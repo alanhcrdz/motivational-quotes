@@ -3,6 +3,7 @@ import { createBottomTabNavigator }  from '@react-navigation/bottom-tabs';
 import colors from '../constants/colors';
 import HomeScreen from '../screens/HomeScreen';
 import { MaterialIcons, AntDesign  } from '@expo/vector-icons';
+import Favorites from '../screens/Favorites';
 
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +38,7 @@ function AuthRoutes() {
                 )),
             }}/>
             <Tab.Screen 
-            name="Favorites" component={HomeScreen}
+            name="Favorites" component={Favorites}
             options={{
                 tabBarIcon:(({ focused }) => (
                     <AntDesign

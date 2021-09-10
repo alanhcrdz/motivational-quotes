@@ -9,9 +9,16 @@ import {
     TouchableWithoutFeedback,
     Animated,
     
+    
 } from 'react-native';
+
+//share and download images feature
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+
 import { AntDesign, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import colors from '../constants/colors';
 
@@ -45,8 +52,38 @@ function ShowImage({ route, navigation }) {
 
     
 
-    const source = picture;
+    // download
+  
 
+    const downloadFile = async () => {
+        const uri = picture
+        let fileUri = FileSystem.documentDirectory + 'quotes.png';
+        FileSystem.downloadAsync(uri, fileUri)
+        .then(({ uri }) => {
+            saveFile(uri)
+        })
+        .catch(error => {
+            console.error(error);
+          })
+
+    }
+
+    const saveFile = async (fileUri) => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status === "granted") {
+            try {
+                MediaLibrary.requestPermissionsAsync()
+                const asset = await MediaLibrary.createAssetAsync(fileUri);
+                await MediaLibrary.createAlbumAsync("Talentiii Quotes", asset, false)
+                alert('File saved to your phone!')
+               
+            }catch(err) {
+                console.log("Save error: ", err)
+            }
+        }
+    }
+    // sharing
+    const source = picture;
     const onShare = () => {
         FileSystem.downloadAsync(
             source,
@@ -82,7 +119,7 @@ function ShowImage({ route, navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={downloadFile}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <Feather 
                                 style={{ margin: 20 }}
