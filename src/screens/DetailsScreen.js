@@ -7,11 +7,11 @@ import {
      ImageBackground, 
      ActivityIndicator,
     } from 'react-native';
+import ActionButton from '../components/ActionButton';
+import BannerAd from '../components/ads/BannerAd';
 import colors from '../constants/colors';
 import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
-
-
 
 
 function DetailsScreen({ route, navigation }) {
@@ -34,16 +34,25 @@ function DetailsScreen({ route, navigation }) {
     const filteredQuotes = quotes.filter(quote => quote.category === category);
         const renderItem = ({ item }) => {
         return (
+            <>
             <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate("ShowImage", {
                 picture: item.picture,
             }) }>
+                
+            
             <ImageBackground style={styles.picture} source={{ uri: item.picture }} />
+            
             </TouchableOpacity>
+            
+
+            </>
 
         )
     }
 
     return (
+  
+        <>
         <View style={styles.container}>
            {/*  <View style={styles.heading}>
             <TouchableOpacity>
@@ -56,8 +65,10 @@ function DetailsScreen({ route, navigation }) {
             </TouchableOpacity>
             </View> */}
             
-            {loading ? 
-            <ActivityIndicator size="small" color={colors.accent} /> :
+            {loading ?
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="small" color={colors.accent} /> 
+            </View> :
             <FlatList
                 keyExtractor={item => item._id}
                 data={filteredQuotes}
@@ -65,7 +76,12 @@ function DetailsScreen({ route, navigation }) {
                 renderItem={renderItem}
             />}
             
+                <BannerAd />
+            
         </View>
+        </>
+    
+        
     )
 }
 
@@ -78,6 +94,16 @@ const styles = StyleSheet.create({
     },
     heading: {
         width: "90%",
+    },
+    loadingContainer: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        padding: 6,
+        justifyContent: 'flex-start',
+        alignSelf: 'center',
+        marginTop: 40,
+        backgroundColor: colors.opacityWhite,
     },
     imgContainer: {
         width: "50%",
@@ -101,6 +127,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
+    action: {
+        marginTop: 30,
+    }
     
 
 });

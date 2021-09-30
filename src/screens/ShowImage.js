@@ -15,12 +15,12 @@ import {
 //share and download images feature
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
-import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 
 import { AntDesign, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import colors from '../constants/colors';
+import { Notifier, Easing } from 'react-native-notifier';
 
 let deviceWidth = Dimensions.get('window').width;
 let deviceHeight = Dimensions.get('window').height;
@@ -75,7 +75,16 @@ function ShowImage({ route, navigation }) {
                 MediaLibrary.requestPermissionsAsync()
                 const asset = await MediaLibrary.createAssetAsync(fileUri);
                 await MediaLibrary.createAlbumAsync("Talentiii Quotes", asset, false)
-                alert('File saved to your phone!')
+                Notifier.showNotification({
+                    title: 'Image Downloaded',
+                    description: 'File has been saved on your phone.',
+                    duration: 3000,
+                    showAnimationDuration: 800,
+                    showEasing: Easing.ease,
+                    hideOnPress: false,
+                    queueMode: 'immediate',
+                    
+                })
                
             }catch(err) {
                 console.log("Save error: ", err)
@@ -99,6 +108,19 @@ function ShowImage({ route, navigation }) {
           });
     }
 
+    // after favorite
+    const showNotifier = () => {
+        Notifier.showNotification({
+            title: 'Added to Favorites',
+            description: 'Your quote now is on favorite list!',
+            duration: 3000,
+            showAnimationDuration: 800,
+            showEasing: Easing.ease,
+            hideOnPress: false,
+            queueMode: 'immediate',
+            
+        })
+    }
 
     return (
         <TouchableWithoutFeedback onPress={toggleFade}>
@@ -147,19 +169,23 @@ function ShowImage({ route, navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { }}>
+
+                        {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
+
+                    {/* <TouchableOpacity onPress={() => { }}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <MaterialIcons
                                 style={{ margin: 20 }}
-                                name="favorite"
+                                name="favorite-outline"
                                 size={24} color={colors.white}
+                                onPress={showNotifier}
 
                             />
                         </View>
                         <View style={styles.label}>
                             <Text style={[styles.labelText, { display: iconShow }]}>Favorite</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </Animated.View>
             </ImageBackground>
         </TouchableWithoutFeedback>

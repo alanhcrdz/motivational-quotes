@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
-function Favorites() {
+function Favorites(props) {
 
+    //const favQuotes = useSelector(state => state.quotes.favoriteQuotes)
     return (
         <View style={styles.container}>
             <Text>Favorites!</Text>

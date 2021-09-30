@@ -13,20 +13,26 @@ import fonts from '../constants/fonts';
 //import { enCA, es, ptBR } from 'date-fns/locale';
 //import DailyCard from '../components/DailyCard';
 import { CategoriesData } from '../components/CategoriesData';
+import Random from '../components/RandomQuotes';
 
 //import Toolbar from '../components/Toolbar';
 //import { WebView } from 'react-native-webview';
 
+
 export default function HomeScreen({navigation}) {
     useEffect(() => {
         StatusBar.setHidden(true);
-      }, [])
+      }, []);
+
     return (
         
         <ScrollView style={styles.content}>
                 
-                <Text style={styles.categoryTitle}>Categories</Text>
+                <Text style={styles.categoryTitle}>Get Inspired</Text>
+                <Random />
                 <View style={styles.catContainer} >
+                <Text style={styles.categoryTitle}>Explore</Text>
+
             {CategoriesData.map(category => {
                 return (
                     <TouchableOpacity 
@@ -68,16 +74,15 @@ const styles = StyleSheet.create({
     },
      
     title: {
-        marginTop: 20,
-        fontSize: 36,
+        fontSize: 22,
         fontFamily: fonts.title,
         color: colors.white,
     },
     categoryTitle: {
         marginTop: 20,
-        fontSize: 30,
+        fontSize: 20,
         fontFamily: fonts.title,
-        color: colors.accent,
+        color: colors.primary,
     },
     list: {
         flex: 1,
@@ -85,15 +90,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
         overflow: 'hidden',
     },
-    title: {
-        fontSize: 16,
-        fontFamily: fonts.title,
-        color: colors.white,
 
-    },
     background: {
         padding: 20,
-        height: 70,
+        height: 120,
     },
     overlay: {
         backgroundColor: colors.opacityBlack,

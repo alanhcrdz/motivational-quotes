@@ -8,11 +8,11 @@ const Context = createContext();
 
 export function DataContextProvider({ children }) {
     const [quotes, setQuotes] = useState([]);
-    //const [randomQuotes, setRandomQuotes] = useState([])
+    // const [randomQuotes, setRandomQuotes] = useState([])
     const [loading, setLoading] = useState(false);
     const today = format(new Date(), 'eeee')
 
-   /*  async function loadQuotes  (){
+    /*  async function loadQuotes  (){
         setLoading(true);
          await api.get('/quotes')
         .then(res => {
@@ -27,9 +27,9 @@ export function DataContextProvider({ children }) {
          
         useEffect(() => {
             loadQuotes();
-        }, [])
+        }, []) */
 
-        async function loadRandomQuotes  (){
+        /*async function loadRandomQuotes  (){
             setLoading(true);
              await api.get('/quotes')
             .then((res) => {
