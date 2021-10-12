@@ -7,7 +7,7 @@ import {
      ImageBackground, 
      ActivityIndicator,
     } from 'react-native';
-import ActionButton from '../components/ActionButton';
+// import ActionButton from '../components/ActionButton';
 import BannerAd from '../components/ads/BannerAd';
 import colors from '../constants/colors';
 import { useDataContext } from '../hooks/useDataContext';
@@ -15,7 +15,7 @@ import { api } from '../services/api';
 
 
 function DetailsScreen({ route, navigation }) {
-    const { category } = route.params;
+    const { category, name } = route.params;
     const { loading, setLoading, quotes, setQuotes } = useDataContext();
     
     
@@ -37,9 +37,9 @@ function DetailsScreen({ route, navigation }) {
             <>
             <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate("ShowImage", {
                 picture: item.picture,
+                category: item.category,
+                name,
             }) }>
-                
-            
             <ImageBackground style={styles.picture} source={{ uri: item.picture }} />
             
             </TouchableOpacity>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 20,
         padding: 6,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignSelf: 'center',
         marginTop: 40,
         backgroundColor: colors.opacityWhite,

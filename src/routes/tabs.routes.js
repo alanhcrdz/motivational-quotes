@@ -6,6 +6,7 @@ import { MaterialIcons, AntDesign, FontAwesome, Entypo  } from '@expo/vector-ico
 import Daily from '../screens/Daily';
 import Random from '../screens/Random';
 import HomeScreen from '../screens/HomeScreen';
+import RandomImages from '../screens/RandomImages';
 
 
 const Tab = createBottomTabNavigator();
@@ -13,15 +14,21 @@ function AuthRoutes() {
     return (
         <Tab.Navigator
         screenOptions={{
+            headerShown: false,
             tabBarStyle: {
                 backgroundColor: colors.background,
                 borderTopWidth: 0,
+                height: 60,
+                paddingBottom: 16,
             },
-            headerShown: false,
+            headerTintColor: colors.primary,
             labelPosition: 'below-icon',
             showLabel: true,
             tabBarActiveTintColor: colors.primary,
             tabBarInactiveTintColor: colors.accent,
+            headerStyle: {
+                backgroundColor: colors.background,
+            }
         }}>
             <Tab.Screen 
             name="Explore" component={HomeScreen}
@@ -46,7 +53,7 @@ function AuthRoutes() {
                       /> 
                 )),
             }}/> */}
-             <Tab.Screen 
+             {/* <Tab.Screen 
             name="Daily" component={Daily}
             options={{
                 tabBarIcon:(({ focused }) => (
@@ -57,13 +64,26 @@ function AuthRoutes() {
                     
                       /> 
                 )),
-            }}/>
+            }}/> */}
             <Tab.Screen 
-            name="Random" component={Random}
+            name="Only Text" component={Random}
             options={{
                 tabBarIcon:(({ focused }) => (
                     <Entypo
                     name="quote" 
+                    size={24}
+                    color={focused ? colors.primary : colors.accent} 
+                    
+                      /> 
+                )),
+            }}/>
+             <Tab.Screen 
+            name="Random Images" component={RandomImages}
+            options={{
+                title: 'Random Images',
+                tabBarIcon:(({ focused }) => (
+                    <Entypo
+                    name="image" 
                     size={24}
                     color={focused ? colors.primary : colors.accent} 
                     

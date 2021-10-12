@@ -1,45 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { 
-    StyleSheet, 
-    View, 
-    Text, 
-    ActivityIndicator, 
-    TouchableOpacity 
-} from 'react-native';
+/* import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
-import { Entypo, Foundation, AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
 import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
-import * as Clipboard from 'expo-clipboard';
-
-import { Notifier, Easing } from 'react-native-notifier';
 
 
-
-
-function RandomQuotes() {
-    //const [copiedText, setCopiedText] = useState('');
+function DailyQuotes() {
     const { loading, setLoading } = useDataContext();
-    const [randomQuotes, setRandomQuotes] = useState([]);
-
-    const copyToClipBoard = (quote, author) => {
-        Clipboard.setString(`${randomQuotes.content} - ${randomQuotes.author}`)
-        Notifier.showNotification({
-            title: 'Copied!',
-            description: 'Text copied to clipboard.',
-            duration: 3000,
-            showAnimationDuration: 800,
-            showEasing: Easing.ease,
-            hideOnPress: false,
-            queueMode: 'immediate',
-
-        })
-    }
-    /* const fetchCopiedText = async () => {
-        const text = await Clipboard.getStringAsync();
-        setCopiedText(text);
-      }; */
+    const [randomQuotes, setRandomQuotes] = useState([])
 
     function loadRandomQuotes() {
         setLoading(true);
@@ -69,17 +40,13 @@ function RandomQuotes() {
 
                 :
                 <View style={styles.card}>
-                    {/* <Text style={styles.date}>{today}</Text> */}
                     <Entypo name="quote" size={34} color={colors.opacityWhite} />
                     <Text style={styles.text} >"{randomQuotes.content}"</Text>
                     <View style={styles.wrapper} >
                         <Text style={styles.author}> - {randomQuotes.author}</Text>
-                        <TouchableOpacity onPress={loadRandomQuotes} activeOpacity={0.6}>
-                            <Foundation name="refresh" size={28} color="#F3EAC0" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={copyToClipBoard} activeOpacity={0.6}>
-                            <AntDesign name="copy1" size={28} color="#F3EAC0" />
-                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style={styles.timer}>Next quote in 23:55:00</Text>
                     </View>
 
                 </View>
@@ -91,11 +58,6 @@ function RandomQuotes() {
     )
 }
 const styles = StyleSheet.create({
-    /*  date: {
-         fontSize: 18,
-         fontFamily: fonts.title,
-         color:  colors.white,
-     }, */
     spinner: {
         marginTop: 40,
         width: 40,
@@ -135,6 +97,12 @@ const styles = StyleSheet.create({
         color: colors.accent,
 
     },
+    timer: {
+        marginTop: 10,
+        fontFamily: fonts.title,
+        color: colors.primary,
+    }
     
 })
-export default RandomQuotes;
+export default DailyQuotes;
+ */

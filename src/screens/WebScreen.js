@@ -1,11 +1,16 @@
 import React from 'react';
 import { WebView } from 'react-native-webview';
 
-function WebScreen() {
+function WebScreen({ route }) {
+
+   const { category } = route.params;
     return (
-        <WebView source={{ uri: 'http://astrolight.ca/astrolight' }}
+        <>
+        {console.log(`http://astrolight.ca/astrolight/${category}`)}
+        <WebView source={{ uri: `http://astrolight.ca/astrolight/${category}` }}
     showsHorizontalScrollIndicator/>
+    </>
     )
 }
 
-export default WebScreen;
+export default React.memo(WebScreen);

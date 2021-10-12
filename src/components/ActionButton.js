@@ -22,7 +22,6 @@ function ActionButton({ onPress, title, style }) {
 }
 const styles = StyleSheet.create({
        button: {
-        width: '96%',
         marginTop: 10,
         padding: 16,
         borderRadius: 8,
