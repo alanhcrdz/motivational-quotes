@@ -51,12 +51,12 @@ function ShowImage({ route, navigation }) {
 
     // ADS
      // IOS
- const prodRewardedIos = 'ca-app-pub-3897756162473819/4198345946';
- const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
+ const prodRewardedIos = '';
+ const testRewardedIos = '';
 
 // ANDROID 
- const prodRewardedAndr = 'ca-app-pub-3897756162473819/2693692583';
- const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
+ const prodRewardedAndr = '';
+ const testRewardedAndr = '';
 
 const RewardedUnit = Platform.select({
     ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
