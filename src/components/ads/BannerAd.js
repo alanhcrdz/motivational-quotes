@@ -1,17 +1,24 @@
 // ADS
 import React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { AdMobBanner } from 'expo-ads-admob';
 import  Constants from 'expo-constants';
-// BANNER ANDROID ID: ca-app-pub-3940256099942544/6300978111 (TEST ID, REPLACE AFTER)
-// INTERSTITIAL ANDROID ID: ca-app-pub-3940256099942544/1033173712 (TEST ID, REPLACE AFTER)
-// INTERSTITIAL VIDEO ANDROID ID: ca-app-pub-3940256099942544/8691691433 (TEST ID, REPLACE AFTER)
+
+const productionAndroid = 'ca-app-pub-3897756162473819/1197161552';
+const testAndroid = 'ca-app-pub-3940256099942544/6300978111';
+
+const productionIos = 'ca-app-pub-3897756162473819/4529518433';
+const testIos = 'ca-app-pub-3940256099942544/2934735716';
+
+// UNITS
+const bannerUnit = Platform.select({
+    ios: Constants.isDevice && !__DEV__ ? productionIos : testIos,
+    android: Constants.isDevice && !__DEV__ ? productionAndroid : testAndroid,
+});
 
 
-const testBanner = 'ca-app-pub-3940256099942544/6300978111';
-const productionBanner = 'ca-app-pub-3897756162473819/1197161552';
 
-const bannerUnit = Constants.isDevice && !__DEV__ ? productionBanner :testBanner
+
 const BannerAd = () => {
     return (
         <AdMobBanner

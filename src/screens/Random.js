@@ -8,36 +8,6 @@ import fonts from '../constants/fonts';
 import { AntDesign } from '@expo/vector-icons';
 import BannerAd from '../components/ads/BannerAd';
 
-// BANNER ANDROID ID: ca-app-pub-3940256099942544/6300978111 (TEST ID, REPLACE AFTER)
-// INTERSTITIAL ANDROID ID: ca-app-pub-3940256099942544/1033173712 (TEST ID, REPLACE AFTER)
-// INTERSTITIAL VIDEO ANDROID ID: ca-app-pub-3940256099942544/8691691433 (TEST ID, REPLACE AFTER)
-// REWARDED VIDEO ANDROID ID: ca-app-pub-3940256099942544/5224354917 (TEST ID, REPLACE AFTER)
-
-// AD OPEN TEST ID: ca-app-pub-3940256099942544/3419835294
-
-
-
-// const testInterstitial = 'ca-app-pub-3940256099942544/8691691433';
-// const productionInterstitial = 'ca-app-pub-3897756162473819/3608181403';
-
-// const adUnit = Constants.isDevice && !__DEV__ ? productionInterstitial : testInterstitial;
-
-// INTERSTITIAL AD
-/* function showInterstitial() {
-    AdMobInterstitial.setAdUnitID(adUnit)
-    AdMobInterstitial.requestAdAsync().then(() => {
-        AdMobInterstitial.showAdAsync()
-            .catch((e) => { console.log(e) })
-    });
-} */
-// REWARDED AD
-/* function showRewarded() {
-    AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917')
-    AdMobRewarded.requestAdAsync().then(() => {
-        AdMobRewarded.showAdAsync()
-        .catch((err) => console.log(err))
-    })
-} */
 
 
 function Random({ navigation }) {

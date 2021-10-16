@@ -34,13 +34,7 @@ import Constants from 'expo-constants';
 
 
 
-// IOS
-// const prodRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
-// const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
 
-// ANDROID 
-// const prodRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
-// const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
 
 function ShowImage({ route, navigation }) {
 
@@ -56,17 +50,27 @@ function ShowImage({ route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
 
     // ADS
-   /*  const adUnit = Platform.select({
-        ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
-        android: Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
-    }) */
+     // IOS
+ const prodRewardedIos = 'ca-app-pub-3897756162473819/4198345946';
+ const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
 
-  
+// ANDROID 
+ const prodRewardedAndr = 'ca-app-pub-3897756162473819/2693692583';
+ const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
+
+const RewardedUnit = Platform.select({
+    ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
+    android: Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
+}) 
+
+  useEffect(() => {
+    setTestDeviceIDAsync('EMULATOR');
+  },[])
 
         
 function showRewarded() {
     setAdLoading(true);
-    AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917')
+    AdMobRewarded.setAdUnitID(RewardedUnit)
     AdMobRewarded.requestAdAsync().then(() => {
         AdMobRewarded.showAdAsync()
             .catch((err) => console.log(err))
@@ -103,15 +107,7 @@ function showRewarded() {
 
 
 }
-/*  useEffect(() => {
-    let { isMounted } = true;
-    setTestDeviceIDAsync('EMULATOR');
-    if(isMounted)
-    showRewarded();
-    
-    return () => { isMounted = false }
-    
-},[])  */
+
 
     // MODAL
     const handleModalVisibility = () => {
@@ -246,9 +242,9 @@ function showRewarded() {
 
                     <TouchableOpacity onPress={onShare}>
                         <View style={[styles.icon, { display: iconShow }]}>
-                            <Feather
+                            <AntDesign
                                 style={{ margin: 20 }}
-                                name="share"
+                                name="instagram"
                                 size={24} color={colors.white}
 
                             />

@@ -2,7 +2,7 @@ export const CategoriesData = [
 
     {
         id: 1,
-        category: 'love',
+        category: 'motivationallove',
         label: 'Love',
         title: 'Love ',
         navigate: 'Details',
@@ -10,7 +10,7 @@ export const CategoriesData = [
     },
     {
         id: 2,
-        category: 'prosperity',
+        category: 'motivationalprosperity',
         label: 'Prosperity',
         title: 'Prosperity ',
         navigate: 'Details',
@@ -18,15 +18,15 @@ export const CategoriesData = [
     },
     {
         id: 3,
-        category: 'achieve_goals',
+        category: 'motivationalgoals',
         label: 'Goals',
-        title: 'Achieve Goals ',
+        title: 'Success',
         navigate: 'Details',
         background: require('../assets/goals.png')
     },
     {
         id: 4,
-        category: 'health',
+        category: 'motivationalhealth',
         label: 'Health',
         title: 'Health ',
         navigate: 'Details',
@@ -34,15 +34,15 @@ export const CategoriesData = [
     },
     {
         id: 5,
-        category: 'positive_attitude',
-        label: 'Positive',
-        title: 'Positive Attitude ',
+        category: 'motivationalconfidence',
+        label: 'Confidence',
+        title: 'Self Confidence ',
         navigate: 'Details',
         background: require('../assets/positive.png')
     },
     {
         id: 6,
-        category: 'resilience',
+        category: 'motivationalresilience',
         label: 'Resilience',
         title: 'Resilience',
         navigate: 'Details',
@@ -50,6 +50,14 @@ export const CategoriesData = [
     },
     {
         id: 7,
+        category: 'motivationalpositive',
+        label: 'Positive',
+        title: 'Positive Affirmations',
+        navigate: 'Details',
+        background: require('../assets/affirmations.png')
+    },
+    {
+        id: 8,
         category: 'random_images',
         label: '',
         title: 'Random Images',
@@ -57,7 +65,7 @@ export const CategoriesData = [
         background: require('../assets/question.jpg')
     },
     {
-        id: 8,
+        id: 9,
         category: 'random_text',
         label: '',
         title: 'Random Text Quotes',
