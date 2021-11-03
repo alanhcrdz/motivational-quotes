@@ -1,12 +1,12 @@
 export const CategoriesData = [
 
     {
-        id: 1,
+        id: '1',
         category: 'motivationallove',
         label: 'Love',
         title: 'Love ',
-        navigate: 'Details',
-        background: require('../assets/love.png')
+        navigate: 'Users',
+        background: require('../assets/love.png'),
     },
     {
         id: 2,
@@ -17,34 +17,34 @@ export const CategoriesData = [
         background: require('../assets/prosperity.png')
     },
     {
-        id: 3,
+        id: '3',
         category: 'motivationalgoals',
-        label: 'Goals',
+        label: 'Success',
         title: 'Success',
-        navigate: 'Details',
+        navigate: 'Users',
         background: require('../assets/goals.png')
     },
     {
-        id: 4,
+        id: '4',
         category: 'motivationalhealth',
-        label: 'Health',
-        title: 'Health ',
+        label: 'Health & Mindfulness',
+        title: 'Health & Mindfulness',
         navigate: 'Details',
         background: require('../assets/health.png')
     },
     {
-        id: 5,
+        id: '5',
         category: 'motivationalconfidence',
         label: 'Confidence',
         title: 'Self Confidence ',
         navigate: 'Details',
         background: require('../assets/positive.png')
     },
-    {
+     /*{
         id: 6,
         category: 'motivationalresilience',
-        label: 'Resilience',
-        title: 'Resilience',
+        label: 'Overcome',
+        title: 'Overcome Challenges',
         navigate: 'Details',
         background: require('../assets/resilience.png')
     },
@@ -55,22 +55,22 @@ export const CategoriesData = [
         title: 'Positive Affirmations',
         navigate: 'Details',
         background: require('../assets/affirmations.png')
-    },
-    {
+    }, */
+    /* {
         id: 8,
         category: 'random_images',
         label: '',
         title: 'Random Images',
         navigate: 'Random Images',
         background: require('../assets/question.jpg')
-    },
-    {
+    }, */
+  /*   {
         id: 9,
         category: 'random_text',
         label: '',
         title: 'Random Text Quotes',
         navigate: 'Random',
         background: require('../assets/read.jpg')
-    },
+    }, */
      
 ]

@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "getInspired",
-    "slug": "getInspired",
+    "name": "motivate",
+    "slug": "motivate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#04080F"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,8 +18,10 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.globalpromotions.motivate",
+      "buildNumber": "1.0.0",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3897756162473819~4511021349"
+        "googleMobileAdsAppId": "ca-app-pub-9871106933538473~8191271703"
       }
       
     },
@@ -29,8 +31,10 @@
         "backgroundColor": "#FFFFFF"
         
       },
+      "package": "com.globalpromotions.motivate",
+      "versionCode": 1,
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3897756162473819~3172588201"
+        "googleMobileAdsAppId": "ca-app-pub-9871106933538473~9504353373"
       }
     },
     "web": {

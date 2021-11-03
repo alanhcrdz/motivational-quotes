@@ -7,12 +7,16 @@ import {
     ImageBackground,
     StatusBar,
     FlatList,
+    BackHandler,
+    Alert,
+    
 } from 'react-native';
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
 //import { enCA, es, ptBR } from 'date-fns/locale';
 //import DailyCard from '../components/DailyCard';
 import { CategoriesData } from '../components/CategoriesData';
+import { useIsFocused } from '@react-navigation/native';
 
 //import Toolbar from '../components/Toolbar';
 //import { WebView } from 'react-native-webview';
@@ -20,12 +24,32 @@ import { CategoriesData } from '../components/CategoriesData';
 
 
 export default function HomeScreen({ navigation }) {
+
+    const isFocused = useIsFocused();
     useEffect(() => {
         StatusBar.setHidden(true);
+        if (isFocused) {
+            const backAction = () => {
+                Alert.alert('Leaving Already?', 'Are you sure you want to exit app?', [
+                    {
+                      text: 'Cancel',
+                      onPress: () => null,
+                      style: 'cancel',
+                    },
+                    { text: 'Exit App', onPress: () => BackHandler.exitApp() },
+                ]);
+                  return true;
+            };
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction) ;
+            return () => backHandler.remove(); 
+        };
     }, []);
+  
+
 
 
     const DATA = CategoriesData;
+
     const renderItem = ({ item }) => {
         return (
             <>
@@ -60,9 +84,16 @@ export default function HomeScreen({ navigation }) {
                 data={DATA}
                 numColumns={1}
                 renderItem={renderItem}
+
+                 // for better performance (if needed, install recyclerlistview)
+                 initialNumToRender={5}
+                 maxToRenderPerBatch={10}
+                 windowSize={10}
+                 removeClippedSubviews={true}
+                 updateCellsBatchingPeriod={100}
             />
             </View>
-        </View>
+        </View >
 
     )
 }
@@ -89,7 +120,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         fontFamily: fonts.text,
-        color: colors.accent,
+        color: colors.primary,
         textTransform: 'uppercase',
         marginTop: 15,
     },

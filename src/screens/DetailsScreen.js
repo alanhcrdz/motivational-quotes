@@ -1,4 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, 
+    useMemo, 
+    useState, 
+    useCallback, 
+    memo } from 'react';
 import { 
      View,
      StyleSheet, 
@@ -6,6 +10,7 @@ import {
      FlatList, 
      ImageBackground, 
      ActivityIndicator,
+     RefreshControl
     } from 'react-native';
 // import ActionButton from '../components/ActionButton';
 import BannerAd from '../components/ads/BannerAd';
@@ -14,9 +19,17 @@ import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
 
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
 function DetailsScreen({ route, navigation }) {
+    const [refreshing, setRefreshing] = useState(false);
     const { category, name } = route.params;
     const { loading, setLoading, quotes, setQuotes } = useDataContext();
+
+
     
     
     useEffect(() => {
@@ -28,31 +41,36 @@ function DetailsScreen({ route, navigation }) {
         .catch(err => console.log(err.response))
         .finally(() => {
             setLoading(false);
+
         })
-    }, [])
+    }, []);
+
+        
+const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {setRefreshing(false)});
+},[]);
     
     const filteredQuotes = quotes.filter(quote => quote.category === category);
+
         const renderItem = ({ item }) => {
         return (
-            <>
             <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate("ShowImage", {
                 picture: item.picture,
                 category: item.category,
                 name,
             }) }>
             <ImageBackground style={styles.picture} source={{ uri: item.picture }} />
-            
+
             </TouchableOpacity>
             
 
-            </>
 
         )
     }
 
+  return useMemo(() => {
     return (
-  
-        <>
         <View style={styles.container}>
            {/*  <View style={styles.heading}>
             <TouchableOpacity>
@@ -67,27 +85,43 @@ function DetailsScreen({ route, navigation }) {
             
             {loading ?
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="small" color={colors.accent} /> 
+                <ActivityIndicator size="small" color={colors.white} /> 
             </View> :
             <FlatList
                 keyExtractor={item => item._id}
                 data={filteredQuotes}
                 numColumns={2}
                 renderItem={renderItem}
-            />}
+
+                // for better performance (see more at: https://reactnative.dev/docs/optimizing-flatlist-configuration)
+                initialNumToRender={5}
+                maxToRenderPerBatch={10}
+                windowSize={21}
+                removeClippedSubviews={true}
+                updateCellsBatchingPeriod={100}
+                // reresh control
+                refreshControl={
+                <RefreshControl 
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />}
+                
+            
+            />} 
             
                 <BannerAd />
             
         </View>
-        </>
     
         
     )
+  }, [filteredQuotes])
 }
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
+        justifyContent: 'space-between',
         alignItems: 'center',
         width: "100%",
         height: '100%',
@@ -116,6 +150,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         width: "100%",
         height: 280,
+        backgroundColor: colors.opacityWhite,
     },
    
     quotesCard: {
@@ -134,4 +169,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default DetailsScreen;
+export default memo(DetailsScreen);

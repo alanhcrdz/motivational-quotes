@@ -11,8 +11,6 @@ import {
     TouchableHighlight,
     ActivityIndicator,
     Platform,
-
-
 } from 'react-native';
 import {
     AdMobRewarded,
@@ -52,11 +50,11 @@ function ShowImage({ route, navigation }) {
     // ADS
      // IOS
  const prodRewardedIos = '';
- const testRewardedIos = '';
+ const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
 
 // ANDROID 
  const prodRewardedAndr = '';
- const testRewardedAndr = '';
+ const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
 
 const RewardedUnit = Platform.select({
     ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
@@ -156,7 +154,7 @@ function showRewarded() {
             try {
                 MediaLibrary.requestPermissionsAsync()
                 const asset = await MediaLibrary.createAssetAsync(fileUri);
-                await MediaLibrary.createAlbumAsync("Talentiii Quotes", asset, false)
+                await MediaLibrary.createAlbumAsync("Global Motivate", asset, false)
                 Notifier.showNotification({
                     title: 'Image Downloaded',
                     description: 'File has been saved on your phone.',
@@ -191,7 +189,7 @@ function showRewarded() {
     }
 
     // after favorite
-    /* const showNotifier = () => {
+     const showNotifier = () => {
         Notifier.showNotification({
             title: 'Added to Favorites',
             description: 'Your quote now is on favorite list!',
@@ -202,7 +200,7 @@ function showRewarded() {
             queueMode: 'immediate',
             
         })
-    } */
+    } 
 
     // Capitalize
     
@@ -259,7 +257,7 @@ function showRewarded() {
 
                     {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
 
-                    {/* <TouchableOpacity onPress={() => { }}>
+                     <TouchableOpacity onPress={() => { }}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <MaterialIcons
                                 style={{ margin: 20 }}
@@ -272,9 +270,9 @@ function showRewarded() {
                         <View style={styles.label}>
                             <Text style={[styles.labelText, { display: iconShow }]}>Favorite</Text>
                         </View>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity> 
                 </Animated.View>
-                <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim, display: iconShow }]}>
+                 <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim, display: iconShow }]}>
                     <TouchableOpacity 
                     style={styles.button} 
                     activeOpacity={0.4} 
@@ -287,10 +285,10 @@ function showRewarded() {
                             <Text style={styles.labelText}> More {name} Quotes! </Text>
                         </View>
                     </TouchableOpacity>
-                </Animated.View>
+                </Animated.View> 
 
                 {/* MODAL FOR LOADING AD */}
-                <Modal
+                 <Modal
                 animationType='slide'
                 visible={modalVisible}
                 transparent
@@ -329,7 +327,7 @@ function showRewarded() {
                        
                     </View>
                 </View>
-            </Modal>
+            </Modal> 
 
             
             </ImageBackground>
@@ -384,7 +382,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         borderRadius: 8,
-        backgroundColor: colors.action,
+        backgroundColor: colors.accent,
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
@@ -416,7 +414,7 @@ const styles = StyleSheet.create({
             padding: 16,
             elevation: 2,
             width: 250,
-            backgroundColor: colors.action,
+            backgroundColor: colors.accent,
         },
         textStyle: {
             color: 'white',

@@ -1,14 +1,14 @@
 // ADS
 import React from 'react';
-import { View, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { AdMobBanner } from 'expo-ads-admob';
 import  Constants from 'expo-constants';
 
-const productionAndroid = '';
-const testAndroid = '';
+const productionAndroid = 'ca-app-pub-9871106933538473/9702119337';
+const testAndroid = 'ca-app-pub-3940256099942544/6300978111';
 
-const productionIos = '';
-const testIos = '';
+const productionIos = 'ca-app-pub-9871106933538473/1712960432';
+const testIos = 'ca-app-pub-3940256099942544/2934735716';
 
 // UNITS
 const bannerUnit = Platform.select({
@@ -27,6 +27,7 @@ const BannerAd = () => {
                 servePersonalizedAds={true}
                 style={{
                     padding:10,
+                    alignSelf: 'center'
                 }}
                
             />

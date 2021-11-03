@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
     StyleSheet,
     View,
@@ -10,14 +10,7 @@ import {
     TouchableWithoutFeedback,
     Animated,
 } from 'react-native';
-import ActionButton from '../components/ActionButton';
-import RandomQuotes from '../components/RandomQuotes';
 import colors from '../constants/colors';
-import {
-    AdMobInterstitial,
-    AdMobRewarded,
-    setTestDeviceIDAsync
-} from "expo-ads-admob";
 import { AntDesign, Foundation, Entypo, MaterialIcons, Feather, FontAwesome } from '@expo/vector-icons';
 import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
@@ -35,36 +28,6 @@ import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 
-// BANNER ANDROID ID: ca-app-pub-3940256099942544/6300978111 (TEST ID, REPLACE AFTER)
-// INTERSTITIAL ANDROID ID: ca-app-pub-3940256099942544/1033173712 (TEST ID, REPLACE AFTER)
-// INTERSTITIAL VIDEO ANDROID ID: ca-app-pub-3940256099942544/8691691433 (TEST ID, REPLACE AFTER)
-// REWARDED VIDEO ANDROID ID: ca-app-pub-3940256099942544/5224354917 (TEST ID, REPLACE AFTER)
-
-// AD OPEN TEST ID: ca-app-pub-3940256099942544/3419835294
-
-
-// const testInterstitial = 'ca-app-pub-3940256099942544/8691691433';
-// const productionInterstitial = 'ca-app-pub-3897756162473819/3608181403';
-
-// const adUnit = Constants.isDevice && !__DEV__ ? productionInterstitial : testInterstitial;
-
-// INTERSTITIAL AD
-/* function showInterstitial() {
-    AdMobInterstitial.setAdUnitID(adUnit)
-    AdMobInterstitial.requestAdAsync().then(() => {
-        AdMobInterstitial.showAdAsync()
-        .catch((e) => {console.log(e)})
-    });
-} */
-// REWARDED AD
-/*  function showRewarded() {
-    AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917')
-    AdMobRewarded.requestAdAsync().then(() => {
-        AdMobRewarded.showAdAsync()
-        .catch((err) => console.log(err))
-    })
-} 
- */
 
 function RandomImages({ navigation }) {
     const { loading, setLoading } = useDataContext();
@@ -72,35 +35,6 @@ function RandomImages({ navigation }) {
     const [iconShow, setIconShow] = useState('none');
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
-    // const [adLoaded, setAdLoaded] = useState(false);
-    /* useEffect(() => {
-        setTestDeviceIDAsync("EMULATOR");
-        // REWARDED
-        AdMobRewarded.addEventListener('rewardedVideoUserDidEarnReward', () => {
-            navigation.navigate('WebScreen')
-        });
-
-        AdMobRewarded.addEventListener('rewardedVideoDidLoad', () => {
-            setAdLoaded(true)
-        });
-
-        AdMobRewarded.addEventListener('rewardedVideoDidDismiss', () => {
-        });
-
-        // INTERSTITIAL
-        AdMobInterstitial.addEventListener('interstitialDidLoad', () => {
-            setAdLoaded(true);
-        });
-
-        AdMobInterstitial.addEventListener('interstitialDidClose', () => {
-            setAdLoaded(false);
-            navigation.navigate('WebScreen');
-
-        });
-
-
-
-    }, []) */
 
     function loadRandomImages() {
         setLoading(true);
@@ -163,7 +97,7 @@ function RandomImages({ navigation }) {
             try {
                 MediaLibrary.requestPermissionsAsync()
                 const asset = await MediaLibrary.createAssetAsync(fileUri);
-                await MediaLibrary.createAlbumAsync("Talentiii Quotes", asset, false)
+                await MediaLibrary.createAlbumAsync("Global Motivate", asset, false)
                 Notifier.showNotification({
                     title: 'Image Downloaded',
                     description: 'File has been saved on your pictures folder.',
@@ -198,6 +132,7 @@ function RandomImages({ navigation }) {
     }
 
 
+
     return (
         <View style={styles.container}>
             {loading ?
@@ -227,8 +162,9 @@ function RandomImages({ navigation }) {
 
                             <TouchableOpacity onPress={onShare}>
                                 <View style={[styles.icon, { display: iconShow }]}>
-                                    <Feather
-                                        name="share"
+                                        <AntDesign
+                                        style={{ margin: 20 }}
+                                        name="instagram"
                                         size={24} color={colors.white}
 
                                     />
@@ -289,6 +225,7 @@ const styles = StyleSheet.create({
     image: {
         height: '100%',
         justifyContent: 'flex-end',
+        
     },
     iconsContainer: {
         width: '100%',
