@@ -207,7 +207,7 @@ function showRewarded() {
 
     return (
         <TouchableWithoutFeedback onPress={toggleFade}>
-            <ImageBackground style={styles.image} source={{ uri: picture }}>
+            <ImageBackground style={styles.image} source={ picture }>
                 <Animated.View style={[styles.iconsContainer, { opacity: fadeAnim }]}>
                     <TouchableOpacity activeOpacity={0.4} onPress={() => { navigation.goBack() }}>
                         <View style={[styles.icon, { display: iconShow }]}>
@@ -224,7 +224,7 @@ function showRewarded() {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={downloadFile}>
+                    {/* <TouchableOpacity onPress={downloadFile}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <Feather
                                 style={{ margin: 20 }}
@@ -236,9 +236,9 @@ function showRewarded() {
                         <View style={styles.label}>
                             <Text style={[styles.iconText, { display: iconShow }]}>Download</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
-                    <TouchableOpacity onPress={onShare}>
+                   {/*  <TouchableOpacity onPress={onShare}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <AntDesign
                                 style={{ margin: 20 }}
@@ -250,14 +250,14 @@ function showRewarded() {
                         <View style={styles.label}>
                             <Text style={[styles.iconText, { display: iconShow }]}>Share</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
 
 
 
                     {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
 
-                     <TouchableOpacity onPress={() => { }}>
+                     {/* <TouchableOpacity onPress={() => { }}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <MaterialIcons
                                 style={{ margin: 20 }}
@@ -270,9 +270,9 @@ function showRewarded() {
                         <View style={styles.label}>
                             <Text style={[styles.labelText, { display: iconShow }]}>Favorite</Text>
                         </View>
-                    </TouchableOpacity> 
+                    </TouchableOpacity>  */}
                 </Animated.View>
-                 <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim, display: iconShow }]}>
+                 {/* <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim, display: iconShow }]}>
                     <TouchableOpacity 
                     style={styles.button} 
                     activeOpacity={0.4} 
@@ -282,13 +282,13 @@ function showRewarded() {
                             size={22}
                             color={colors.white} />
                         <View style={styles.label}>
-                            <Text style={styles.labelText}> More {name} Quotes! </Text>
+                            <Text style={styles.labelText}> More { name} Quotes! </Text>
                         </View>
                     </TouchableOpacity>
-                </Animated.View> 
+                </Animated.View>  */}
 
                 {/* MODAL FOR LOADING AD */}
-                 <Modal
+                 {/* <Modal
                 animationType='slide'
                 visible={modalVisible}
                 transparent
@@ -327,7 +327,7 @@ function showRewarded() {
                        
                     </View>
                 </View>
-            </Modal> 
+            </Modal>  */}
 
             
             </ImageBackground>

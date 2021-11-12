@@ -1,34 +1,38 @@
-import React, { useEffect, 
-    useMemo, 
-    useState, 
-    useCallback, 
-    memo } from 'react';
-import { 
-     View,
-     Text,
-     StyleSheet, 
-     TouchableOpacity, 
-     FlatList, 
-     ImageBackground, 
-     ActivityIndicator,
-     RefreshControl,
-     Modal,
-     TouchableHighlight,
-     Platform,
-    } from 'react-native';
+import React, {
+    useEffect,
+    useMemo,
+    useState,
+    useCallback,
+    memo
+} from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    FlatList,
+    ImageBackground,
+    ActivityIndicator,
+    RefreshControl,
+    Platform,
+    ToastAndroid,
+    TextInput
+} from 'react-native';
 // import ActionButton from '../components/ActionButton';
 import BannerAd from '../components/ads/BannerAd';
 import colors from '../constants/colors';
 import { useDataContext } from '../hooks/useDataContext';
-import { UsersData } from '../components/UsersData';
+// import { UsersData } from '../components/UsersData';
+import { api } from '../services/api';
 // import { api } from '../services/api';
 import fonts from '../constants/fonts';
-import { Entypo, AntDesign  } from '@expo/vector-icons'; 
+import { Entypo, AntDesign } from '@expo/vector-icons';
 import {
     AdMobRewarded,
     setTestDeviceIDAsync
 } from "expo-ads-admob";
 import Constants from 'expo-constants';
+import { Feather } from '@expo/vector-icons';
 
 
 
@@ -37,70 +41,43 @@ const wait = (timeout) => {
 }
 
 
-  
+
 
 function UsersScreen({ route, navigation }) {
     const [refreshing, setRefreshing] = useState(false);
-    const { category, name } = route.params;
-    const { loading, setLoading, quotes, setQuotes } = useDataContext();
+    const { category } = route.params;
+    const { loading, setLoading } = useDataContext();
 
     const [adLoading, setAdLoading] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    // const [modalVisible, setModalVisible] = useState(false);
+    const [search, setSearch] = useState('');
+    const [creators, setCreators] = useState([]);
+    const [searchableCreators, setSearchchableCreators] = useState([])
 
     // ADS
-     // IOS
+    // IOS
 
-useEffect(() => {
-    setTestDeviceIDAsync('EMULATOR');
-  },[])
+    useEffect(() => {
+        setTestDeviceIDAsync('EMULATOR');
+    }, [])
 
-/*   function showRewarded() {
-    setAdLoading(true);
-    AdMobRewarded.setAdUnitID(RewardedUnit)
-    AdMobRewarded.requestAdAsync().then(() => {
-        AdMobRewarded.showAdAsync()
-            .catch((err) => console.log(err))
-    });
-    AdMobRewarded.addEventListener('rewardedVideoUserDidEarnReward', () => {
-        setModalVisible(false);
-        navigation.navigate('WebScreen', {
-            category,
-            creatorId,
-        });
-    });
-    AdMobRewarded.addEventListener('rewardedVideoDidPresent', () => {
-        setAdLoading(false);
-        console.log('Add is presented: ')
-    });
-
-    AdMobRewarded.addEventListener('rewardedVideoDidFailToPresent', () => {
-        setAdLoading(false);
-        console.log('Add failed to present')
-    });
-
-    AdMobRewarded.addEventListener('rewardedVideoDidLoad', () => {
-        setAdLoading(false)
-        console.log('Add loaded!')
-    });
-    AdMobRewarded.addEventListener('rewardedVideoDidFailToLoad', () => {
-        setAdLoading(false);
-        console.log('Add not loaded')
-    })
-
-    AdMobRewarded.addEventListener('rewardedVideoDidDismiss', () => {
-        setModalVisible(false);
-        setAdLoading(false);
-    });
-
-
-} */
-
- // MODAL
- const handleModalVisibility = () => {
-    setModalVisible(true)
-}
-
+    // SEARCH
+     useEffect(() => {
+        setSearchchableCreators(
+            creators.filter(creator => {
+                return creator.name.toLowerCase().includes(search.toLowerCase())
+            })
+        )
+    }, [creators, search]) 
     
+   
+
+    // MODAL
+   /*  const handleModalVisibility = () => {
+        setModalVisible(true)
+    } */
+
+
     /* useEffect(() => {
         setLoading(true);
         api.get('/quotes')
@@ -114,117 +91,94 @@ useEffect(() => {
         })
     }, []); */
 
-        
-const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {setRefreshing(false)});
-},[]);
-    
-        const filteredUsers = UsersData.filter(user => user.category === category); 
-        const renderItem = ({ item }) => {
+      useEffect(() => {
+        setLoading(true);
+        api.get('/creators/all')
+        .then(res => {
+            setCreators(res.data); 
+        })
+        .catch(err => console.log(err.response))
+        .finally(() => {
+            setLoading(false);
+
+        })
+    }, []); 
+
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => { setRefreshing(false) });
+    }, []);
+
+    const filteredUsers = searchableCreators.filter(user => user.category === category);
+    const renderItem = ({ item }) => {
         return (
-            
+            <>
+           
             <View style={styles.listContainer} >
+               
                 <View style={styles.imgContainer} >
-                <ImageBackground style={styles.picture} source={ item.picture} />
+                    <ImageBackground style={styles.picture} source={{ uri: item.picture }} />
                 </View>
 
                 <View style={styles.textContainer}>
-                <Text style={styles.name}>{item.name}</Text>
-                <TouchableOpacity style={styles.button} onPress ={() => {
-                         const prodRewardedIos = '';
-                         const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
-                        
-                        // ANDROID 
-                         const prodRewardedAndr = item.adUnit;
-                         const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
-                        
-                        const RewardedUnit = Platform.select({
-                            ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
-                            android: Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
-                        }) 
-                        
+                    <Text style={styles.name}>{item.name}</Text>
+                    <Text numberOfLines={5} style={styles.bio}>{item.bio}</Text>
+                    <TouchableOpacity 
+                    style={styles.button} 
+                    onPress={ async () => {
+                    const prodRewardedIos = '';
+                    const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
+
+                    // ANDROID 
+                    const prodRewardedAndr = item.adUnit;
+                    const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
+
+                    const RewardedUnit = Platform.select({
+                        ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
+                        android: Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
+                    })
 
                     setAdLoading(true);
-                    AdMobRewarded.setAdUnitID(RewardedUnit)
-                    AdMobRewarded.requestAdAsync().then(() => {
-                        AdMobRewarded.showAdAsync()
+                   await AdMobRewarded.setAdUnitID(RewardedUnit)
+                   await  AdMobRewarded.requestAdAsync().then(() => {
+                          AdMobRewarded.showAdAsync()
                             .catch((err) => console.log(err))
                     });
                     AdMobRewarded.addEventListener('rewardedVideoUserDidEarnReward', () => {
-                        setModalVisible(false);
-                        navigation.navigate('WebScreen', {
+                        setAdLoading(false);
+                         navigation.navigate('WebScreen', {
                             category: item.category,
-                            creatorId: item.creatorId,
-                        });
+                            creatorId: item._id,
+                        }); 
                     });
                     AdMobRewarded.addEventListener('rewardedVideoDidPresent', () => {
                         setAdLoading(false);
-                        console.log('Add is presented: ')
                     });
-                
+
                     AdMobRewarded.addEventListener('rewardedVideoDidFailToPresent', () => {
                         setAdLoading(false);
-                        console.log('Add failed to present')
                     });
-                
+
                     AdMobRewarded.addEventListener('rewardedVideoDidLoad', () => {
-                        setAdLoading(false)
-                        console.log('Add loaded!')
+                        setAdLoading(false);
                     });
                     AdMobRewarded.addEventListener('rewardedVideoDidFailToLoad', () => {
                         setAdLoading(false);
-                        console.log('Add not loaded')
                     })
-                
+
                     AdMobRewarded.addEventListener('rewardedVideoDidDismiss', () => {
-                        setModalVisible(false);
                         setAdLoading(false);
                     });
-                }}>
-                    <Entypo name="eye" size={24} color={colors.white} />
-                    <Text style={styles.action}>View pictures</Text>
-                </TouchableOpacity>
-                </View>
-            </View>
-            
+                        
+                    }}>
+                        <Entypo name="eye" size={24} color={colors.white} />
+                        <Text
+                            style={styles.action}>
+                            View Gallery
+                        </Text>
+                    </TouchableOpacity>
 
-
-        )
-    }
-
-  return useMemo(() => {
-    return (
-        <View style={styles.container}>
-          
-            
-            {loading ?
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="small" color={colors.white} /> 
-            </View> :
-            <FlatList
-                keyExtractor={item => item.id}
-                data={filteredUsers}
-                numColumns={1}
-                renderItem={renderItem}
-
-                // for better performance (see more at: https://reactnative.dev/docs/optimizing-flatlist-configuration)
-                initialNumToRender={5}
-                maxToRenderPerBatch={10}
-                windowSize={21}
-                removeClippedSubviews={true}
-                updateCellsBatchingPeriod={100}
-                // reresh control
-                refreshControl={
-                <RefreshControl 
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                />}
-                
-            
-            />} 
-            
-                <BannerAd />
                 {/* MODAL FOR LOADING AD */}
                 {/* <Modal
                 animationType='slide'
@@ -248,7 +202,7 @@ const onRefresh = useCallback(() => {
 
                         <TouchableHighlight
                             style={{ ...styles.openButton}}
-                            onPress={showRewarded }>
+                            onPress={ }>
                                 <View>
                                     { adLoading ? 
                                     <ActivityIndicator 
@@ -265,13 +219,73 @@ const onRefresh = useCallback(() => {
                        
                     </View>
                 </View>
-            </Modal>  */}
+            </Modal> */}
+                </View>
+                 
+            </View>
+            </>
+
+        )
+    }
+
+    return useMemo(() => {
+        return (
+            <>
+            <View style={styles.container}>
+            <View style={styles.searchContainer}>
+            <Feather  name="search" size={24} color="rgba(224, 224, 224, 0.5)" />
+                <TextInput 
+                placeholder="Search creator..."
+                placeholderTextColor="rgba(224, 224, 224, 0.5)" 
+                value={search} 
+                onChangeText={input => setSearch(input)} style={styles.search} />
+            </View>
+                
+                {loading ?
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="small" color={colors.white} />
+                    </View> :
+
+                    filteredUsers.length <= 0 ?
+                    <View >
+                        <Text style={styles.errorSearch}>No Results found for "{search}".</Text>
+                    </View> 
+                    :
+                    <FlatList
+                        keyExtractor={item => item._id}
+                        data={filteredUsers}
+                        numColumns={1}
+                        renderItem={renderItem}
+
+                        // for better performance (see more at: https://reactnative.dev/docs/optimizing-flatlist-configuration)
+                        initialNumToRender={5}
+                        maxToRenderPerBatch={10}
+                        windowSize={21}
+                        removeClippedSubviews={true}
+                        updateCellsBatchingPeriod={100}
+                        // reresh control
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                            />}
+
+
+                    />}
+                     {!adLoading ? null : ToastAndroid.show('Please Wait while gallery is opening...', ToastAndroid.SHORT)}
+
+                 
+
+                <BannerAd />
+                  
+
+            </View>
+            </>
             
-        </View>
-    
-        
-    )
-  }, [filteredUsers])
+
+
+        )
+    }, [filteredUsers])
 }
 
 const styles = StyleSheet.create({
@@ -279,6 +293,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
         width: "100%",
         height: '100%',
+        justifyContent: 'space-between',
+
     },
     loadingContainer: {
         width: 40,
@@ -295,12 +311,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: colors.white,
         flexDirection: 'row',
-        
+
     },
     imgContainer: {
     },
     textContainer: {
         padding: 16,
+        flexDirection: 'column',
     },
     picture: {
         borderRadius: 40,
@@ -309,10 +326,21 @@ const styles = StyleSheet.create({
         height: 80,
         backgroundColor: colors.opacityWhite,
     },
-    name:{
+    name: {
         color: colors.white,
         fontFamily: fonts.title,
         fontSize: 18,
+    },
+    bio: {
+        flex: 1,
+        padding: 6,
+        flexWrap: 'wrap',
+        color: 'rgba(224, 224, 224, 0.5)',
+        fontFamily: fonts.text,
+        fontSize: 15,
+        width: 280,
+        flexShrink: 1,
+
     },
     button: {
         padding: 16,
@@ -330,7 +358,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.text,
     },
     // MODAL STYLE
-    centeredView: {
+    /* centeredView: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -375,15 +403,39 @@ const styles = StyleSheet.create({
     },
     callback: {
         marginTop: 6,
-        textAlign: 'center', 
+        textAlign: 'center',
         fontFamily: fonts.text,
         color: colors.white,
+    }, */
+    // END of MODAL
+    searchContainer: {
+        padding: 10,
+        marginBottom: 30,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: colors.opacityWhite,
+        width: '90%',
+        borderRadius: 8,
+        alignSelf: 'center',
+        
+    },
+    search: {
+        marginLeft: 10,
+        fontSize: 18,
+        fontFamily: fonts.text,
+        color: 'rgba(224, 224, 224, 0.5)',
+    },
+    errorSearch: {
+        color: colors.accent,
+        fontSize: 18,
+        fontFamily: fonts.text,
+        alignSelf: 'center'
     }
 
-    
-   
-   
-    
+
+
+
+
 
 });
 

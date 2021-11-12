@@ -14,6 +14,7 @@ import {
     } from 'react-native';
 // import ActionButton from '../components/ActionButton';
 import BannerAd from '../components/ads/BannerAd';
+import { QuotesList } from '../components/QuotesList';
 import colors from '../constants/colors';
 import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
@@ -51,7 +52,7 @@ const onRefresh = useCallback(() => {
     wait(2000).then(() => {setRefreshing(false)});
 },[]);
     
-    const filteredQuotes = quotes.filter(quote => quote.category === category);
+    const filteredQuotes = QuotesList.filter(quote => quote.category === category);
 
         const renderItem = ({ item }) => {
         return (
@@ -60,7 +61,7 @@ const onRefresh = useCallback(() => {
                 category: item.category,
                 name,
             }) }>
-            <ImageBackground style={styles.picture} source={{ uri: item.picture }} />
+            <ImageBackground style={styles.picture} source={ item.picture} />
 
             </TouchableOpacity>
             
@@ -88,7 +89,7 @@ const onRefresh = useCallback(() => {
                 <ActivityIndicator size="small" color={colors.white} /> 
             </View> :
             <FlatList
-                keyExtractor={item => item._id}
+                keyExtractor={item => item.id}
                 data={filteredQuotes}
                 numColumns={2}
                 renderItem={renderItem}

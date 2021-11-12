@@ -11,7 +11,6 @@ import {
 import {
     Avatar,
     Title,
-    Caption,
     Drawer,
 
 } from 'react-native-paper';
@@ -30,6 +29,7 @@ import {
 } from '@expo/vector-icons';
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
+import { Link } from '@react-navigation/native';
 
 // Rate system
 // import * as StoreReview from 'expo-store-review';
@@ -38,7 +38,6 @@ function DrawerContent(props) {
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    const packageName = 'host.exp.exponent'
     // MODAL
     const handleModalVisibility = () => {
         setModalVisible(true)
@@ -48,8 +47,8 @@ function DrawerContent(props) {
     // Open the iOS App Store in the browser -> redirects to App Store on iOS
 
     const handleAppReview = () => {
-        const androidPackageName = 'com.globalpromotions.motivate';
-        const itunesItemId = 982107779; // REPLACE WITH APPLE ID
+        const androidPackageName = 'com.globalpromotions.motivationalquotes';
+        const itunesItemId = ''; // REPLACE WITH APPLE ID
         /* if (await StoreReview.hasAction()) {
             StoreReview.requestReview()
           } */
@@ -97,7 +96,7 @@ function DrawerContent(props) {
                                 label="Explore"
                                 onPress={() => { props.navigation.navigate('Inspire') }}
                             />
-                            <DrawerItem
+                            {/* <DrawerItem
                                 icon={({ color, size }) => (
                                     <AntDesign
                                         name='picture'
@@ -107,7 +106,7 @@ function DrawerContent(props) {
                                 )}
                                 label="Random Images"
                                 onPress={() => { props.navigation.navigate('Random Images') }}
-                            />
+                            /> */}
                            {/*  <DrawerItem
                                 icon={({ color, size }) => (
                                     <Entypo
@@ -134,7 +133,7 @@ function DrawerContent(props) {
                             label="Follow us"
                         />
  */}
-                             {/* <DrawerItem
+                            <DrawerItem
                             icon={({ color, size }) => (
                                 <AntDesign
                                     name='infocirlceo'
@@ -144,7 +143,7 @@ function DrawerContent(props) {
                             )}
                             label="About us"
                             onPress={() =>{props.navigation.navigate('About')}}
-                        />  */}
+                        />  
                             <DrawerItem
                                 icon={({ color, size }) => (
                                     <Entypo
@@ -156,6 +155,17 @@ function DrawerContent(props) {
                                 label="Leave Feedback"
                                 onPress={handleModalVisibility}
                             />
+                            <DrawerItem
+                            icon={({ color, size }) => (
+                                <MaterialIcons
+                                    name='privacy-tip'
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Privacy Policy"
+                            onPress={() =>{Linking.openURL('https://globalpromotions.ca/privacy-policy')}}
+                        />  
                             {/*  <DrawerItem
                             icon={({ color, size }) => (
                                 <MaterialCommunityIcons
