@@ -7,15 +7,13 @@ function AboutUs() {
     return (
         <View style={styles.container}>
             <View  style={styles.wrapper}>
-            <Text style={styles.title}>Motivate</Text>
+            <Text style={styles.title}>Motivational Quotes</Text>
             <View style={styles.imageWrapper}>
                 <Image style={styles.image} source={require('../assets/logo.png')} />
             </View>
-            <Text style={styles.text}>Motivate is an App that is part of Global Promotions Group of Canada Ltd.
-            Our Mission is bring you the best creative Motivational Quotes within beautiful images so that make good impact over your day and help people feel a bit better.   </Text>
+            <Text style={styles.text}>Motivational Quotes is a large selection of inspirational texts combined with images to help you refresh your spirit and inspire a new mindset. </Text>
 
-                    <Text style={styles.text}>Form more information or feedback email us at: <Text onPress={() => { Linking.openURL('mailto:info@globalpromotions.ca') }} style={styles.span}>info@globalpromotions.ca</Text>
-                 </Text>
+              
             </View>
             
         </View>

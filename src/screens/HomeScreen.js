@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -19,7 +19,6 @@ import { CategoriesData } from '../components/CategoriesData';
 import { useIsFocused } from '@react-navigation/native';
 
 //import Toolbar from '../components/Toolbar';
-//import { WebView } from 'react-native-webview';
 
 
 
@@ -69,6 +68,13 @@ export default function HomeScreen({ navigation }) {
                         imageStyle={{ opacity: 0.6 }}>
 
                         <Text style={styles.title}>{item.title}</Text>
+                        {item.label === 'Love' || item.label === 'Success' ?
+                        <View style={styles.subtitleWrapper}>
+                        <Text style={styles.subtitle}>Creators's gallery</Text>
+                    </View>    
+                    :
+                    null
+                    }
                     </ImageBackground>
                 </TouchableOpacity>
             </>
@@ -149,4 +155,15 @@ const styles = StyleSheet.create({
         // height: 160,
         backgroundColor: colors.opacityBlack,
     },
+    subtitleWrapper: {
+        padding: 8,
+        backgroundColor: colors.accent,
+        borderRadius: 20,
+        marginTop: 20,
+    },
+    subtitle: {
+        color: colors.white,
+        fontSize: 12,
+        fontFamily: fonts.text,
+    }
 })
