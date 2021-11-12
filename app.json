@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "motivate",
-    "slug": "motivate",
-    "version": "1.0.0",
+    "name": "motivationalquotes",
+    "slug": "motivationalquotes",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,8 +18,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.globalpromotions.motivate",
-      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.globalpromotions.motivationalquotes",
+      "buildNumber": "1.0.1",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~8191271703"
       }
@@ -31,8 +31,8 @@
         "backgroundColor": "#FFFFFF"
         
       },
-      "package": "com.globalpromotions.motivate",
-      "versionCode": 1,
+      "package": "com.globalpromotions.motivationalquotes",
+      "versionCode": 3,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~9504353373"
       }
