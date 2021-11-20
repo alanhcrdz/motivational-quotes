@@ -1,4 +1,9 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
+import React, { 
+    useRef, 
+    useState, 
+    useEffect, 
+     } from 'react';
+import { connect } from 'react-redux';
 import {
     View,
     Text,
@@ -23,50 +28,55 @@ import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 
+
 import { AntDesign, Entypo, MaterialIcons, Feather, FontAwesome } from '@expo/vector-icons';
 import colors from '../constants/colors';
 import { Notifier, Easing } from 'react-native-notifier';
 import fonts from '../constants/fonts';
 import Constants from 'expo-constants';
 
+//redux
+import { createStructuredSelector } from 'reselect';
+import { selectQuoteMarked } from '../redux/quotes/quotes.selectors';
+import { toggleFavorite, addQuote } from '../redux/quotes/quotes.actions';
+import { QuotesActionTypes } from '../redux/quotes/quotes.types';
 
 
 
-
-
-function ShowImage({ route, navigation }) {
+const ShowImage = ({ route, navigation, marked, addQuote }) => {
 
     const { picture, category, name } = route.params;
-
+  
     const [iconShow, setIconShow] = useState('none');
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
+       
 
     // STATES
-    const [adLoading, setAdLoading] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
+   /*  const [adLoading, setAdLoading] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false); */
 
     // ADS
      // IOS
- const prodRewardedIos = '';
+/*  const prodRewardedIos = '';
  const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
-
+ */
 // ANDROID 
- const prodRewardedAndr = '';
+/*  const prodRewardedAndr = '';
  const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
 
 const RewardedUnit = Platform.select({
     ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
     android: Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
 }) 
-
-  useEffect(() => {
+ */
+/*   useEffect(() => {
     setTestDeviceIDAsync('EMULATOR');
   },[])
-
+ */
         
-function showRewarded() {
+/* function showRewarded() {
     setAdLoading(true);
     AdMobRewarded.setAdUnitID(RewardedUnit)
     AdMobRewarded.requestAdAsync().then(() => {
@@ -105,12 +115,12 @@ function showRewarded() {
 
 
 }
-
+ */
 
     // MODAL
-    const handleModalVisibility = () => {
+   /*  const handleModalVisibility = () => {
         setModalVisible(true)
-    }
+    } */
 
     const toggleFade = () => {
         if (iconShow === 'none') {
@@ -135,7 +145,7 @@ function showRewarded() {
     // download
 
 
-    const downloadFile = async () => {
+   /*  const downloadFile = async () => {
         const uri = picture;
         let fileUri = FileSystem.documentDirectory + 'quotes.png';
         FileSystem.downloadAsync(uri, fileUri)
@@ -146,9 +156,9 @@ function showRewarded() {
                 console.error(error);
             })
 
-    }
+    } */
 
-    const saveFile = async (fileUri) => {
+    /* const saveFile = async (fileUri) => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status === "granted") {
             try {
@@ -170,8 +180,8 @@ function showRewarded() {
                 console.log("Save error: ", err)
             }
         }
-    }
-    // sharing
+    } */
+   /*  // sharing
     const source = picture;
     const onShare = () => {
         FileSystem.downloadAsync(
@@ -186,13 +196,13 @@ function showRewarded() {
             .catch(error => {
                 console.error(error);
             });
-    }
+    } */
 
     // after favorite
      const showNotifier = () => {
         Notifier.showNotification({
-            title: 'Added to Favorites',
-            description: 'Your quote now is on favorite list!',
+            title: marked ? 'Added to Favorites' : 'Removed from Favorites',
+            description: marked ? 'Your quote now is on favorite list!' : 'Quote Removed from Favorites.',
             duration: 3000,
             showAnimationDuration: 800,
             showEasing: Easing.ease,
@@ -257,20 +267,25 @@ function showRewarded() {
 
                     {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
 
-                     {/* <TouchableOpacity onPress={() => { }}>
+                      {/* <TouchableOpacity onPress={() => {
+                          // toggleFavorite();
+                          addQuote(picture)
+                          showNotifier();
+
+                      }}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <MaterialIcons
                                 style={{ margin: 20 }}
-                                name="favorite-outline"
+                                name={marked ? 'favorite' : 'favorite-outline'} 
                                 size={24} color={colors.white}
-                                onPress={showNotifier}
+                                
 
                             />
                         </View>
                         <View style={styles.label}>
-                            <Text style={[styles.labelText, { display: iconShow }]}>Favorite</Text>
+                            <Text style={[styles.iconText, { display: iconShow }]}>Add Favorite</Text>
                         </View>
-                    </TouchableOpacity>  */}
+                    </TouchableOpacity>   */}
                 </Animated.View>
                  {/* <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim, display: iconShow }]}>
                     <TouchableOpacity 
@@ -333,7 +348,19 @@ function showRewarded() {
             </ImageBackground>
         </TouchableWithoutFeedback>
     )
-}
+};
+
+ /* const mapStateToProps = createStructuredSelector({
+    marked: selectQuoteMarked
+});  */
+const mapDispatchToProps = dispatch => ({
+    // toggleFavorite: () => dispatch(toggleFavorite()),
+    addQuote: picture => dispatch(addQuote(picture))
+});
+
+
+
+
 const styles = StyleSheet.create({
     image: {
         width: '100%',
@@ -440,4 +467,7 @@ const styles = StyleSheet.create({
     
 })
 
-export default ShowImage;
+export default connect(
+    null,
+    mapDispatchToProps,
+)(ShowImage);

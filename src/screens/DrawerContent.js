@@ -30,11 +30,12 @@ import {
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
 import { Link } from '@react-navigation/native';
+import FavoriteIcon from '../components/FavoriteIcon';
 
 // Rate system
 // import * as StoreReview from 'expo-store-review';
 
-function DrawerContent(props) {
+function DrawerContent({otherProps, navigation}) {
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -66,7 +67,7 @@ function DrawerContent(props) {
     return (
         <>
             <View style={{ flex: 1 }} >
-                <DrawerContentScrollView  {...props}>
+                <DrawerContentScrollView  {...otherProps}>
                     <View style={styles.drawerContent}>
                         <View style={styles.userInfoSection}>
                             <View style={{ flexDirection: 'row', marginTop: 15 }}>
@@ -94,7 +95,18 @@ function DrawerContent(props) {
                                     />
                                 )}
                                 label="Explore"
-                                onPress={() => { props.navigation.navigate('Inspire') }}
+                                onPress={() => { navigation.navigate('Inspire') }}
+                            />
+                             <DrawerItem
+                                icon={() => (
+                                    <FavoriteIcon
+                                        name="heart"
+                                        color={colors.opacityBlack}
+                                        size={24}
+                                    />
+                                )}
+                                label="Favorites"
+                                onPress={() => {navigation.navigate('Favorites', {}) }}
                             />
                             {/* <DrawerItem
                                 icon={({ color, size }) => (
@@ -105,7 +117,7 @@ function DrawerContent(props) {
                                     />
                                 )}
                                 label="Random Images"
-                                onPress={() => { props.navigation.navigate('Random Images') }}
+                                onPress={() => {navigation.navigate('Random Images') }}
                             /> */}
                            {/*  <DrawerItem
                                 icon={({ color, size }) => (
@@ -116,7 +128,7 @@ function DrawerContent(props) {
                                     />
                                 )}
                                 label="Only Text"
-                                onPress={() => { props.navigation.navigate('Random') }}
+                                onPress={() => { navigation.navigate('Random') }}
                             /> */}
 
                         </Drawer.Section>
@@ -142,7 +154,7 @@ function DrawerContent(props) {
                                 />
                             )}
                             label="About us"
-                            onPress={() =>{props.navigation.navigate('About')}}
+                            onPress={() =>{navigation.navigate('About')}}
                         />  
                             <DrawerItem
                                 icon={({ color, size }) => (

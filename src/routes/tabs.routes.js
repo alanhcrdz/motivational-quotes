@@ -7,6 +7,7 @@ import Daily from '../screens/Daily';
 import Random from '../screens/Random';
 import HomeScreen from '../screens/HomeScreen';
 import RandomImages from '../screens/RandomImages';
+import Favorites from '../screens/Favorites';
 
 
 const Tab = createBottomTabNavigator();
@@ -37,22 +38,22 @@ function AuthRoutes() {
                     <MaterialIcons
                     name="explore" 
                     size={24}
-                    color={focused ? colors.primary : colors.accent} 
+                    color={focused ? colors.primary : colors.opacityWhite} 
                     
                       /> 
                 )),
             }}/>
-            {/* <Tab.Screen 
+             <Tab.Screen 
             name="Favorites" component={Favorites}
             options={{
                 tabBarIcon:(({ focused }) => (
                     <AntDesign
                     name="heart" 
                     size={24}
-                    color={focused ? colors.primary : colors.accent} 
+                    color={focused ? colors.primary : colors.opacityWhite} 
                       /> 
                 )),
-            }}/> */}
+            }}/> 
              {/* <Tab.Screen 
             name="Daily" component={Daily}
             options={{
@@ -65,7 +66,7 @@ function AuthRoutes() {
                       /> 
                 )),
             }}/> */}
-            <Tab.Screen 
+            {/* <Tab.Screen 
             name="Only Text" component={Random}
             options={{
                 tabBarIcon:(({ focused }) => (
@@ -76,8 +77,8 @@ function AuthRoutes() {
                     
                       /> 
                 )),
-            }}/>
-             <Tab.Screen 
+            }}/> */}
+            {/*  <Tab.Screen 
             name="Random Images" component={RandomImages}
             options={{
                 title: 'Random Images',
@@ -89,7 +90,7 @@ function AuthRoutes() {
                     
                       /> 
                 )),
-            }}/>
+            }}/> */}
 
         </Tab.Navigator>
     )

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "globalpromotions",
     "name": "motivationalquotes",
     "slug": "motivationalquotes",
     "version": "1.0.1",

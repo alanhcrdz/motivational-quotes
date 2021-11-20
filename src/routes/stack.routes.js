@@ -14,6 +14,7 @@ import RandomImages from '../screens/RandomImages';
 import AuthRoutes from './tabs.routes';
 import HomeScreen from '../screens/HomeScreen';
 import AboutUs from '../screens/AboutUs';
+import Favorites from '../screens/Favorites';
 import UsersScreen from '../screens/UsersScreen';
 
 
@@ -63,8 +64,8 @@ const  AppRoutes = ({navigation }) => {
        {/*  <StackRoutes.Screen name="Daily" component={Daily} options={{title: 'Daily Quotes'}} /> */}
         {/* <StackRoutes.Screen name="Random" component={Random} options={{title: 'Random Text'}} /> */}
         <StackRoutes.Screen name="WebScreen" component={WebScreen} options={{headerShown: false}} />
-        {/* <StackRoutes.Screen name="Favorites" component={Favorites} options={{title: 'Favorites'}} /> */}
         <StackRoutes.Screen name="About" component={AboutUs} options={{title: 'About Us'}} />
+        <StackRoutes.Screen name="Favorites" component={Favorites} options={{title: 'Favorites'}} />
         </StackRoutes.Navigator>
     )
 }
