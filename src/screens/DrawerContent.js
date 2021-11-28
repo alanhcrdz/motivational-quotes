@@ -240,7 +240,7 @@ function DrawerContent({otherProps, navigation}) {
 
                         </TouchableOpacity>
                         <View>
-                            <Text style={styles.title}>Enjoying Motivate Experience?</Text>
+                            <Text style={styles.title}>Enjoying Motivational Quotes?</Text>
                         </View>
                         <View style={styles.starsContainer}>
                             <EvilIcons name="star" size={26} color="white" />
@@ -249,7 +249,7 @@ function DrawerContent({otherProps, navigation}) {
                             <EvilIcons name="star" size={26} color="white" />
                             <EvilIcons name="star" size={26} color="white" />
                         </View>
-                        <Text style={styles.modalText}>Show us what you think of Motivate App!</Text>
+                        <Text style={styles.modalText}>Show us what you think!</Text>
 
                         <TouchableHighlight
                             style={{ ...styles.openButton }}
