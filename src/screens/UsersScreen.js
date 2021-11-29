@@ -127,7 +127,9 @@ function UsersScreen({ route, navigation }) {
                     <TouchableOpacity 
                     style={styles.button} 
                     onPress={ async () => {
-                    const prodRewardedIos = '';
+
+                    // IOS
+                    const prodRewardedIos = item.iosUnit;
                     const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
 
                     // ANDROID 
