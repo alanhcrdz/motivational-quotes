@@ -23,18 +23,26 @@ import colors from '../constants/colors';
 import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
 import {  MaterialIcons } from '@expo/vector-icons';
-import { addQuote } from '../redux/quotes/quotes.actions';
-
+import { addQuote, toggleFavorite, removeQuote } from '../redux/quotes/quotes.actions';
+import { createStructuredSelector } from 'reselect';
+import { selectQuoteMarked } from '../redux/quotes/quotes.selectors';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 
-function DetailsScreen({ route, navigation, marked, addQuote }) {
+function DetailsScreen({ 
+    route, 
+    navigation,  
+    addQuote, 
+    toggleFavorite,
+    marked, 
+    removeQuote 
+}) {
     const [refreshing, setRefreshing] = useState(false);
     const { category, name } = route.params;
-    const { loading, setLoading, quotes, setQuotes } = useDataContext();
+    const { loading } = useDataContext();
 
 
 
@@ -61,21 +69,27 @@ function DetailsScreen({ route, navigation, marked, addQuote }) {
     const filteredQuotes = QuotesList.filter(quote => quote.category === category);
 
     const renderItem = ({ item }) => {
-        const { picture } = item;
+        const { picture, category } = item;
 
         return (
             <>
             <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate("ShowImage", {
-                picture: item.picture,
-                category: item.category,
+                picture,
+                category,
                 name,
             })}>
                 <ImageBackground style={styles.picture} source={picture} />
             
                                   
-            <View>
+            <View style={styles.iconsWrapper}>
                  <MaterialIcons onPress={() => {
-                    addQuote(item)
+                     toggleFavorite(item);
+                     if (!item) {
+                        addQuote(item);
+                    } else {
+                        removeQuote(item)
+                    }
+
                 }}
                         style={{ margin: 20 }}
                         name={marked ? 'favorite' : 'favorite-outline'}
@@ -83,6 +97,7 @@ function DetailsScreen({ route, navigation, marked, addQuote }) {
 
 
                     /> 
+                    
             </View>
             </TouchableOpacity>
             </>
@@ -123,7 +138,6 @@ function DetailsScreen({ route, navigation, marked, addQuote }) {
                 />}
 
             <BannerAd />
-
         </View>
 
 
@@ -132,7 +146,12 @@ function DetailsScreen({ route, navigation, marked, addQuote }) {
 }
 
 const mapDispatchToProps = dispatch => ({
-    addQuote: quote => dispatch(addQuote(quote))
+    addQuote: quote => dispatch(addQuote(quote)),
+    removeQuote: quote => dispatch(removeQuote(quote)),
+    toggleFavorite: quote => dispatch(toggleFavorite(quote))
+})
+const mapStateToProps = createStructuredSelector({
+    marked: selectQuoteMarked,
 })
 
 const styles = StyleSheet.create({
@@ -142,6 +161,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: "100%",
         height: '100%',
+        
     },
     heading: {
         width: "90%",
@@ -181,12 +201,17 @@ const styles = StyleSheet.create({
     },
     action: {
         marginTop: 30,
-    }
+    },
+    iconsWrapper: {
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
 
 
 });
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(DetailsScreen);

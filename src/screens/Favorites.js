@@ -29,7 +29,7 @@ import {  MaterialIcons } from '@expo/vector-icons';
 
 
 
-function Favorites({ navigation,  quotes, marked  }) {
+function Favorites({ navigation,  quotes  }) {
     const [refreshing, setRefreshing] = useState(false);
 
     const { loading } = useDataContext();
@@ -46,7 +46,7 @@ function Favorites({ navigation,  quotes, marked  }) {
         return (
             <>
             <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate("ShowImage", {
-                picture: item.picture,
+                picture,
                 
             })}>
                 <ImageBackground style={styles.picture} source={picture} />
@@ -62,7 +62,7 @@ function Favorites({ navigation,  quotes, marked  }) {
     }
  
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, {  alignItems: quotes.length <= 2 ? 'flex-start' : 'center' }]}>
                 {loading ?
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size="small" color={colors.white} />
@@ -91,14 +91,10 @@ function Favorites({ navigation,  quotes, marked  }) {
 
                 />
 
-
-
-                    /* quotes.map((quote, index) =>
-                        <FavoriteList key={quote.id} quote={quote} onNavigate={() => {
-                            navigation.navigate("ShowImage", {quote})
-                        }} />) */
                         :
-                        <Text numberOfLines={2} style={styles.empty}> No Favorite pictures found. Try to Add some!</Text>
+                        <View style={styles.emptyWrapper}>
+                            <Text style={styles.empty}> No Favorite pictures found. Try to Add some!</Text>
+                        </View>
                 }
             </View>
 
@@ -113,7 +109,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
         justifyContent: 'space-between',
-        alignItems: 'center',
         width: "100%",
         height: '100%',
     },
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.opacityWhite,
     },
     imgContainer: {
-        width: "50%",
+        width: 180,
         padding: 6,
         justifyContent: 'center',
 
@@ -156,12 +151,20 @@ const styles = StyleSheet.create({
     action: {
         marginTop: 30,
     },
+    emptyWrapper: {
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     empty: {
         color: colors.white,
         fontFamily: fonts.text,
         fontSize: 18,
         alignSelf: 'center',
         marginTop: 40,
+        width: 250,
+        textAlign: 'center',
+
     }
 
 
