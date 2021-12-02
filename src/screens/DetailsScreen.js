@@ -74,7 +74,7 @@ function DetailsScreen({ route, navigation, marked, addQuote }) {
             
                                   
             <View>
-                 <MaterialIcons onPress={() => {
+                 {/*<MaterialIcons onPress={() => {
                     addQuote(item)
                 }}
                         style={{ margin: 20 }}
@@ -82,7 +82,7 @@ function DetailsScreen({ route, navigation, marked, addQuote }) {
                         size={24} color={colors.white}
 
 
-                    /> 
+            /> */}
             </View>
             </TouchableOpacity>
             </>
