@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
 import AppLoading from 'expo-app-loading';
+import Toast from 'react-native-toast-message';
 import {
 useFonts,
 Ubuntu_400Regular,
@@ -34,6 +35,7 @@ export default function App() {
         <NotifierWrapper>
           <DataContextProvider>
             <Routes />
+            <Toast />
           </DataContextProvider>
         </NotifierWrapper>
       </PaperProvider>

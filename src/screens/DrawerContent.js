@@ -97,7 +97,7 @@ function DrawerContent({otherProps, navigation}) {
                                 label="Explore"
                                 onPress={() => { navigation.navigate('Inspire') }}
                             />
-                             <DrawerItem
+                             {/*<DrawerItem
                                 icon={() => (
                                     <FavoriteIcon
                                         name="heart"
@@ -107,7 +107,7 @@ function DrawerContent({otherProps, navigation}) {
                                 )}
                                 label="Favorites"
                                 onPress={() => {navigation.navigate('Favorites', {}) }}
-                            />
+                                /> */}
                             {/* <DrawerItem
                                 icon={({ color, size }) => (
                                     <AntDesign

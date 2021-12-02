@@ -70,8 +70,8 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.title}>{item.title}</Text>
                         {item.label === 'Love' || item.label === 'Success' ?
                         <View style={styles.subtitleWrapper}>
-                        <Text style={styles.subtitle}>Creators's gallery</Text>
-                    </View>    
+                            <Text style={styles.subtitle}>Creators's gallery</Text>
+                        </View>    
                     :
                     null
                     }

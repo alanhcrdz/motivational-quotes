@@ -10,15 +10,18 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
+    Button,
     FlatList,
     ImageBackground,
     ActivityIndicator,
     RefreshControl,
     Platform,
     ToastAndroid,
-    TextInput
+    TextInput,
+    
 } from 'react-native';
 // import ActionButton from '../components/ActionButton';
+import Toast from 'react-native-toast-message';
 import BannerAd from '../components/ads/BannerAd';
 import colors from '../constants/colors';
 import { useDataContext } from '../hooks/useDataContext';
@@ -87,7 +90,6 @@ function UsersScreen({ route, navigation }) {
         .catch(err => console.log(err.response))
         .finally(() => {
             setLoading(false);
-
         })
     }, []); */
 
@@ -110,6 +112,14 @@ function UsersScreen({ route, navigation }) {
         wait(2000).then(() => { setRefreshing(false) });
     }, []);
 
+    const showIosToast = () => {
+        Toast.show({
+            type: 'success',
+            text1: 'Please wait',
+            text2: 'Gallery will be openned after a video.'
+         })
+    }
+
     const filteredUsers = searchableCreators.filter(user => user.category === category);
     const renderItem = ({ item }) => {
         return (
@@ -124,7 +134,7 @@ function UsersScreen({ route, navigation }) {
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>{item.name}</Text>
                     <Text numberOfLines={5} style={styles.bio}>{item.bio}</Text>
-                    <TouchableOpacity 
+                    <Button title="View Gallery" 
                     style={styles.button} 
                     onPress={ async () => {
 
@@ -174,12 +184,11 @@ function UsersScreen({ route, navigation }) {
                     });
                         
                     }}>
+                       
                         <Entypo name="eye" size={24} color={colors.white} />
-                        <Text
-                            style={styles.action}>
-                            View Gallery
-                        </Text>
-                    </TouchableOpacity>
+                           
+                       
+                    </Button>
 
                 {/* MODAL FOR LOADING AD */}
                 {/* <Modal
@@ -193,15 +202,12 @@ function UsersScreen({ route, navigation }) {
                         <TouchableOpacity 
                         style={styles.close}
                         onPress={() => {setModalVisible(!modalVisible)}}>
-
                         <AntDesign 
                         name="closecircleo" 
                         size={24} 
                         color="white" />
-
                         </TouchableOpacity>
                         <Text style={styles.modalText}>Watch a Video to Unlock Pictures!</Text>
-
                         <TouchableHighlight
                             style={{ ...styles.openButton}}
                             onPress={ }>
@@ -274,7 +280,11 @@ function UsersScreen({ route, navigation }) {
 
 
                     />}
-                     {!adLoading ? null : ToastAndroid.show('Please Wait while gallery is opening...', ToastAndroid.SHORT)}
+                     {!adLoading ? null 
+                     : Platform.OS === 'ios' ?
+                     null
+                     :
+                     ToastAndroid.show('Please Wait while gallery is opening...', ToastAndroid.SHORT)}
 
                  
 
@@ -347,7 +357,8 @@ const styles = StyleSheet.create({
     button: {
         padding: 16,
         borderRadius: 20,
-        backgroundColor: colors.accent,
+        backgroundColor: Platform.OS === 'ios' ? 'white' : colors.accent,
+        color: colors.white,
         width: 150,
         height: 30,
         marginTop: 20,
