@@ -49,7 +49,7 @@ function DrawerContent({otherProps, navigation}) {
 
     const handleAppReview = () => {
         const androidPackageName = 'com.globalpromotions.motivationalquotes';
-        const itunesItemId = ''; // REPLACE WITH APPLE ID
+        const itunesItemId = '1598740990'; // REPLACE WITH APPLE ID
         /* if (await StoreReview.hasAction()) {
             StoreReview.requestReview()
           } */
