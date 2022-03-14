@@ -20,20 +20,18 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.globalpromotions.motivationalquotes",
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.2",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~8191271703"
       }
-      
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-        
       },
       "package": "com.globalpromotions.motivationalquotes",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~9504353373"
       }
