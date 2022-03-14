@@ -1,62 +1,68 @@
 export const CategoriesData = [
-
-    {
-        id: '1',
-        category: 'motivationallove',
-        label: 'Love',
-        title: 'Love ',
-        navigate: 'Users',
-        background: require('../assets/love.png'),
-    },
-    {
-        id: 2,
-        category: 'motivationalprosperity',
-        label: 'Prosperity',
-        title: 'Prosperity ',
-        navigate: 'Details',
-        background: require('../assets/prosperity.png')
-    },
-    {
-        id: '3',
-        category: 'motivationalgoals',
-        label: 'Success',
-        title: 'Success',
-        navigate: 'Users',
-        background: require('../assets/goals.png')
-    },
-    {
-        id: '4',
-        category: 'motivationalhealth',
-        label: 'Health & Mindfulness',
-        title: 'Health & Mindfulness',
-        navigate: 'Details',
-        background: require('../assets/health.png')
-    },
-    {
-        id: '5',
-        category: 'motivationalconfidence',
-        label: 'Confidence',
-        title: 'Self Confidence ',
-        navigate: 'Details',
-        background: require('../assets/positive.png')
-    },
-     /*{
-        id: 6,
-        category: 'motivationalresilience',
-        label: 'Overcome',
-        title: 'Overcome Challenges',
-        navigate: 'Details',
-        background: require('../assets/resilience.png')
-    },
-    {
-        id: 7,
-        category: 'motivationalpositive',
-        label: 'Positive',
-        title: 'Positive Affirmations',
-        navigate: 'Details',
-        background: require('../assets/affirmations.png')
-    }, */
-    /* {
+  {
+    id: "1",
+    category: "motivationallove",
+    label: "Love",
+    subtitle: "Love short sentences to overcome sad times.",
+    title: "Love ",
+    navigate: "Details",
+    background: require("../assets/love.png"),
+  },
+  {
+    id: "2",
+    category: "motivationalprosperity",
+    label: "Prosperity",
+    subtitle: "Prosperity and wealth beautiful quotes.",
+    title: "Prosperity ",
+    navigate: "Details",
+    background: require("../assets/prosperity.png"),
+  },
+  {
+    id: "3",
+    category: "motivationalsuccess",
+    label: "Success",
+    subtitle: "Reach your goals and achieve success with inspirational quotes.",
+    title: "Success",
+    navigate: "Details",
+    background: require("../assets/success.png"),
+  },
+  {
+    id: "4",
+    category: "motivationalhealth",
+    label: "Health",
+    subtitle: "Get inspiration for your mind with these phrases.",
+    title: "Health & Mindfulness",
+    navigate: "Details",
+    background: require("../assets/health.png"),
+  },
+  {
+    id: "5",
+    category: "motivationalconfidence",
+    label: "Confidence",
+    subtitle: "Self confidence is important in life.",
+    title: "Self Confidence",
+    navigate: "Details",
+    background: require("../assets/positive.png"),
+  },
+  {
+    id: "6",
+    category: "motivationalresilience",
+    label: "Overcome",
+    subtitle: "Overcome dark times, get inspired and do not give up!",
+    title: "Overcome Challenges",
+    navigate: "Details",
+    background: require("../assets/resilience.png"),
+  },
+  {
+    id: "7",
+    category: "motivationalpositive",
+    label: "Positive",
+    subtitle: "Take action and stay positive.",
+    title: "Positive Affirmations",
+    navigate: "Details",
+    background: require("../assets/affirmations.png"),
+  },
+  /* {
         id: 8,
         category: 'random_images',
         label: '',
@@ -72,5 +78,4 @@ export const CategoriesData = [
         navigate: 'Random',
         background: require('../assets/read.jpg')
     }, */
-     
-]
+];

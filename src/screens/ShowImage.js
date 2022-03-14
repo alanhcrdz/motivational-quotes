@@ -1,151 +1,73 @@
-import React, { 
-    useRef, 
-    useState, 
-    useEffect, 
-     } from 'react';
-import { connect } from 'react-redux';
+import React, { useRef, useState, useEffect } from "react";
+import { connect } from "react-redux";
 import {
-    View,
-    Text,
-    ImageBackground,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Animated,
-    Modal, 
-    TouchableHighlight,
-    ActivityIndicator,
-    Platform,
-} from 'react-native';
-import {
-    AdMobRewarded,
-    setTestDeviceIDAsync
-} from "expo-ads-admob";
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Animated,
+  Modal,
+  TouchableHighlight,
+  ActivityIndicator,
+  Platform,
+} from "react-native";
+import { useDataContext } from "../hooks/useDataContext";
 
 //share and download images feature
-import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
-import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library";
 
-
-import { AntDesign, Entypo, MaterialIcons, Feather, FontAwesome } from '@expo/vector-icons';
-import colors from '../constants/colors';
-import { Notifier, Easing } from 'react-native-notifier';
-import fonts from '../constants/fonts';
-import Constants from 'expo-constants';
+import {
+  AntDesign,
+  Entypo,
+  MaterialIcons,
+  Feather,
+  FontAwesome,
+} from "@expo/vector-icons";
+import colors from "../constants/colors";
+import { Notifier, Easing } from "react-native-notifier";
+import fonts from "../constants/fonts";
+import Constants from "expo-constants";
 
 //redux
-import { createStructuredSelector } from 'reselect';
-import { selectQuoteMarked } from '../redux/quotes/quotes.selectors';
-import { toggleFavorite, addQuote } from '../redux/quotes/quotes.actions';
-import { QuotesActionTypes } from '../redux/quotes/quotes.types';
+import { createStructuredSelector } from "reselect";
+import { selectQuoteMarked } from "../redux/quotes/quotes.selectors";
+import { toggleFavorite, addQuote } from "../redux/quotes/quotes.actions";
+import { QuotesActionTypes } from "../redux/quotes/quotes.types";
+import { Favorite } from "../components/favorites/favorites.component";
 
+const ShowImage = ({ route, navigation, quote = {} }) => {
+  const [iconShow, setIconShow] = useState("none");
+  const { adLoading, showRewarded } = useDataContext();
+  const { picture, category, name } = route.params;
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-const ShowImage = ({ route, navigation, marked, addQuote }) => {
-
-    const { picture, category, name } = route.params;
-  
-    const [iconShow, setIconShow] = useState('none');
-
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-
-       
-
-    // STATES
-   /*  const [adLoading, setAdLoading] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false); */
-
-    // ADS
-     // IOS
-/*  const prodRewardedIos = '';
- const testRewardedIos = 'ca-app-pub-3940256099942544/1712485313';
- */
-// ANDROID 
-/*  const prodRewardedAndr = '';
- const testRewardedAndr = 'ca-app-pub-3940256099942544/5224354917';
-
-const RewardedUnit = Platform.select({
-    ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
-    android: Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
-}) 
- */
-/*   useEffect(() => {
-    setTestDeviceIDAsync('EMULATOR');
-  },[])
- */
-        
-/* function showRewarded() {
-    setAdLoading(true);
-    AdMobRewarded.setAdUnitID(RewardedUnit)
-    AdMobRewarded.requestAdAsync().then(() => {
-        AdMobRewarded.showAdAsync()
-            .catch((err) => console.log(err))
-    });
-    AdMobRewarded.addEventListener('rewardedVideoUserDidEarnReward', () => {
-        setModalVisible(false);
-        navigation.navigate('WebScreen', {
-            category,
-        });
-    });
-    AdMobRewarded.addEventListener('rewardedVideoDidPresent', () => {
-        setAdLoading(false);
-        console.log('Add is presented')
-    });
-
-    AdMobRewarded.addEventListener('rewardedVideoDidFailToPresent', () => {
-        setAdLoading(false);
-        console.log('Add failed to present')
-    });
-
-    AdMobRewarded.addEventListener('rewardedVideoDidLoad', () => {
-        setAdLoading(false)
-        console.log('Add loaded!')
-    });
-    AdMobRewarded.addEventListener('rewardedVideoDidFailToLoad', () => {
-        setAdLoading(false);
-        console.log('Add not loaded')
-    })
-
-    AdMobRewarded.addEventListener('rewardedVideoDidDismiss', () => {
-        setModalVisible(false);
-        setAdLoading(false);
-    });
-
-
-}
- */
-
-    // MODAL
-   /*  const handleModalVisibility = () => {
-        setModalVisible(true)
-    } */
-
-    const toggleFade = () => {
-        if (iconShow === 'none') {
-            setIconShow('flex')
-            Animated.timing(fadeAnim, {
-                toValue: 1,
-                duration: 250,
-                useNativeDriver: true,
-            }).start()
-        } else {
-            setIconShow('none')
-            Animated.timing(fadeAnim, {
-                toValue: 0,
-                duration: 250,
-                useNativeDriver: true,
-            }).start()
-        }
+  const toggleFade = () => {
+    if (iconShow === "none") {
+      setIconShow("flex");
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      setIconShow("none");
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
     }
+  };
 
+  // download
 
-
-    // download
-
-
-   /*  const downloadFile = async () => {
+  /*  const downloadFile = async () => {
         const uri = picture;
         let fileUri = FileSystem.documentDirectory + 'quotes.png';
         FileSystem.downloadAsync(uri, fileUri)
@@ -158,7 +80,7 @@ const RewardedUnit = Platform.select({
 
     } */
 
-    /* const saveFile = async (fileUri) => {
+  /* const saveFile = async (fileUri) => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status === "granted") {
             try {
@@ -181,7 +103,7 @@ const RewardedUnit = Platform.select({
             }
         }
     } */
-   /*  // sharing
+  /*  // sharing
     const source = picture;
     const onShare = () => {
         FileSystem.downloadAsync(
@@ -198,43 +120,50 @@ const RewardedUnit = Platform.select({
             });
     } */
 
-    // after favorite
-     const showNotifier = () => {
-        Notifier.showNotification({
-            title: marked ? 'Added to Favorites' : 'Removed from Favorites',
-            description: marked ? 'Your quote now is on favorite list!' : 'Quote Removed from Favorites.',
-            duration: 3000,
-            showAnimationDuration: 800,
-            showEasing: Easing.ease,
-            hideOnPress: false,
-            queueMode: 'immediate',
-            
-        })
-    } 
+  // after favorite
+  /* const showNotifier = () => {
+    Notifier.showNotification({
+      title: marked ? "Added to Favorites" : "Removed from Favorites",
+      description: marked
+        ? "Your quote now is on favorite list!"
+        : "Quote Removed from Favorites.",
+      duration: 3000,
+      showAnimationDuration: 800,
+      showEasing: Easing.ease,
+      hideOnPress: false,
+      queueMode: "immediate",
+    });
+  }; */
 
-    // Capitalize
-    
+  // Capitalize
 
-    return (
-        <TouchableWithoutFeedback onPress={toggleFade}>
-            <ImageBackground style={styles.image} source={ picture }>
-                <Animated.View style={[styles.iconsContainer, { opacity: fadeAnim }]}>
-                    <TouchableOpacity activeOpacity={0.4} onPress={() => { navigation.goBack() }}>
-                        <View style={[styles.icon, { display: iconShow }]}>
-                            <AntDesign
-                                style={{ margin: 20, }}
-                                name="arrowleft"
-                                size={24} color={colors.white}
-                                onPress={() => { navigation.goBack() }}
-                            />
+  return (
+    <TouchableWithoutFeedback onPress={toggleFade}>
+      <ImageBackground style={styles.image} source={picture}>
+        <Animated.View style={[styles.iconsContainer, { opacity: fadeAnim }]}>
+          <TouchableOpacity
+            activeOpacity={0.4}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <View style={[styles.icon, { display: iconShow }]}>
+              <AntDesign
+                style={{ margin: 20 }}
+                name="arrowleft"
+                size={24}
+                color={colors.white}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            </View>
+            <View style={styles.label}>
+              <Text style={[styles.iconText, { display: iconShow }]}>Back</Text>
+            </View>
+          </TouchableOpacity>
 
-                        </View>
-                        <View style={styles.label}>
-                            <Text style={[styles.iconText, { display: iconShow }]}>Back</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    {/* <TouchableOpacity onPress={downloadFile}>
+          {/* <TouchableOpacity onPress={downloadFile}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <Feather
                                 style={{ margin: 20 }}
@@ -248,7 +177,7 @@ const RewardedUnit = Platform.select({
                         </View>
                     </TouchableOpacity> */}
 
-                   {/*  <TouchableOpacity onPress={onShare}>
+          {/*  <TouchableOpacity onPress={onShare}>
                         <View style={[styles.icon, { display: iconShow }]}>
                             <AntDesign
                                 style={{ margin: 20 }}
@@ -262,212 +191,149 @@ const RewardedUnit = Platform.select({
                         </View>
                     </TouchableOpacity> */}
 
+          {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
+          {/*  <TouchableOpacity>
+            <View style={[styles.icon, { display: iconShow }]}>
+              <Favorite quote={quote} />
+            </View>
+            <View style={styles.label}>
+              <Text style={[styles.iconText, { display: iconShow }]}>Add</Text>
+            </View>
+          </TouchableOpacity> */}
+        </Animated.View>
+        {/*  <Animated.View
+          style={[
+            c,
+            { opacity: fadeAnim, display: iconShow },
+          ]}
+        >
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={0.4}
+            onPress={handleModalVisibility}
+          >
+            <AntDesign name="camera" size={22} color={colors.white} />
+            <View style={styles.label}>
+              <Text style={styles.labelText}> More {name} Quotes! </Text>
+            </View>
+          </TouchableOpacity>
+        </Animated.View> */}
 
+        {/* MODAL FOR LOADING AD */}
+        {/* <Modal animationType="slide" visible={modalVisible} transparent>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TouchableOpacity
+                style={styles.close}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <AntDesign name="closecircleo" size={24} color="white" />
+              </TouchableOpacity>
+              <Text style={styles.modalText}>
+                Wanna see more Beautiful Pictures like this?
+              </Text>
 
-
-                    {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
-
-                      {/* <TouchableOpacity onPress={() => {
-                          // toggleFavorite();
-                          addQuote(picture)
-                          showNotifier();
-
-                      }}>
-                        <View style={[styles.icon, { display: iconShow }]}>
-                            <MaterialIcons
-                                style={{ margin: 20 }}
-                                name={marked ? 'favorite' : 'favorite-outline'} 
-                                size={24} color={colors.white}
-                                
-
-                            />
-                        </View>
-                        <View style={styles.label}>
-                            <Text style={[styles.iconText, { display: iconShow }]}>Add Favorite</Text>
-                        </View>
-                    </TouchableOpacity>   */}
-                </Animated.View>
-                 {/* <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim, display: iconShow }]}>
-                    <TouchableOpacity 
-                    style={styles.button} 
-                    activeOpacity={0.4} 
-                    onPress={handleModalVisibility}>
-                        <AntDesign
-                            name="lock"
-                            size={22}
-                            color={colors.white} />
-                        <View style={styles.label}>
-                            <Text style={styles.labelText}> More { name} Quotes! </Text>
-                        </View>
-                    </TouchableOpacity>
-                </Animated.View>  */}
-
-                {/* MODAL FOR LOADING AD */}
-                 {/* <Modal
-                animationType='slide'
-                visible={modalVisible}
-                transparent
-                
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <TouchableOpacity 
-                        style={styles.close}
-                        onPress={() => {setModalVisible(!modalVisible)}}>
-
-                        <AntDesign 
-                        name="closecircleo" 
-                        size={24} 
-                        color="white" />
-
-                        </TouchableOpacity>
-                        <Text style={styles.modalText}>Watch a Video to Unlock Private Content!</Text>
-
-                        <TouchableHighlight
-                            style={{ ...styles.openButton}}
-                            onPress={showRewarded }>
-                                <View>
-                                    { adLoading ? 
-                                    <ActivityIndicator 
-                                        size={20} 
-                                        color={colors.white} /> : 
-                                    <Text 
-                                        style={styles.textStyle}>
-                                        Watch Video
-                                    </Text> }
-                                </View>
-                        </TouchableHighlight>
-                        <Text style={styles.callback}>{adLoading ? 'Loading Video...' : ''}</Text>
-                        <Text style={styles.callback}>{adLoading ? '😊 Please Watch the video until the end to access content.' : ''}</Text>
-                       
-                    </View>
+              <TouchableHighlight
+                style={{ ...styles.openButton }}
+                onPress={() => {
+                  if (
+                    category === "motivationalsuccess" ||
+                    category === "motivationallove"
+                  ) {
+                    showRewarded();
+                  }
+                  navigation.navigate("WebScreen", {
+                    category,
+                  });
+                  setModalVisible(false);
+                }}
+              >
+                <View>
+                  {adLoading ? (
+                    <ActivityIndicator size={20} color={colors.white} />
+                  ) : (
+                    <Text style={styles.textStyle}>Check Creators Gallery</Text>
+                  )}
                 </View>
-            </Modal>  */}
-
-            
-            </ImageBackground>
-        </TouchableWithoutFeedback>
-    )
+              </TouchableHighlight>
+              <Text style={styles.callback}>
+                {adLoading ? "Please wait..." : ""}
+              </Text>
+              <Text style={styles.callback}>
+                {adLoading
+                  ? "😊 You'll be redirected to our creators gallery!"
+                  : ""}
+              </Text>
+            </View>
+          </View>
+        </Modal> */}
+      </ImageBackground>
+    </TouchableWithoutFeedback>
+  );
 };
 
- /* const mapStateToProps = createStructuredSelector({
+/* const mapStateToProps = createStructuredSelector({
     marked: selectQuoteMarked
 });  */
-const mapDispatchToProps = dispatch => ({
-    // toggleFavorite: () => dispatch(toggleFavorite()),
-    addQuote: picture => dispatch(addQuote(picture))
+/* const mapDispatchToProps = (dispatch) => ({
+  // toggleFavorite: () => dispatch(toggleFavorite()),
+  addQuote: (picture) => dispatch(addQuote(picture)),
+});
+ */
+const styles = StyleSheet.create({
+  image: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "flex-end",
+  },
+  iconsContainer: {
+    width: "100%",
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  icon: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 65,
+    height: 65,
+    borderRadius: 50,
+    backgroundColor: colors.opacityBlack,
+  },
+  iconText: {
+    color: colors.white,
+    fontFamily: fonts.text,
+  },
+  label: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  labelText: {
+    color: colors.white,
+    fontFamily: fonts.title,
+    fontSize: 18,
+    textTransform: "uppercase",
+  },
+  button: {
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  ctaContainer: {
+    width: "90%",
+    height: 60,
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 8,
+    backgroundColor: colors.accent,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
 });
 
-
-
-
-const styles = StyleSheet.create({
-    image: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'flex-end',
-    },
-    iconsContainer: {
-        width: '100%',
-        padding: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
-    icon: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 65,
-        height: 65,
-        borderRadius: 50,
-        backgroundColor: colors.opacityBlack,
-
-    },
-    iconText: {
-        color: colors.white,
-        fontFamily: fonts.text,
-    },
-    label: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    labelText: {
-        color: colors.white,
-        fontFamily: fonts.title,
-        fontSize: 18,
-        textTransform: 'uppercase',
-    },
-    button: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-        alignSelf: 'center',
-    },
-    ctaContainer: {
-        width: '90%',
-        height: 60,
-        marginTop: 10,
-        marginBottom: 10,
-        borderRadius: 8,
-        backgroundColor: colors.accent,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-    },
-        // MODAL STYLE
-        centeredView: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        modalView: {
-            margin: 20,
-            backgroundColor: colors.background,
-            borderRadius: 20,
-            padding: 35,
-            justifyContent: 'center',
-            alignItems: 'center',
-            shadowColor: '#000',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-        },
-        openButton: {
-            borderRadius: 8,
-            padding: 16,
-            elevation: 2,
-            width: 250,
-            backgroundColor: colors.accent,
-        },
-        textStyle: {
-            color: 'white',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            textTransform: 'uppercase',
-        },
-        modalText: {
-            marginBottom: 15,
-            textAlign: 'center',
-            textTransform: 'uppercase',
-            color: colors.white,
-        },
-        close: {
-            marginBottom: 10,
-        },
-        callback: {
-            marginTop: 6,
-            textAlign: 'center', 
-            fontFamily: fonts.text,
-            color: colors.white,
-        }
-    
-})
-
-export default connect(
-    null,
-    mapDispatchToProps,
-)(ShowImage);
+export default ShowImage;
