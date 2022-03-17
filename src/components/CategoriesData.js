@@ -2,6 +2,7 @@ export const CategoriesData = [
   {
     id: "1",
     category: "motivationallove",
+    slug: "love",
     label: "Love",
     subtitle: "Love short sentences to overcome sad times.",
     title: "Love ",
@@ -11,6 +12,7 @@ export const CategoriesData = [
   {
     id: "2",
     category: "motivationalprosperity",
+    slug: "prosperity",
     label: "Prosperity",
     subtitle: "Prosperity and wealth beautiful quotes.",
     title: "Prosperity ",
@@ -20,6 +22,7 @@ export const CategoriesData = [
   {
     id: "3",
     category: "motivationalsuccess",
+    slug: "success",
     label: "Success",
     subtitle: "Reach your goals and achieve success with inspirational quotes.",
     title: "Success",
@@ -29,6 +32,7 @@ export const CategoriesData = [
   {
     id: "4",
     category: "motivationalhealth",
+    slug: "health",
     label: "Health",
     subtitle: "Get inspiration for your mind with these phrases.",
     title: "Health & Mindfulness",
@@ -38,6 +42,7 @@ export const CategoriesData = [
   {
     id: "5",
     category: "motivationalconfidence",
+    slug: "confidence",
     label: "Confidence",
     subtitle: "Self confidence is important in life.",
     title: "Self Confidence",
@@ -47,6 +52,7 @@ export const CategoriesData = [
   {
     id: "6",
     category: "motivationalresilience",
+    slug: "challenges",
     label: "Overcome",
     subtitle: "Overcome dark times, get inspired and do not give up!",
     title: "Overcome Challenges",
@@ -56,6 +62,7 @@ export const CategoriesData = [
   {
     id: "7",
     category: "motivationalpositive",
+    slug: "affirmations",
     label: "Positive",
     subtitle: "Take action and stay positive.",
     title: "Positive Affirmations",

@@ -38,7 +38,7 @@ function DetailsScreen({ route, navigation, quote = {} }) {
   const [adLoading, setAdLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { category, name, subtitle, background } = route.params;
+  const { category, name, subtitle, background, slug } = route.params;
   const { loading, showInterstitial } = useDataContext();
 
   // console.log(favorites);
@@ -93,7 +93,9 @@ function DetailsScreen({ route, navigation, quote = {} }) {
     });
     AdMobRewarded.addEventListener("rewardedVideoUserDidEarnReward", () => {
       setModalVisible(false);
-      navigation.navigate("WebScreen");
+      navigation.navigate("WebScreen", {
+        slug,
+      });
       console.log("Reward granted.");
     });
     AdMobRewarded.addEventListener("rewardedVideoDidPresent", () => {
@@ -179,7 +181,7 @@ function DetailsScreen({ route, navigation, quote = {} }) {
           }
           ListFooterComponent={
             <View style={styles.boxContainer}>
-              <Text style={styles.labelText}>Explore Gallery</Text>
+              <Text style={styles.labelText}>Explore {name} Gallery</Text>
               <TouchableOpacity
                 style={[styles.button, styles.overlay]}
                 activeOpacity={0.4}
@@ -210,7 +212,8 @@ function DetailsScreen({ route, navigation, quote = {} }) {
                       <AntDesign name="closecircleo" size={24} color="white" />
                     </TouchableOpacity>
                     <Text style={styles.modalText}>
-                      See more Beautiful paintings and pictures!
+                      Watch an Ad to unlock more beautiful paintings and
+                      pictures!
                     </Text>
 
                     <TouchableHighlight
@@ -322,6 +325,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginBottom: 20,
     marginTop: 20,
+    alignSelf: "center",
   },
   button: {
     justifyContent: "center",
@@ -353,6 +357,8 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: 250,
     backgroundColor: colors.accent,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   textStyle: {
     color: "white",

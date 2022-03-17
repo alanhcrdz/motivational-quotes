@@ -90,6 +90,7 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate(item.navigate, {
           category: item.category,
           name: item.label,
+          slug: item.slug,
           subtitle: item.subtitle,
           background: item.background,
         });
@@ -127,7 +128,7 @@ export default function HomeScreen({ navigation }) {
             <ActivityIndicator size={22} color={colors.primary} />
             <Text style={styles.text}>Please wait...</Text>
 
-            <Text style={styles.text}>"{randomQuotes.content}"</Text>
+            <Text style={styles.text}>{randomQuotes.content}</Text>
           </Animated.View>
         ) : (
           <FlatList
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     padding: 10,
     flex: 1,
+    marginBottom: 50,
   },
   catContainer: {
     flexGrow: 1,
