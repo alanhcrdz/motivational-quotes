@@ -34,11 +34,11 @@ import fonts from "../constants/fonts";
 import Constants from "expo-constants";
 
 //redux
-import { createStructuredSelector } from "reselect";
-import { selectQuoteMarked } from "../redux/quotes/quotes.selectors";
-import { toggleFavorite, addQuote } from "../redux/quotes/quotes.actions";
-import { QuotesActionTypes } from "../redux/quotes/quotes.types";
-import { Favorite } from "../components/favorites/favorites.component";
+// import { createStructuredSelector } from "reselect";
+// import { selectQuoteMarked } from "../redux/quotes/quotes.selectors";
+// import { toggleFavorite, addQuote } from "../redux/quotes/quotes.actions";
+// import { QuotesActionTypes } from "../redux/quotes/quotes.types";
+// import { Favorite } from "../components/favorites/favorites.component";
 
 const ShowImage = ({ route, navigation, quote = {} }) => {
   const [iconShow, setIconShow] = useState("none");
@@ -103,22 +103,19 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
             }
         }
     } */
-  /*  // sharing
-    const source = picture;
-    const onShare = () => {
-        FileSystem.downloadAsync(
-            source,
-            FileSystem.documentDirectory + '.png'
-        )
-            .then(({ uri }) => {
-                console.log('finished download to ' + uri);
+  // sharing
+  const source = picture;
+  const onShare = () => {
+    FileSystem.downloadAsync(source, FileSystem.documentDirectory + ".png")
+      .then(({ uri }) => {
+        console.log("finished download to " + uri);
 
-                Sharing.shareAsync(uri)
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    } */
+        Sharing.shareAsync(uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   // after favorite
   /* const showNotifier = () => {
@@ -139,7 +136,7 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
 
   return (
     <TouchableWithoutFeedback onPress={toggleFade}>
-      <ImageBackground style={styles.image} source={picture}>
+      <ImageBackground style={styles.image} source={{ uri: picture }}>
         <Animated.View style={[styles.iconsContainer, { opacity: fadeAnim }]}>
           <TouchableOpacity
             activeOpacity={0.4}
@@ -178,18 +175,20 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
                     </TouchableOpacity> */}
 
           {/*  <TouchableOpacity onPress={onShare}>
-                        <View style={[styles.icon, { display: iconShow }]}>
-                            <AntDesign
-                                style={{ margin: 20 }}
-                                name="instagram"
-                                size={24} color={colors.white}
-
-                            />
-                        </View>
-                        <View style={styles.label}>
-                            <Text style={[styles.iconText, { display: iconShow }]}>Share</Text>
-                        </View>
-                    </TouchableOpacity> */}
+            <View style={[styles.icon, { display: iconShow }]}>
+              <Entypo
+                style={{ margin: 20 }}
+                name="share"
+                size={24}
+                color={colors.white}
+              />
+            </View>
+            <View style={styles.label}>
+              <Text style={[styles.iconText, { display: iconShow }]}>
+                Share
+              </Text>
+            </View>
+          </TouchableOpacity> */}
 
           {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
           {/*  <TouchableOpacity>

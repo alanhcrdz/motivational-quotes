@@ -1,5 +1,7 @@
 /* import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 
 import {
   API_KEY,
@@ -24,9 +26,10 @@ const firebaseConfig = {
   messagingSenderId: `${MESSAGING_SENDER_ID}`,
 
   appId: `${APP_ID}`,
+
   measurementId: `${MEASUREMENT_ID}`,
 };
-
+const db = getFirestore();
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+//const analytics = getAnalytics(app);
  */

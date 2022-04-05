@@ -11,6 +11,7 @@ import {
   Modal,
   TouchableHighlight,
   Platform,
+  LogBox,
 } from "react-native";
 import { Button, overlay } from "react-native-paper";
 import { connect } from "react-redux";
@@ -22,7 +23,11 @@ import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import fonts from "../constants/fonts";
 import { AdMobRewarded } from "expo-ads-admob";
-import Constants from "expo-constants";
+import * as Device from "expo-device";
+
+// getting quotes from firebase
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const ActionsContainer = styled.View`
   justify-content: space-between;
@@ -37,26 +42,34 @@ function DetailsScreen({ route, navigation, quote = {} }) {
   const [refreshing, setRefreshing] = useState(false);
   const [adLoading, setAdLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [quotes, setQuotes] = useState([]);
 
   const { category, name, subtitle, background, slug } = route.params;
-  const { loading, showInterstitial } = useDataContext();
+  const { loading, setLoading } = useDataContext();
+  const db = getFirestore();
 
-  // console.log(favorites);
-  /* useEffect(() => {
-       setLoading(true);
-       api.get('/quotes')
-       .then(res => {
-           setQuotes(res.data); 
-       })
-       .catch(err => console.log(err.response))
-       .finally(() => {
-           setLoading(false);
-       })
-   }, []);  */
+  async function getQuotes() {
+    setLoading(true);
+    try {
+      const querySnapshot = await getDocs(collection(db, "quotes"));
+      const listQuotes = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        listQuotes.push({
+          ...doc.data(),
+          key: doc.id,
+        });
+      });
+      setQuotes(listQuotes);
+    } catch (error) {
+      console.log("Could not find data: ", error);
+    }
+    setLoading(false);
+  }
 
-  /* useEffect(() => {
-    showInterstitial();
-  }, []); */
+  useEffect(() => {
+    getQuotes();
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -65,9 +78,7 @@ function DetailsScreen({ route, navigation, quote = {} }) {
     });
   }, []);
 
-  const filteredQuotes = QuotesList.filter(
-    (quote) => quote.category === category
-  );
+  const filteredQuotes = quotes.filter((quote) => quote.category === category);
   const handleModalVisibility = () => {
     setModalVisible(true);
   };
@@ -80,9 +91,8 @@ function DetailsScreen({ route, navigation, quote = {} }) {
   const testRewardedAndr = "ca-app-pub-3940256099942544/5224354917";
 
   const RewardedUnit = Platform.select({
-    ios: Constants.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
-    android:
-      Constants.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
+    ios: Device.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
+    android: Device.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
   });
 
   function showRewarded() {
@@ -139,7 +149,7 @@ function DetailsScreen({ route, navigation, quote = {} }) {
             })
           }
         >
-          <ImageBackground style={styles.picture} source={picture} />
+          <ImageBackground style={styles.picture} source={{ uri: picture }} />
 
           {/* <ActionsContainer>
             <Favorite picture={quote} />
@@ -155,9 +165,13 @@ function DetailsScreen({ route, navigation, quote = {} }) {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="small" color={colors.white} />
         </View>
+      ) : filteredQuotes.length < 1 ? (
+        <View style={styles.emptyList}>
+          <Text style={styles.title}>Empty list.</Text>
+        </View>
       ) : (
         <FlatList
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.key}
           data={filteredQuotes}
           numColumns={2}
           renderItem={renderItem}
@@ -277,6 +291,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 40,
     backgroundColor: colors.opacityWhite,
+  },
+  emptyList: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   imgContainer: {
     width: "50%",

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   Alert,
   Animated,
 } from "react-native";
-import Constants from "expo-constants";
+import * as Device from "expo-device";
 
 import colors from "../constants/colors";
 import fonts from "../constants/fonts";
@@ -27,6 +27,7 @@ import { ActivityIndicator } from "react-native-paper";
 //import Toolbar from '../components/Toolbar';
 
 export default function HomeScreen({ navigation }) {
+  // firestore database
   const { adLoading, setAdLoading, randomQuotes, loadRandomQuotes } =
     useDataContext();
 
@@ -74,11 +75,9 @@ export default function HomeScreen({ navigation }) {
     const testInterAndroid = "ca-app-pub-3940256099942544/1033173712";
 
     const interstitialUnit = Platform.select({
-      ios: Constants.isDevice && !__DEV__ ? productionInterIos : testInterIos,
+      ios: Device.isDevice && !__DEV__ ? productionInterIos : testInterIos,
       android:
-        Constants.isDevice && !__DEV__
-          ? productionInterAndroid
-          : testInterAndroid,
+        Device.isDevice && !__DEV__ ? productionInterAndroid : testInterAndroid,
     });
     function showInterstitial() {
       setAdLoading(true);
@@ -97,12 +96,13 @@ export default function HomeScreen({ navigation }) {
         setAdLoading(false);
       });
     }
+
     return (
       <>
         <TouchableOpacity
           onPress={() => {
             animFade();
-            loadRandomQuotes();
+            // loadRandomQuotes();
             showInterstitial();
           }}
           activeOpacity={0.6}
@@ -126,14 +126,14 @@ export default function HomeScreen({ navigation }) {
         {adLoading ? (
           <Animated.View style={[styles.loadingBox, { opacity: fadeAnim }]}>
             <ActivityIndicator size={22} color={colors.primary} />
-            <Text style={styles.text}>Please wait...</Text>
+            <Text style={styles.text}>Loading quotes, please wait...</Text>
 
-            <Text style={styles.text}>{randomQuotes.content}</Text>
+            {/* <Text style={styles.text}>{randomQuotes.content}</Text> */}
           </Animated.View>
         ) : (
           <FlatList
             ListHeaderComponent={<Text style={styles.title}>Explore</Text>}
-            keyExtractor={(item, index) => item.id.toString()}
+            keyExtractor={(item, index) => item.id}
             data={DATA}
             numColumns={1}
             renderItem={renderItem}
