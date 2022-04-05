@@ -158,6 +158,87 @@ function DetailsScreen({ route, navigation, quote = {} }) {
       </>
     );
   };
+  const renderHeader = () => {
+    return (
+      <View style={[styles.headerContent, styles.overlay]}>
+        <ImageBackground
+          style={styles.headerBackground}
+          source={background}
+          imageStyle={{ opacity: 0.4 }}
+        >
+          <Text style={styles.title}>{name} Quotes</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+        </ImageBackground>
+      </View>
+    );
+  };
+  const renderFooter = () => {
+    return (
+      <>
+        <View style={styles.boxContainer}>
+          <Text style={styles.labelText}>Explore {name} Gallery</Text>
+          <TouchableOpacity
+            style={[styles.button, styles.overlay]}
+            activeOpacity={0.4}
+            onPress={handleModalVisibility}
+          >
+            <ImageBackground
+              style={styles.background}
+              source={require("../assets/creative.png")}
+              imageStyle={{ opacity: 0.6 }}
+            >
+              <View style={styles.imageContainer}>
+                <Text style={styles.title}>
+                  View more paintings and pictures taken from Creators around
+                  the world!
+                </Text>
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+          <Modal animationType="slide" visible={modalVisible} transparent>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <AntDesign name="closecircleo" size={24} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.modalText}>
+                  Watch an Ad to unlock more beautiful paintings and pictures!
+                </Text>
+
+                <TouchableHighlight
+                  style={{ ...styles.openButton }}
+                  onPress={showRewarded}
+                >
+                  <View>
+                    {adLoading ? (
+                      <ActivityIndicator size={20} color={colors.white} />
+                    ) : (
+                      <Text style={styles.textStyle}>
+                        Check Creators Gallery
+                      </Text>
+                    )}
+                  </View>
+                </TouchableHighlight>
+                <Text style={styles.callback}>
+                  {adLoading ? "Please wait..." : ""}
+                </Text>
+                <Text style={styles.callback}>
+                  {adLoading
+                    ? "😊 You'll be redirected to our creators gallery!"
+                    : ""}
+                </Text>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      </>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -167,7 +248,7 @@ function DetailsScreen({ route, navigation, quote = {} }) {
         </View>
       ) : filteredQuotes.length < 1 ? (
         <View style={styles.emptyList}>
-          <Text style={styles.title}>Empty list.</Text>
+          <Text style={styles.title}>Empty list for "{name}".</Text>
         </View>
       ) : (
         <FlatList
@@ -181,82 +262,8 @@ function DetailsScreen({ route, navigation, quote = {} }) {
           windowSize={21}
           removeClippedSubviews={true}
           updateCellsBatchingPeriod={100}
-          ListHeaderComponent={
-            <View style={[styles.headerContent, styles.overlay]}>
-              <ImageBackground
-                style={styles.headerBackground}
-                source={background}
-                imageStyle={{ opacity: 0.4 }}
-              >
-                <Text style={styles.title}>{name} Quotes</Text>
-                <Text style={styles.subtitle}>{subtitle}</Text>
-              </ImageBackground>
-            </View>
-          }
-          ListFooterComponent={
-            <View style={styles.boxContainer}>
-              <Text style={styles.labelText}>Explore {name} Gallery</Text>
-              <TouchableOpacity
-                style={[styles.button, styles.overlay]}
-                activeOpacity={0.4}
-                onPress={handleModalVisibility}
-              >
-                <ImageBackground
-                  style={styles.background}
-                  source={require("../assets/creative.png")}
-                  imageStyle={{ opacity: 0.6 }}
-                >
-                  <View style={styles.imageContainer}>
-                    <Text style={styles.title}>
-                      View more paintings and pictures taken from Creators
-                      around the world!
-                    </Text>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
-              <Modal animationType="slide" visible={modalVisible} transparent>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <TouchableOpacity
-                      style={styles.close}
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                      }}
-                    >
-                      <AntDesign name="closecircleo" size={24} color="white" />
-                    </TouchableOpacity>
-                    <Text style={styles.modalText}>
-                      Watch an Ad to unlock more beautiful paintings and
-                      pictures!
-                    </Text>
-
-                    <TouchableHighlight
-                      style={{ ...styles.openButton }}
-                      onPress={showRewarded}
-                    >
-                      <View>
-                        {adLoading ? (
-                          <ActivityIndicator size={20} color={colors.white} />
-                        ) : (
-                          <Text style={styles.textStyle}>
-                            Check Creators Gallery
-                          </Text>
-                        )}
-                      </View>
-                    </TouchableHighlight>
-                    <Text style={styles.callback}>
-                      {adLoading ? "Please wait..." : ""}
-                    </Text>
-                    <Text style={styles.callback}>
-                      {adLoading
-                        ? "😊 You'll be redirected to our creators gallery!"
-                        : ""}
-                    </Text>
-                  </View>
-                </View>
-              </Modal>
-            </View>
-          }
+          ListHeaderComponent={renderHeader}
+          ListFooterComponent={renderFooter}
           // reresh control
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -300,7 +307,6 @@ const styles = StyleSheet.create({
   imgContainer: {
     width: "50%",
     padding: 6,
-    justifyContent: "center",
   },
   picture: {
     borderRadius: 8,
@@ -308,6 +314,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 280,
     backgroundColor: colors.opacityWhite,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    borderRadius: 8,
+    justifyContent: "center",
   },
 
   quotesCard: {
@@ -419,7 +429,7 @@ const styles = StyleSheet.create({
 
   // image
   imageContainer: {
-    padding: 12,
+    padding: 6,
   },
   headerContent: {
     alignItems: "center",
@@ -431,6 +441,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   background: {
+    width: "100%",
     height: 120,
     alignItems: "center",
     justifyContent: "center",
@@ -442,4 +453,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailsScreen;
+export default memo(DetailsScreen);
