@@ -1,15 +1,10 @@
 import React, { useContext } from "react";
 import { createContext, useState, useEffect } from "react";
 import { format } from "date-fns";
-import Constants from "expo-constants";
-import { AdMobRewarded, AdMobInterstitial } from "expo-ads-admob";
-import { api } from "../services/api";
 
 const Context = createContext();
 
 export function DataContextProvider({ children }) {
-  const [quotes, setQuotes] = useState([]);
-  const [randomQuotes, setRandomQuotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [adLoading, setAdLoading] = useState(false);
 
@@ -26,55 +21,7 @@ export function DataContextProvider({ children }) {
     setFavorites(newFavorites);
   };
 
-  // interstitial
-  /* const productionInterIos = "ca-app-pub-9871106933538473/5497945163";
-  const testInterIos = "ca-app-pub-3940256099942544/4411468910";
-
-  const productionInterAndroid = "ca-app-pub-9871106933538473/2193673059";
-  const testInterAndroid = "ca-app-pub-3940256099942544/1033173712";
-
-  const interstitialUnit = Platform.select({
-    ios: Constants.isDevice && !__DEV__ ? productionInterIos : testInterIos,
-    android:
-      Constants.isDevice && !__DEV__
-        ? productionInterAndroid
-        : testInterAndroid,
-  });
-  function showInterstitial() {
-    setAdLoading(true);
-    AdMobInterstitial.setAdUnitID(interstitialUnit);
-    AdMobInterstitial.requestAdAsync().then(() => {
-      AdMobInterstitial.showAdAsync().catch((e) => {
-        console.log(e);
-      });
-    });
-    setAdLoading(false);
-  } */
-
-  /* End of Favorites. Next step: 
-  - pass to children
-  - Wrapp App.js with provider; 
-  - Go to Details screen and console.log to see the favorites array; 
-  */
-
-  /*  async function loadQuotes  (){
-        setLoading(true);
-         await api.get('/quotes')
-        .then(res => {
-            //setQuotes(res.data)
-                setQuotes(res.data); 
-           })
-        .catch(err => {
-            console.log(err)
-        })
-        .finally(() => {setLoading(false)});
-        }
-         
-        useEffect(() => {
-            loadQuotes();
-        }, []) */
-
-  async function loadRandomQuotes() {
+  /* async function loadRandomQuotes() {
     setLoading(true);
     await api
       .get("/quotes")
@@ -90,7 +37,7 @@ export function DataContextProvider({ children }) {
       .finally(() => {
         setLoading(false);
       });
-  }
+  } */
   /* useEffect(() => {
     loadRandomQuotes();
   }, []); */
@@ -103,10 +50,6 @@ export function DataContextProvider({ children }) {
         setAdLoading,
         today,
         setLoading,
-        quotes,
-        setQuotes,
-        loadRandomQuotes,
-        randomQuotes,
         favorites,
         addToFavorites: add,
         removeFromFavorites: remove,

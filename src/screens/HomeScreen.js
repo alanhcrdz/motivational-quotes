@@ -28,8 +28,7 @@ import { ActivityIndicator } from "react-native-paper";
 
 export default function HomeScreen({ navigation }) {
   // firestore database
-  const { adLoading, setAdLoading, randomQuotes, loadRandomQuotes } =
-    useDataContext();
+  const { adLoading, setAdLoading } = useDataContext();
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -86,13 +85,6 @@ export default function HomeScreen({ navigation }) {
         AdMobInterstitial.showAdAsync().catch((e) => {
           console.log(e);
         });
-        navigation.navigate(item.navigate, {
-          category: item.category,
-          name: item.label,
-          slug: item.slug,
-          subtitle: item.subtitle,
-          background: item.background,
-        });
         setAdLoading(false);
       });
     }
@@ -101,9 +93,18 @@ export default function HomeScreen({ navigation }) {
       <>
         <TouchableOpacity
           onPress={() => {
-            animFade();
-            // loadRandomQuotes();
             showInterstitial();
+            animFade();
+            setTimeout(() => {
+              navigation.navigate(item.navigate, {
+                category: item.category,
+                name: item.title,
+                slug: item.slug,
+                subtitle: item.subtitle,
+                background: item.background,
+              });
+            }, 1000);
+            // loadRandomQuotes();
           }}
           activeOpacity={0.6}
           key={item.id}
@@ -120,19 +121,51 @@ export default function HomeScreen({ navigation }) {
       </>
     );
   };
+  const renderHeader = () => {
+    return (
+      <>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={[styles.bgWrapper, styles.overlay]}
+          onPress={() => {
+            navigation.navigate("EventsWebScreen");
+          }}
+        >
+          <ImageBackground
+            style={{ height: "100%", flexDirection: "column-reverse" }}
+            source={require("../assets/artsphoto.png")}
+            imageStyle={{ opacity: 0.6 }}
+          >
+            <View style={styles.headerContentWrapper}>
+              <Text style={[styles.title, { textAlign: "left" }]}>
+                Arts for Change Events
+              </Text>
+              <Text style={[styles.text, { textAlign: "left" }]}>
+                Check our upcoming events and supporters!
+              </Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
+        <Text style={[styles.title, { textAlign: "left", marginTop: 20 }]}>
+          Explore
+        </Text>
+      </>
+    );
+  };
+
   return (
     <View style={styles.content}>
       <View style={styles.catContainer}>
         {adLoading ? (
           <Animated.View style={[styles.loadingBox, { opacity: fadeAnim }]}>
-            <ActivityIndicator size={22} color={colors.primary} />
+            <ActivityIndicator size={22} color={colors.white} />
             <Text style={styles.text}>Loading quotes, please wait...</Text>
 
             {/* <Text style={styles.text}>{randomQuotes.content}</Text> */}
           </Animated.View>
         ) : (
           <FlatList
-            ListHeaderComponent={<Text style={styles.title}>Explore</Text>}
+            ListHeaderComponent={renderHeader}
             keyExtractor={(item, index) => item.id}
             data={DATA}
             numColumns={1}
@@ -145,7 +178,9 @@ export default function HomeScreen({ navigation }) {
             updateCellsBatchingPeriod={100}
           />
         )}
-        <BannerAd />
+        <View style={styles.adContainer}>
+          <BannerAd />
+        </View>
       </View>
     </View>
   );
@@ -155,20 +190,35 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.background,
     padding: 10,
-    flex: 1,
-    marginBottom: 50,
+    height: "100%",
   },
   catContainer: {
-    flexGrow: 1,
+    marginBottom: 50,
   },
   loadingBox: {
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
+  adContainer: {
+    flex: 5,
+  },
   background: {
     width: "100%",
     height: "100%",
+  },
+  bgWrapper: {
+    width: "100%",
+    height: 200,
+    backgroundColor: "red",
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  headerContentWrapper: {
+    padding: 8,
+    backgroundColor: colors.opacityBlack,
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
 
   title: {
@@ -179,7 +229,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontFamily: fonts.text,
-    color: colors.primary,
+    color: colors.white,
     marginTop: 15,
     textAlign: "center",
   },
@@ -187,7 +237,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 20,
     fontFamily: fonts.title,
-    color: colors.primary,
+    color: colors.white,
   },
   list: {
     flex: 1,

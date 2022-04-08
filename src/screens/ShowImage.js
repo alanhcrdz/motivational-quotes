@@ -4,6 +4,7 @@ import {
   View,
   Text,
   ImageBackground,
+  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -13,7 +14,7 @@ import {
   ActivityIndicator,
   Platform,
 } from "react-native";
-import { useDataContext } from "../hooks/useDataContext";
+import AnimatedLottieView from "lottie-react-native";
 
 //share and download images feature
 import * as Sharing from "expo-sharing";
@@ -21,17 +22,10 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 
-import {
-  AntDesign,
-  Entypo,
-  MaterialIcons,
-  Feather,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import colors from "../constants/colors";
 import { Notifier, Easing } from "react-native-notifier";
 import fonts from "../constants/fonts";
-import Constants from "expo-constants";
 
 //redux
 // import { createStructuredSelector } from "reselect";
@@ -41,9 +35,9 @@ import Constants from "expo-constants";
 // import { Favorite } from "../components/favorites/favorites.component";
 
 const ShowImage = ({ route, navigation, quote = {} }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const [iconShow, setIconShow] = useState("none");
-  const { adLoading, showRewarded } = useDataContext();
-  const { picture, category, name } = route.params;
+  const { picture, category, membership, user_store, username } = route.params;
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -67,42 +61,43 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
 
   // download
 
-  /*  const downloadFile = async () => {
-        const uri = picture;
-        let fileUri = FileSystem.documentDirectory + 'quotes.png';
-        FileSystem.downloadAsync(uri, fileUri)
-            .then(({ uri }) => {
-                saveFile(uri)
-            })
-            .catch(error => {
-                console.error(error);
-            })
+  const downloadFile = async () => {
+    const uri = picture;
+    let fileUri = FileSystem.documentDirectory + `${category}_quotes.png`;
+    await FileSystem.downloadAsync(uri, fileUri)
+      .then(({ uri }) => {
+        saveFile(uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-    } */
-
-  /* const saveFile = async (fileUri) => {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status === "granted") {
-            try {
-                MediaLibrary.requestPermissionsAsync()
-                const asset = await MediaLibrary.createAssetAsync(fileUri);
-                await MediaLibrary.createAlbumAsync("Global Motivate", asset, false)
-                Notifier.showNotification({
-                    title: 'Image Downloaded',
-                    description: 'File has been saved on your phone.',
-                    duration: 3000,
-                    showAnimationDuration: 800,
-                    showEasing: Easing.ease,
-                    hideOnPress: false,
-                    queueMode: 'immediate',
-
-                })
-
-            } catch (err) {
-                console.log("Save error: ", err)
-            }
-        }
-    } */
+  const saveFile = async (fileUri) => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status === "granted") {
+      try {
+        MediaLibrary.requestPermissionsAsync();
+        const asset = await MediaLibrary.createAssetAsync(fileUri);
+        await MediaLibrary.createAlbumAsync(
+          "Motivational Quotes",
+          asset,
+          false
+        );
+        Notifier.showNotification({
+          title: "Image Downloaded",
+          description: "File has been saved on your phone.",
+          duration: 3000,
+          showAnimationDuration: 800,
+          showEasing: Easing.ease,
+          hideOnPress: false,
+          queueMode: "immediate",
+        });
+      } catch (err) {
+        console.log("Save error: ", err);
+      }
+    }
+  };
   // sharing
   const source = picture;
   const onShare = () => {
@@ -117,20 +112,19 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
       });
   };
 
-  // after favorite
-  /* const showNotifier = () => {
-    Notifier.showNotification({
-      title: marked ? "Added to Favorites" : "Removed from Favorites",
-      description: marked
-        ? "Your quote now is on favorite list!"
-        : "Quote Removed from Favorites.",
-      duration: 3000,
-      showAnimationDuration: 800,
-      showEasing: Easing.ease,
-      hideOnPress: false,
-      queueMode: "immediate",
-    });
-  }; */
+  useEffect(() => {
+    if (membership === "premium") {
+      Notifier.showNotification({
+        title: "This Picture is for sale as a product!",
+        description: "Click on the shop icon below to enter the online store.",
+        duration: 5000,
+        showAnimationDuration: 800,
+        showEasing: Easing.ease,
+        hideOnPress: false,
+        queueMode: "immediate",
+      });
+    }
+  }, []);
 
   // Capitalize
 
@@ -160,21 +154,23 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
             </View>
           </TouchableOpacity>
 
-          {/* <TouchableOpacity onPress={downloadFile}>
-                        <View style={[styles.icon, { display: iconShow }]}>
-                            <Feather
-                                style={{ margin: 20 }}
-                                name="download"
-                                size={24} color={colors.white}
+          <TouchableOpacity onPress={downloadFile}>
+            <View style={[styles.icon, { display: iconShow }]}>
+              <Feather
+                style={{ margin: 20 }}
+                name="download"
+                size={24}
+                color={colors.white}
+              />
+            </View>
+            <View style={styles.label}>
+              <Text style={[styles.iconText, { display: iconShow }]}>
+                Download
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-                            />
-                        </View>
-                        <View style={styles.label}>
-                            <Text style={[styles.iconText, { display: iconShow }]}>Download</Text>
-                        </View>
-                    </TouchableOpacity> */}
-
-          {/*  <TouchableOpacity onPress={onShare}>
+          <TouchableOpacity onPress={onShare}>
             <View style={[styles.icon, { display: iconShow }]}>
               <Entypo
                 style={{ margin: 20 }}
@@ -188,7 +184,25 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
                 Share
               </Text>
             </View>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
+
+          {membership === "premium" ? (
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+              <View style={[styles.icon, { display: iconShow }]}>
+                <Entypo
+                  style={{ margin: 20 }}
+                  name="shop"
+                  size={24}
+                  color={colors.white}
+                />
+              </View>
+              <View style={styles.label}>
+                <Text style={[styles.iconText, { display: iconShow }]}>
+                  Shop
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
 
           {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
           {/*  <TouchableOpacity>
@@ -200,74 +214,63 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
             </View>
           </TouchableOpacity> */}
         </Animated.View>
-        {/*  <Animated.View
-          style={[
-            c,
-            { opacity: fadeAnim, display: iconShow },
-          ]}
-        >
-          <TouchableOpacity
-            style={styles.button}
-            activeOpacity={0.4}
-            onPress={handleModalVisibility}
-          >
-            <AntDesign name="camera" size={22} color={colors.white} />
-            <View style={styles.label}>
-              <Text style={styles.labelText}> More {name} Quotes! </Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View> */}
 
         {/* MODAL FOR LOADING AD */}
-        {/* <Modal animationType="slide" visible={modalVisible} transparent>
+        <Modal animationType="slide" visible={modalVisible} transparent>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <TouchableOpacity
-                style={styles.close}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <AntDesign name="closecircleo" size={24} color="white" />
-              </TouchableOpacity>
+              <View style={styles.modalHeader}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <AntDesign
+                    name="closecircleo"
+                    size={24}
+                    color={colors.icecream}
+                  />
+                </TouchableOpacity>
+                <AnimatedLottieView
+                  key="animation"
+                  autoPlay
+                  loop
+                  resizeMode="cover"
+                  source={require("../assets/shop.json")}
+                  style={styles.storeImage}
+                />
+              </View>
+              <Text style={styles.modalTitle}>Support our Creators!</Text>
               <Text style={styles.modalText}>
-                Wanna see more Beautiful Pictures like this?
+                The owner of this amazing picture sells its products online.
+                Show gratitude by visiting!
               </Text>
 
               <TouchableHighlight
                 style={{ ...styles.openButton }}
                 onPress={() => {
-                  if (
-                    category === "motivationalsuccess" ||
-                    category === "motivationallove"
-                  ) {
-                    showRewarded();
-                  }
-                  navigation.navigate("WebScreen", {
-                    category,
+                  navigation.navigate("CreatorStore", {
+                    user_store,
                   });
                   setModalVisible(false);
                 }}
               >
                 <View>
-                  {adLoading ? (
-                    <ActivityIndicator size={20} color={colors.white} />
-                  ) : (
-                    <Text style={styles.textStyle}>Check Creators Gallery</Text>
-                  )}
+                  <Text style={styles.textStyle}>Go to Online Store</Text>
                 </View>
               </TouchableHighlight>
-              <Text style={styles.callback}>
-                {adLoading ? "Please wait..." : ""}
-              </Text>
-              <Text style={styles.callback}>
-                {adLoading
-                  ? "😊 You'll be redirected to our creators gallery!"
-                  : ""}
+              <Text
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+                style={[styles.modalText, { color: colors.blue }]}
+              >
+                Maybe later
               </Text>
             </View>
           </View>
-        </Modal> */}
+        </Modal>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -300,7 +303,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 50,
-    backgroundColor: colors.opacityBlack,
+    backgroundColor: colors.primary,
   },
   iconText: {
     color: colors.white,
@@ -328,10 +331,71 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 8,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
+  },
+  // Modal
+  centeredView: {
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalHeader: {
+    alignItems: "center",
+    width: "100%",
+    height: 200,
+    backgroundColor: colors.primary,
+  },
+  modalView: {
+    borderRadius: 12,
+    alignItems: "center",
+    width: "90%",
+    height: 500,
+    backgroundColor: colors.icecream,
+    overflow: "hidden",
+  },
+  close: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  storeImage: {
+    width: 250,
+    height: 250,
+    position: "absolute",
+    top: 5,
+  },
+
+  modalTitle: {
+    marginTop: 50,
+    fontFamily: fonts.title,
+    fontSize: 20,
+    textAlign: "center",
+  },
+  modalText: {
+    color: colors.lightgray,
+    marginTop: 20,
+    lineHeight: 20,
+    width: "90%",
+    fontFamily: fonts.text,
+    fontSize: 18,
+    textAlign: "center",
+  },
+  openButton: {
+    marginTop: 20,
+    alignItems: "center",
+    width: 200,
+    padding: 16,
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+  },
+  textStyle: {
+    fontFamily: fonts.text,
+    color: "white",
+    fontSize: 16,
   },
 });
 

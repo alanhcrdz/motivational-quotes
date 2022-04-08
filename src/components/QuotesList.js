@@ -1,4 +1,4 @@
-export const QuotesList = [
+/* export const QuotesList = [
   // Love
   {
     id: "1",
@@ -513,3 +513,4 @@ export const QuotesList = [
     picture: require("../assets/quotes/affirmations/12.png"),
   },
 ];
+ */

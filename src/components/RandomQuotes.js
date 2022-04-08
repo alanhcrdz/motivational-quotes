@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useCallback } from 'react';
+/* import React, { useState, useEffect, memo, useCallback } from 'react';
 import { 
     StyleSheet, 
     View, 
@@ -36,10 +36,10 @@ function RandomQuotes() {
 
         })
     }
-    /* const fetchCopiedText = async () => {
+     const fetchCopiedText = async () => {
         const text = await Clipboard.getStringAsync();
         setCopiedText(text);
-      }; */
+      }; 
 
     function loadRandomQuotes() {
         setLoading(true);
@@ -71,7 +71,7 @@ function RandomQuotes() {
 
                 :
                 <View style={styles.card}>
-                    {/* <Text style={styles.date}>{today}</Text> */}
+                    <Text style={styles.date}>{today}</Text> 
                     <Entypo name="quote" size={34} color={colors.opacityWhite} />
                     <Text style={styles.text} >"{randomQuotes.content}"</Text>
                     <View style={styles.wrapper} >
@@ -93,11 +93,11 @@ function RandomQuotes() {
     )
 }
 const styles = StyleSheet.create({
-    /*  date: {
+      date: {
          fontSize: 18,
          fontFamily: fonts.title,
          color:  colors.white,
-     }, */
+     }, 
     spinner: {
         marginTop: 40,
         width: 40,
@@ -140,3 +140,4 @@ const styles = StyleSheet.create({
     
 })
 export default memo(RandomQuotes);
+ */

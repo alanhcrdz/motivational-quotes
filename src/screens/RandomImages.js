@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+/*import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
     StyleSheet,
     View,
@@ -15,8 +15,8 @@ import { AntDesign, Foundation, Entypo, MaterialIcons, Feather, FontAwesome } fr
 import { useDataContext } from '../hooks/useDataContext';
 import { api } from '../services/api';
 import { Notifier, Easing } from 'react-native-notifier';
-/* let deviceWidth = Dimensions.get('window').width;
-let deviceHeight = Dimensions.get('window').height; */
+ let deviceWidth = Dimensions.get('window').width;
+let deviceHeight = Dimensions.get('window').height; 
 
 import Constants from 'expo-constants';
 import fonts from '../constants/fonts';
@@ -190,14 +190,14 @@ function RandomImages({ navigation }) {
                        
                         </Animated.View>
 
-                           {/*  <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim,  display: iconShow }]}>
+                             <Animated.View style={[styles.ctaContainer, { opacity: fadeAnim,  display: iconShow }]}>
                             <TouchableOpacity activeOpacity={0.4} onPress={showRewarded}>
                                 
                                 <View style={styles.label}>
                                     <Text style={styles.labelText}>Get Weekly Motivation Quotes! </Text>
                                 </View>
                             </TouchableOpacity>
-                        </Animated.View> */}
+                        </Animated.View> 
                     </ImageBackground>
                  
                 </TouchableWithoutFeedback>
@@ -280,3 +280,4 @@ const styles = StyleSheet.create({
 })
 
 export default RandomImages;
+ */

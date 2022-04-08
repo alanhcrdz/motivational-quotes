@@ -121,17 +121,18 @@ function DrawerContent({ otherProps, navigation }) {
             </Drawer.Section>
 
             <Drawer.Section title="Social">
-              {/* <DrawerItem
-                            icon={({ color, size }) => (
-                                <Feather
-                                    name='instagram'
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Follow us"
-                        />
- */}
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Feather name="instagram" color={color} size={size} />
+                )}
+                label="Follow us"
+                onPress={() => {
+                  Linking.openURL(
+                    "https://www.instagram.com/globalpromotionscanada/"
+                  );
+                }}
+              />
+
               <DrawerItem
                 icon={({ color, size }) => (
                   <AntDesign name="infocirlceo" color={color} size={size} />
@@ -139,6 +140,15 @@ function DrawerContent({ otherProps, navigation }) {
                 label="About us"
                 onPress={() => {
                   navigation.navigate("About");
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Entypo name="globe" color={color} size={size} />
+                )}
+                label="Visit our website"
+                onPress={() => {
+                  Linking.openURL("https://globalpromotions.ca/");
                 }}
               />
               <DrawerItem
@@ -308,7 +318,7 @@ const styles = StyleSheet.create({
     padding: 16,
     elevation: 2,
     width: 250,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
   },
   textStyle: {
     color: "white",
