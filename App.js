@@ -2,7 +2,8 @@ import "react-native-gesture-handler";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
 import { Provider } from "react-redux";
-import store from "./src/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./src/redux/store";
 import AppLoading from "expo-app-loading";
 import Toast from "react-native-toast-message";
 import {
@@ -62,14 +63,16 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PaperProvider>
-        <NotifierWrapper>
-          <DataContextProvider>
-            <Routes />
-            <Toast />
-          </DataContextProvider>
-        </NotifierWrapper>
-      </PaperProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <PaperProvider>
+          <NotifierWrapper>
+            <DataContextProvider>
+              <Routes />
+              <Toast />
+            </DataContextProvider>
+          </NotifierWrapper>
+        </PaperProvider>
+      </PersistGate>
     </Provider>
   );
 }

@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Linking,
   Platform,
+  Image,
 } from "react-native";
 import { Avatar, Title, Drawer } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
@@ -23,7 +24,6 @@ import {
 import colors from "../constants/colors";
 import fonts from "../constants/fonts";
 import { Link } from "@react-navigation/native";
-import FavoriteIcon from "../components/FavoriteIcon";
 
 // Rate system
 // import * as StoreReview from 'expo-store-review';
@@ -85,7 +85,7 @@ function DrawerContent({ otherProps, navigation }) {
               />
               {/* <DrawerItem
                 icon={() => (
-                  <FavoriteIcon
+                  <AntDesign
                     name="heart"
                     color={colors.opacityBlack}
                     size={24}
@@ -93,7 +93,7 @@ function DrawerContent({ otherProps, navigation }) {
                 )}
                 label="Favorites"
                 onPress={() => {
-                  navigation.navigate("Favorites", {});
+                  navigation.navigate("Favorites");
                 }}
               /> */}
               {/* <DrawerItem
@@ -153,6 +153,17 @@ function DrawerContent({ otherProps, navigation }) {
               />
               <DrawerItem
                 icon={({ color, size }) => (
+                  <Entypo name="mobile" color={color} size={size} />
+                )}
+                label="More Apps"
+                onPress={() => {
+                  Linking.openURL(
+                    "https://play.google.com/store/apps/dev?id=8341975679786746388"
+                  );
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
                   <Entypo name="star-outlined" color={color} size={size} />
                 )}
                 label="Leave Feedback"
@@ -196,38 +207,41 @@ function DrawerContent({ otherProps, navigation }) {
           </View>
         </DrawerContentScrollView>
         {/* <Drawer.Section style={styles.bottomDrawerSection}>
-                <DrawerItem
-                    icon={({ color, size }) => (
-                        <Feather
-                            name='settings'
-                            color={color}
-                            size={size}
-                        />
-                    )}
-                    label="Settings"
-                />
-            </Drawer.Section>  */}
+          <DrawerItem
+            icon={({ color, size }) => (
+              <Feather name="settings" color={color} size={size} />
+            )}
+            label="Settings"
+            onPress={() => navigation.navigate("Settings")}
+          />
+        </Drawer.Section> */}
       </View>
       <Modal animationType="slide" visible={modalVisible} transparent>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <TouchableOpacity
-              style={styles.close}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <AntDesign name="closecircleo" size={24} color="white" />
-            </TouchableOpacity>
+            <View style={styles.modalHeader}>
+              <Image
+                source={require("../assets/feedback.png")}
+                style={styles.rateImage}
+              />
+              <TouchableOpacity
+                style={styles.close}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <AntDesign name="closecircleo" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
             <View>
               <Text style={styles.title}>Enjoying Motivational Quotes?</Text>
             </View>
             <View style={styles.starsContainer}>
-              <EvilIcons name="star" size={26} color="white" />
-              <EvilIcons name="star" size={26} color="white" />
-              <EvilIcons name="star" size={26} color="white" />
-              <EvilIcons name="star" size={26} color="white" />
-              <EvilIcons name="star" size={26} color="white" />
+              <EvilIcons name="star" size={26} color="gold" />
+              <EvilIcons name="star" size={26} color="gold" />
+              <EvilIcons name="star" size={26} color="gold" />
+              <EvilIcons name="star" size={26} color="gold" />
+              <EvilIcons name="star" size={26} color="gold" />
             </View>
             <Text style={styles.modalText}>Show us what you think!</Text>
 
@@ -257,11 +271,7 @@ const styles = StyleSheet.create({
   userInfoSection: {
     paddingLeft: 20,
   },
-  title: {
-    fontSize: 16,
-    marginTop: 3,
-    fontWeight: "bold",
-  },
+
   caption: {
     fontSize: 14,
     lineHeight: 14,
@@ -293,25 +303,29 @@ const styles = StyleSheet.create({
   },
   // MODAL STYLE
   centeredView: {
-    flex: 1,
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
-    margin: 20,
-    backgroundColor: colors.background,
-    borderRadius: 20,
-    padding: 35,
-    justifyContent: "center",
+    borderRadius: 12,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    width: "90%",
+    height: 500,
+    backgroundColor: colors.white,
+    overflow: "hidden",
+  },
+  rateImage: {
+    width: 200,
+    height: 200,
+    position: "absolute",
+    top: 20,
+  },
+  modalHeader: {
+    alignItems: "center",
+    width: "100%",
+    height: 200,
+    backgroundColor: colors.primary,
   },
   openButton: {
     borderRadius: 8,
@@ -327,14 +341,18 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   modalText: {
-    marginBottom: 15,
-    marginTop: 10,
-    textAlign: "center",
-    color: colors.white,
+    color: colors.lightgray,
+    marginTop: 20,
+    lineHeight: 20,
+    width: "90%",
     fontFamily: fonts.text,
+    fontSize: 18,
+    textAlign: "center",
   },
   close: {
-    marginBottom: 10,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
   starsContainer: {
     flexDirection: "row",
@@ -347,11 +365,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
+    marginTop: 50,
     fontFamily: fonts.title,
-    color: colors.white,
-    fontSize: 18,
+    fontSize: 20,
     textAlign: "center",
-    marginBottom: 8,
+    color: colors.lightgray,
   },
 });
 

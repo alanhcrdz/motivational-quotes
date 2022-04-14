@@ -5,7 +5,7 @@ function EventsWebScreen({ route }) {
   return (
     <WebView
       source={{
-        uri: `https://globalpromotions.ca/arts-for-change-supporters/`,
+        uri: `https://globalpromotions.ca/arts-for-change-auction/`,
       }}
       style={{ opacity: 0.99 }}
     />

@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {
     AntDesign,
@@ -52,3 +52,4 @@ const mapStateToProps = createStructuredSelector({
 })
 
 export default connect(mapStateToProps)(FavoriteIcon);
+ */

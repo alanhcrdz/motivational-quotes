@@ -6,15 +6,14 @@ import colors from "../constants/colors";
 import DetailsScreen from "../screens/DetailsScreen";
 import ShowImage from "../screens/ShowImage";
 import { Feather } from "@expo/vector-icons";
-// import Favorites from '../screens/Favorites';
+import Favorites from "../screens/Favorites";
 import WebScreen from "../screens/WebScreen";
 import EventsWebScreen from "../screens/EventsWebScreen";
 import CreatorStore from "../screens/CreatorStore";
 // import AuthRoutes from "./tabs.routes";
 import HomeScreen from "../screens/HomeScreen";
 import AboutUs from "../screens/AboutUs";
-import Favorites from "../screens/Favorites";
-
+import Settings from "../screens/Settings";
 const StackRoutes = createStackNavigator();
 const AppRoutes = ({ navigation }) => {
   return (
@@ -84,6 +83,11 @@ const AppRoutes = ({ navigation }) => {
         name="About"
         component={AboutUs}
         options={{ title: "About Us" }}
+      />
+      <StackRoutes.Screen
+        name="Settings"
+        component={Settings}
+        options={{ title: "Settings" }}
       />
       <StackRoutes.Screen
         name="Favorites"

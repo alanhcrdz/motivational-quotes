@@ -61,7 +61,7 @@ export const CategoriesData = [
     navigate: "Details",
     background: require("../assets/resilience.png"),
   },
-  {
+  /* {
     id: "7",
     category: "motivationalpositive",
     slug: "affirmations",
@@ -70,7 +70,7 @@ export const CategoriesData = [
     title: "Positive Affirmations",
     navigate: "Details",
     background: require("../assets/affirmations.png"),
-  },
+  }, */
   /* {
         id: 8,
         category: 'random_images',

@@ -21,7 +21,10 @@ import {
   LogBox,
   Image,
 } from "react-native";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+//import actions
+import { addFavorite, removeFavorite, getQuotes } from "../redux/actions";
+
 // import ActionButton from '../components/ActionButton';
 import colors from "../constants/colors";
 import { useDataContext } from "../hooks/useDataContext";
@@ -44,7 +47,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-function DetailsScreen({ route, navigation, quote = {} }) {
+function DetailsScreen({ route, navigation }) {
   // lets cleanUp firestore data fetch on useEffect
   const isMounted = useRef(false);
 
@@ -63,7 +66,6 @@ function DetailsScreen({ route, navigation, quote = {} }) {
       const querySnapshot = await getDocs(collection(db, "quotes"));
       const listQuotes = [];
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         listQuotes.push({
           ...doc.data(),
           key: doc.id,
@@ -92,11 +94,6 @@ function DetailsScreen({ route, navigation, quote = {} }) {
       setRefreshing(false);
     });
   }, []);
-
-  const filteredQuotes = quotes.filter((quote) => quote.category === category);
-  const handleModalVisibility = () => {
-    setModalVisible(!modalVisible);
-  };
 
   // rewarded
   const prodRewardedIos = "ca-app-pub-9871106933538473/1612406555";
@@ -149,32 +146,75 @@ function DetailsScreen({ route, navigation, quote = {} }) {
     });
   }
 
+  // handling favorites with redux
+  /*   const { favorites, quotes } = useSelector((state) => state.quotesReducer);
+  const dispatch = useDispatch();
+
+  const addToFavorites = (quote) => dispatch(addFavorite(quote));
+  const removeFromFavorites = (quote) => dispatch(removeFavorite(quote));
+
+  const handleAddFavorites = (quote) => {
+    addToFavorites(quote);
+  };
+  const handleRemoveFavorites = (quote) => {
+    removeFromFavorites(quote);
+  };
+
+  const ifExists = (quote) => {
+    if (favorites.filter((item) => item.id === quote.id).lenght > 0) {
+      return true;
+    }
+    return false;
+  }; */
+
+  const filteredQuotes = quotes.filter((quote) => quote.category === category);
+  const handleModalVisibility = () => {
+    setModalVisible(!modalVisible);
+  };
+
   const renderItem = ({ item }) => {
     const { picture } = item;
     return (
-      <View
-        style={{
-          width: "100%",
-          height: "100%",
-          flex: 1,
-        }}
-      >
-        <TouchableOpacity
-          style={styles.imgContainer}
-          onPress={() =>
-            navigation.navigate("ShowImage", {
-              picture,
-              category,
-              name,
-              membership: item.creator.membership,
-              user_store: item.creator.user_store,
-              username: item.creator.username,
-            })
-          }
+      <>
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            flex: 1,
+          }}
         >
-          <ImageBackground style={styles.picture} source={{ uri: picture }} />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.imgContainer}
+            onPress={() =>
+              navigation.navigate("ShowImage", {
+                picture,
+                category,
+                name,
+                membership: item.creator.membership,
+                user_store: item.creator.user_store,
+                username: item.creator.username,
+              })
+            }
+          >
+            <ImageBackground style={styles.picture} source={{ uri: picture }} />
+          </TouchableOpacity>
+          {/*  <View style={{ margin: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                ifExists(item)
+                  ? handleRemoveFavorites(item)
+                  : handleAddFavorites(item);
+              }}
+            >
+              <AntDesign
+                name={ifExists(item) ? "heart" : "hearto"}
+                size={24}
+                color={ifExists(item) ? colors.accent : colors.white}
+              />
+            </TouchableOpacity>
+          </View> */}
+        </View>
+      </>
     );
   };
   const renderHeader = () => {
@@ -207,7 +247,7 @@ function DetailsScreen({ route, navigation, quote = {} }) {
           >
             <View style={styles.imageContainer}>
               <Text style={styles.title}>
-                View more pictures and new features on our gallery page!
+                View more pictures, vote your favorite on our gallery page!
               </Text>
             </View>
           </ImageBackground>
@@ -311,10 +351,6 @@ function DetailsScreen({ route, navigation, quote = {} }) {
   );
 }
 
-/* const mapDispatchToProps = (dispatch) => ({
-  addQuote: (quote) => dispatch(addQuote(quote)),
-});
- */
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,

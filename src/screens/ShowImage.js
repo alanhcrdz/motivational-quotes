@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "90%",
     height: 500,
-    backgroundColor: colors.icecream,
+    backgroundColor: colors.white,
     overflow: "hidden",
   },
   close: {
@@ -374,6 +374,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.title,
     fontSize: 20,
     textAlign: "center",
+    color: colors.lightgray,
   },
   modalText: {
     color: colors.lightgray,

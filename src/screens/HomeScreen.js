@@ -24,8 +24,6 @@ import { useDataContext } from "../hooks/useDataContext";
 import { AdMobInterstitial } from "expo-ads-admob";
 import { ActivityIndicator } from "react-native-paper";
 
-//import Toolbar from '../components/Toolbar';
-
 export default function HomeScreen({ navigation }) {
   // firestore database
   const { adLoading, setAdLoading } = useDataContext();
@@ -115,7 +113,9 @@ export default function HomeScreen({ navigation }) {
             source={item.background}
             imageStyle={{ opacity: 0.6 }}
           >
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={[styles.title_dark, { color: "#fff" }]}>
+              {item.title}
+            </Text>
           </ImageBackground>
         </TouchableOpacity>
       </>
@@ -137,16 +137,26 @@ export default function HomeScreen({ navigation }) {
             imageStyle={{ opacity: 0.6 }}
           >
             <View style={styles.headerContentWrapper}>
-              <Text style={[styles.title, { textAlign: "left" }]}>
-                Arts for Change Events
+              <Text
+                style={[
+                  styles.title_dark,
+                  { textAlign: "left", color: "#fff" },
+                ]}
+              >
+                Arts for Change
               </Text>
               <Text style={[styles.text, { textAlign: "left" }]}>
-                Check our upcoming events and supporters!
+                View and support our Arts for Change Auction!
               </Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>
-        <Text style={[styles.title, { textAlign: "left", marginTop: 20 }]}>
+        <Text
+          style={[
+            styles.title_light,
+            { textAlign: "left", marginTop: 20, color: "white" },
+          ]}
+        >
           Explore
         </Text>
       </>
@@ -154,7 +164,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.content}>
+    <View style={styles.container_light}>
       <View style={styles.catContainer}>
         {adLoading ? (
           <Animated.View style={[styles.loadingBox, { opacity: fadeAnim }]}>
@@ -187,7 +197,12 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  content: {
+  container_light: {
+    backgroundColor: colors.background,
+    padding: 10,
+    height: "100%",
+  },
+  container_dark: {
     backgroundColor: colors.background,
     padding: 10,
     height: "100%",
@@ -221,10 +236,15 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
 
-  title: {
+  title_light: {
     fontSize: 22,
     fontFamily: fonts.title,
-    color: colors.white,
+    color: colors.lightgray,
+  },
+  title_dark: {
+    fontSize: 22,
+    fontFamily: fonts.title,
+    color: "#000",
   },
   text: {
     fontSize: 18,
