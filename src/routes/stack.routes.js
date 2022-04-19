@@ -67,7 +67,7 @@ const AppRoutes = ({ navigation }) => {
       <StackRoutes.Screen
         name="WebScreen"
         component={WebScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, title: "Gallery" }}
       />
       <StackRoutes.Screen
         name="EventsWebScreen"

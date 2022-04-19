@@ -133,7 +133,7 @@ function DrawerContent({ otherProps, navigation }) {
                 }}
               />
 
-              <DrawerItem
+              {/* <DrawerItem
                 icon={({ color, size }) => (
                   <AntDesign name="infocirlceo" color={color} size={size} />
                 )}
@@ -141,7 +141,7 @@ function DrawerContent({ otherProps, navigation }) {
                 onPress={() => {
                   navigation.navigate("About");
                 }}
-              />
+              /> */}
               <DrawerItem
                 icon={({ color, size }) => (
                   <Entypo name="globe" color={color} size={size} />
@@ -314,6 +314,15 @@ const styles = StyleSheet.create({
     height: 500,
     backgroundColor: colors.white,
     overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   rateImage: {
     width: 200,

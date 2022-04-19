@@ -76,32 +76,27 @@ export default function HomeScreen({ navigation }) {
       android:
         Device.isDevice && !__DEV__ ? productionInterAndroid : testInterAndroid,
     });
-    function showInterstitial() {
-      setAdLoading(true);
-      AdMobInterstitial.setAdUnitID(interstitialUnit);
-      AdMobInterstitial.requestAdAsync().then(() => {
-        AdMobInterstitial.showAdAsync().catch((e) => {
-          console.log(e);
-        });
-        setAdLoading(false);
-      });
-    }
 
     return (
       <>
         <TouchableOpacity
           onPress={() => {
-            showInterstitial();
-            animFade();
-            setTimeout(() => {
-              navigation.navigate(item.navigate, {
-                category: item.category,
-                name: item.title,
-                slug: item.slug,
-                subtitle: item.subtitle,
-                background: item.background,
+            setAdLoading(true);
+            AdMobInterstitial.setAdUnitID(interstitialUnit);
+            AdMobInterstitial.requestAdAsync().then(() => {
+              AdMobInterstitial.showAdAsync().catch((e) => {
+                console.log(e);
               });
-            }, 1000);
+              setAdLoading(false);
+            });
+            navigation.navigate(item.navigate, {
+              category: item.category,
+              name: item.title,
+              slug: item.slug,
+              subtitle: item.subtitle,
+              background: item.background,
+            });
+
             // loadRandomQuotes();
           }}
           activeOpacity={0.6}
@@ -146,7 +141,7 @@ export default function HomeScreen({ navigation }) {
                 Arts for Change
               </Text>
               <Text style={[styles.text, { textAlign: "left" }]}>
-                View and support our Arts for Change Auction!
+                Visit our Arts for Change website!
               </Text>
             </View>
           </ImageBackground>

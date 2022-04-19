@@ -43,7 +43,7 @@ export const CategoriesData = [
   {
     id: "5",
     category: "motivationalconfidence",
-    slug: "confidence",
+    slug: "positive-attitude",
     label: "Attitude",
     subtitle: "Keeping a Positive Attitude is very important in life.",
     title: "Positive Attitude",

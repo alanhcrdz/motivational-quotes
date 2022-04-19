@@ -31,7 +31,11 @@ import { useDataContext } from "../hooks/useDataContext";
 import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import fonts from "../constants/fonts";
-import { AdMobRewarded } from "expo-ads-admob";
+import {
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+  isAvailableAsync,
+} from "expo-ads-admob";
 import * as Device from "expo-device";
 
 // getting quotes from firebase
@@ -53,6 +57,7 @@ function DetailsScreen({ route, navigation }) {
 
   const [refreshing, setRefreshing] = useState(false);
   const [adLoading, setAdLoading] = useState(false);
+  const [adLoaded, setAdLoaded] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [quotes, setQuotes] = useState([]);
 
@@ -107,10 +112,12 @@ function DetailsScreen({ route, navigation }) {
     android: Device.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
   });
 
-  function showRewarded() {
+  async function showRewarded() {
+    // await setTestDeviceIDAsync("EMULATOR");
+
     setAdLoading(true);
-    AdMobRewarded.setAdUnitID(RewardedUnit);
-    AdMobRewarded.requestAdAsync().then(() => {
+    await AdMobRewarded.setAdUnitID(RewardedUnit);
+    await AdMobRewarded.requestAdAsync().then(() => {
       AdMobRewarded.showAdAsync().catch((err) => console.log(err));
     });
     AdMobRewarded.addEventListener("rewardedVideoUserDidEarnReward", () => {
@@ -118,6 +125,7 @@ function DetailsScreen({ route, navigation }) {
       navigation.navigate("WebScreen", {
         slug,
       });
+      removeRewardedListeners();
       console.log("Reward granted.");
     });
     AdMobRewarded.addEventListener("rewardedVideoDidPresent", () => {
@@ -132,6 +140,9 @@ function DetailsScreen({ route, navigation }) {
 
     AdMobRewarded.addEventListener("rewardedVideoDidLoad", () => {
       setAdLoading(false);
+      navigation.navigate("WebScreen", {
+        slug,
+      });
       console.log("Add loaded!");
     });
     AdMobRewarded.addEventListener("rewardedVideoDidFailToLoad", () => {
@@ -142,8 +153,12 @@ function DetailsScreen({ route, navigation }) {
     AdMobRewarded.addEventListener("rewardedVideoDidDismiss", () => {
       setModalVisible(false);
       setAdLoading(false);
+      removeRewardedListeners();
       console.log("Video Dismissed.");
     });
+  }
+  function removeRewardedListeners() {
+    AdMobRewarded.removeAllListeners();
   }
 
   // handling favorites with redux
@@ -168,9 +183,6 @@ function DetailsScreen({ route, navigation }) {
   }; */
 
   const filteredQuotes = quotes.filter((quote) => quote.category === category);
-  const handleModalVisibility = () => {
-    setModalVisible(!modalVisible);
-  };
 
   const renderItem = ({ item }) => {
     const { picture } = item;
@@ -238,7 +250,9 @@ function DetailsScreen({ route, navigation }) {
         <TouchableOpacity
           style={[styles.button, styles.overlay]}
           activeOpacity={0.4}
-          onPress={handleModalVisibility}
+          onPress={() => {
+            setModalVisible(true);
+          }}
         >
           <ImageBackground
             style={styles.background}
@@ -247,7 +261,7 @@ function DetailsScreen({ route, navigation }) {
           >
             <View style={styles.imageContainer}>
               <Text style={styles.title}>
-                View more pictures, vote your favorite on our gallery page!
+                View more pictures, rate your favorite on our gallery page!
               </Text>
             </View>
           </ImageBackground>
@@ -259,7 +273,7 @@ function DetailsScreen({ route, navigation }) {
                 <TouchableOpacity
                   style={styles.close}
                   onPress={() => {
-                    setModalVisible(!modalVisible);
+                    setModalVisible(false);
                   }}
                 >
                   <AntDesign
@@ -283,30 +297,25 @@ function DetailsScreen({ route, navigation }) {
                 }}
               >
                 <Text style={styles.modalText}>
-                  Watch a video ad to unlock new features on the community page!
+                  View more features on the community page.
                 </Text>
 
                 <TouchableHighlight
                   style={{ ...styles.openButton }}
-                  onPress={showRewarded}
+                  onPress={() => {
+                    showRewarded();
+                  }}
                 >
                   <View>
-                    {adLoading ? (
-                      <ActivityIndicator size={20} color={colors.white} />
-                    ) : (
-                      <Text style={styles.textStyle}>
-                        Watch Video and Check Now!
-                      </Text>
-                    )}
+                    <Text style={styles.textStyle}>Check Now!</Text>
                   </View>
                 </TouchableHighlight>
-
-                <Text style={styles.callback}>
-                  {adLoading ? "Please wait..." : ""}
-                </Text>
-                <Text style={styles.callback}>
-                  {adLoading ? "😊 You'll be redirected to our page!" : ""}
-                </Text>
+                {adLoading ? (
+                  <View style={{ marginTop: 10 }}>
+                    <ActivityIndicator size={20} color={colors.primary} />
+                    <Text style={styles.callback}>Please wait...</Text>
+                  </View>
+                ) : null}
               </View>
             </View>
           </View>
@@ -328,7 +337,7 @@ function DetailsScreen({ route, navigation }) {
         <LoadingBar />
       ) : (
         <FlatList
-          style={{ flexGrow: 1 }}
+          style={{ flex: 1 }}
           keyExtractor={(item) => item.key}
           data={filteredQuotes}
           numColumns={2}
@@ -355,9 +364,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
     justifyContent: "space-between",
-    alignItems: "center",
+    flexGrow: 1,
     width: "100%",
-    height: "100%",
   },
   heading: {
     width: "90%",
@@ -379,7 +387,9 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     width: "100%",
+    flexGrow: 1,
     padding: 6,
+    backgroundColor: colors.background,
   },
   picture: {
     borderRadius: 8,
