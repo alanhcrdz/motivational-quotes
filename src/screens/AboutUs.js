@@ -13,12 +13,21 @@ function AboutUs() {
             style={styles.storeImage}
           />
         </View>
-        <Text style={styles.title}>Motivational Quotes</Text>
+        <Text style={styles.title}>About Motivational Quotes</Text>
 
         <Text style={styles.text}>
-          Motivational Quotes is a large selection of inspirational texts
-          combined with images to help you refresh your spirit and inspire a new
-          mindset.{" "}
+          Motivational Quotes is a dynamic app built with content from our
+          community members worldwide. This app is part of our Arts for Change
+          Collection. Through art, we can grow, heal and prosper. Join us and
+          together we can create a better tomorrow!{" "}
+        </Text>
+        <Text
+          style={{ color: "blue", marginTop: 10 }}
+          onPress={() => {
+            Linking.openURL("https://artzforchange.com/");
+          }}
+        >
+          https://artzforchange.com
         </Text>
       </View>
     </View>

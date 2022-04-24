@@ -5,7 +5,7 @@ function WebScreen({ route }) {
   const { slug } = route.params;
   return (
     <WebView
-      source={{ uri: `https://globalpromotions.ca/${slug}-gallery` }}
+      source={{ uri: `https://artzforchange.com/${slug}-gallery` }}
       style={{ opacity: 0.99 }}
     />
   );

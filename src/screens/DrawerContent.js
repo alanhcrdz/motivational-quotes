@@ -127,13 +127,11 @@ function DrawerContent({ otherProps, navigation }) {
                 )}
                 label="Follow us"
                 onPress={() => {
-                  Linking.openURL(
-                    "https://www.instagram.com/globalpromotionscanada/"
-                  );
+                  Linking.openURL("https://www.instagram.com/artzforchange/");
                 }}
               />
 
-              {/* <DrawerItem
+              <DrawerItem
                 icon={({ color, size }) => (
                   <AntDesign name="infocirlceo" color={color} size={size} />
                 )}
@@ -141,14 +139,14 @@ function DrawerContent({ otherProps, navigation }) {
                 onPress={() => {
                   navigation.navigate("About");
                 }}
-              /> */}
+              />
               <DrawerItem
                 icon={({ color, size }) => (
                   <Entypo name="globe" color={color} size={size} />
                 )}
                 label="Visit our website"
                 onPress={() => {
-                  Linking.openURL("https://globalpromotions.ca/");
+                  Linking.openURL("https://artzforchange.com/");
                 }}
               />
               <DrawerItem
@@ -157,9 +155,13 @@ function DrawerContent({ otherProps, navigation }) {
                 )}
                 label="More Apps"
                 onPress={() => {
-                  Linking.openURL(
-                    "https://play.google.com/store/apps/dev?id=8341975679786746388"
-                  );
+                  Platform.OS === "android"
+                    ? Linking.openURL(
+                        "https://play.google.com/store/apps/dev?id=8341975679786746388"
+                      )
+                    : Linking.openURL(
+                        "https://apps.apple.com/us/developer/global-promotions-group-of-canada-ltd/id1598740992"
+                      );
                 }}
               />
               <DrawerItem
@@ -175,7 +177,7 @@ function DrawerContent({ otherProps, navigation }) {
                 )}
                 label="Privacy Policy"
                 onPress={() => {
-                  Linking.openURL("https://globalpromotions.ca/privacy-policy");
+                  Linking.openURL("https://artzforchange.com/privacy-policy");
                 }}
               />
               {/*  <DrawerItem

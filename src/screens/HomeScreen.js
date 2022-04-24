@@ -5,11 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Image,
   StatusBar,
   FlatList,
   BackHandler,
   Alert,
   Animated,
+  Modal,
+  TouchableHighlight,
 } from "react-native";
 import * as Device from "expo-device";
 
@@ -19,14 +22,16 @@ import fonts from "../constants/fonts";
 //import DailyCard from '../components/DailyCard';
 import { CategoriesData } from "../components/CategoriesData";
 import { useIsFocused } from "@react-navigation/native";
-import BannerAd from "../components/ads/BannerAd";
 import { useDataContext } from "../hooks/useDataContext";
-import { AdMobInterstitial } from "expo-ads-admob";
+import { AdMobRewarded } from "expo-ads-admob";
 import { ActivityIndicator } from "react-native-paper";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function HomeScreen({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   // firestore database
-  const { adLoading, setAdLoading } = useDataContext();
+  const { adLoading, setAdLoading, loading, setLoading } = useDataContext();
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -52,8 +57,67 @@ export default function HomeScreen({ navigation }) {
       BackHandler.removeEventListener("hardwareBackPress");
     }
   }, []);
+  // rewarded
+  const prodRewardedIos = "ca-app-pub-9871106933538473/1612406555";
+  const testRewardedIos = "ca-app-pub-3940256099942544/1712485313";
 
-  const DATA = CategoriesData;
+  const prodRewardedAndr = "ca-app-pub-9871106933538473/2015201008";
+  const testRewardedAndr = "ca-app-pub-3940256099942544/5224354917";
+
+  const RewardedUnit = Platform.select({
+    ios: Device.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
+    android: Device.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
+  });
+
+  async function showRewarded() {
+    setAdLoading(true);
+
+    // await setTestDeviceIDAsync("EMULATOR");
+
+    await AdMobRewarded.setAdUnitID(RewardedUnit);
+    await AdMobRewarded.requestAdAsync().then(() => {
+      AdMobRewarded.showAdAsync().catch((err) => console.log(err));
+    });
+    AdMobRewarded.addEventListener("rewardedVideoUserDidEarnReward", () => {
+      setAdLoading(false);
+      setModalVisible(false);
+      console.log("Reward granted.");
+      navigation.navigate("EventsWebScreen");
+      removeRewardedListeners();
+    });
+    AdMobRewarded.addEventListener("rewardedVideoDidPresent", () => {
+      setAdLoading(false);
+      console.log("Add is presented");
+    });
+
+    AdMobRewarded.addEventListener("rewardedVideoDidFailToPresent", () => {
+      setAdLoading(false);
+      console.log("Add failed to present");
+    });
+
+    AdMobRewarded.addEventListener("rewardedVideoDidLoad", () => {
+      setAdLoading(false);
+      console.log("Add loaded!");
+    });
+    AdMobRewarded.addEventListener("rewardedVideoDidFailToLoad", () => {
+      setAdLoading(false);
+      navigation.navigate("EventsWebScreen");
+      console.log("Add not loaded");
+      removeRewardedListeners();
+    });
+
+    AdMobRewarded.addEventListener("rewardedVideoDidDismiss", () => {
+      setModalVisible(false);
+      setAdLoading(false);
+      console.log("Video Dismissed.");
+      removeRewardedListeners();
+    });
+  }
+  function removeRewardedListeners() {
+    AdMobRewarded.removeAllListeners();
+    console.log("Removed all listeners");
+  }
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const animFade = () => {
     Animated.timing(fadeAnim, {
@@ -63,41 +127,17 @@ export default function HomeScreen({ navigation }) {
     }).start();
   };
 
+  const DATA = CategoriesData;
   const renderItem = ({ item }) => {
-    // interstitial
-    const productionInterIos = "ca-app-pub-9871106933538473/5497945163";
-    const testInterIos = "ca-app-pub-3940256099942544/4411468910";
-
-    const productionInterAndroid = "ca-app-pub-9871106933538473/2193673059";
-    const testInterAndroid = "ca-app-pub-3940256099942544/1033173712";
-
-    const interstitialUnit = Platform.select({
-      ios: Device.isDevice && !__DEV__ ? productionInterIos : testInterIos,
-      android:
-        Device.isDevice && !__DEV__ ? productionInterAndroid : testInterAndroid,
-    });
-
     return (
       <>
         <TouchableOpacity
           onPress={() => {
-            setAdLoading(true);
-            AdMobInterstitial.setAdUnitID(interstitialUnit);
-            AdMobInterstitial.requestAdAsync().then(() => {
-              AdMobInterstitial.showAdAsync().catch((e) => {
-                console.log(e);
-              });
-              setAdLoading(false);
-            });
             navigation.navigate(item.navigate, {
               category: item.category,
               name: item.title,
               slug: item.slug,
-              subtitle: item.subtitle,
-              background: item.background,
             });
-
-            // loadRandomQuotes();
           }}
           activeOpacity={0.6}
           key={item.id}
@@ -116,14 +156,14 @@ export default function HomeScreen({ navigation }) {
       </>
     );
   };
-  const renderHeader = () => {
+  const renderHeader = ({ item }) => {
     return (
       <>
         <TouchableOpacity
           activeOpacity={0.6}
           style={[styles.bgWrapper, styles.overlay]}
           onPress={() => {
-            navigation.navigate("EventsWebScreen");
+            setModalVisible(true);
           }}
         >
           <ImageBackground
@@ -141,11 +181,65 @@ export default function HomeScreen({ navigation }) {
                 Arts for Change
               </Text>
               <Text style={[styles.text, { textAlign: "left" }]}>
-                Visit our Arts for Change website!
+                Creating a Better Tomorrow Together!
               </Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>
+        <Modal animationType="slide" visible={modalVisible} transparent>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.modalHeader}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                >
+                  <AntDesign
+                    name="closecircleo"
+                    size={24}
+                    color={colors.icecream}
+                  />
+                </TouchableOpacity>
+
+                <Image
+                  source={require("../assets/gallery.png")}
+                  style={styles.storeImage}
+                />
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  height: 300,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.modalText}>
+                  Watch a video to unlock exclusive content and feature.
+                </Text>
+
+                <TouchableHighlight
+                  style={{ ...styles.openButton }}
+                  onPress={() => {
+                    showRewarded();
+                  }}
+                >
+                  <View>
+                    <Text style={styles.textStyle}>Check Now!</Text>
+                  </View>
+                </TouchableHighlight>
+                {adLoading ? (
+                  <View style={{ marginTop: 10 }}>
+                    <ActivityIndicator size={20} color={colors.primary} />
+                    <Text style={styles.callback}>Please wait...</Text>
+                  </View>
+                ) : null}
+              </View>
+            </View>
+          </View>
+        </Modal>
         <Text
           style={[
             styles.title_light,
@@ -161,31 +255,19 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container_light}>
       <View style={styles.catContainer}>
-        {adLoading ? (
-          <Animated.View style={[styles.loadingBox, { opacity: fadeAnim }]}>
-            <ActivityIndicator size={22} color={colors.white} />
-            <Text style={styles.text}>Loading quotes, please wait...</Text>
-
-            {/* <Text style={styles.text}>{randomQuotes.content}</Text> */}
-          </Animated.View>
-        ) : (
-          <FlatList
-            ListHeaderComponent={renderHeader}
-            keyExtractor={(item, index) => item.id}
-            data={DATA}
-            numColumns={1}
-            renderItem={renderItem}
-            // for better performance (if needed, install recyclerlistview)
-            initialNumToRender={5}
-            maxToRenderPerBatch={10}
-            windowSize={10}
-            removeClippedSubviews={true}
-            updateCellsBatchingPeriod={100}
-          />
-        )}
-        <View style={styles.adContainer}>
-          <BannerAd />
-        </View>
+        <FlatList
+          ListHeaderComponent={renderHeader}
+          keyExtractor={(item, index) => item.id}
+          data={DATA}
+          numColumns={1}
+          renderItem={renderItem}
+          // for better performance (if needed, install recyclerlistview)
+          initialNumToRender={5}
+          maxToRenderPerBatch={10}
+          windowSize={10}
+          removeClippedSubviews={true}
+          updateCellsBatchingPeriod={100}
+        />
       </View>
     </View>
   );
@@ -194,17 +276,14 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container_light: {
     backgroundColor: colors.background,
-    padding: 10,
     height: "100%",
+    padding: 10,
   },
   container_dark: {
     backgroundColor: colors.background,
-    padding: 10,
     height: "100%",
   },
-  catContainer: {
-    marginBottom: 50,
-  },
+  catContainer: {},
   loadingBox: {
     height: "100%",
     justifyContent: "center",
@@ -281,5 +360,81 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 12,
     fontFamily: fonts.text,
+  },
+  // MODAL STYLE
+  centeredView: {
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalHeader: {
+    alignItems: "center",
+    width: "100%",
+    height: 200,
+    backgroundColor: colors.primary,
+  },
+
+  openButton: {
+    marginTop: 20,
+    borderRadius: 8,
+    padding: 16,
+    elevation: 2,
+    width: 270,
+    backgroundColor: colors.primary,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    textTransform: "uppercase",
+  },
+  modalTitle: {
+    marginTop: 50,
+    fontFamily: fonts.title,
+    fontSize: 20,
+    textAlign: "center",
+  },
+  modalText: {
+    color: colors.lightgray,
+    marginTop: 50,
+    lineHeight: 20,
+    width: "90%",
+    fontFamily: fonts.text,
+    fontSize: 18,
+    textAlign: "center",
+  },
+  close: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  storeImage: {
+    width: 250,
+    height: 250,
+    position: "absolute",
+    top: 5,
+  },
+  linkClose: {
+    marginTop: 30,
+    fontSize: 16,
+    textAlign: "center",
+    fontFamily: fonts.text,
+    color: colors.blue,
+  },
+  callback: {
+    marginTop: 6,
+    textAlign: "center",
+    fontFamily: fonts.text,
+    color: colors.lightgray,
+  },
+  modalView: {
+    borderRadius: 12,
+    alignItems: "center",
+    width: "90%",
+    height: 500,
+    backgroundColor: colors.icecream,
+    overflow: "hidden",
   },
 });

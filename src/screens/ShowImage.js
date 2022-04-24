@@ -17,10 +17,8 @@ import {
 import AnimatedLottieView from "lottie-react-native";
 
 //share and download images feature
-import * as Sharing from "expo-sharing";
-import * as FileSystem from "expo-file-system";
-import * as ImagePicker from "expo-image-picker";
-import * as MediaLibrary from "expo-media-library";
+// import * as Sharing from "expo-sharing";
+// import * as FileSystem from "expo-file-system";
 
 import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import colors from "../constants/colors";
@@ -61,7 +59,7 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
 
   // download
 
-  const downloadFile = async () => {
+  /*   const downloadFile = async () => {
     const uri = picture;
     let fileUri = FileSystem.documentDirectory + `${category}_quotes.png`;
     await FileSystem.downloadAsync(uri, fileUri)
@@ -72,8 +70,8 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
         console.error(error);
       });
   };
-
-  const saveFile = async (fileUri) => {
+ */
+  /* const saveFile = async (fileUri) => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status === "granted") {
       try {
@@ -97,10 +95,10 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
         console.log("Save error: ", err);
       }
     }
-  };
+  }; */
   // sharing
-  const source = picture;
-  const onShare = () => {
+  // const source = picture;
+  /*   const onShare = () => {
     FileSystem.downloadAsync(source, FileSystem.documentDirectory + ".png")
       .then(({ uri }) => {
         console.log("finished download to " + uri);
@@ -110,7 +108,7 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }; */
 
   useEffect(() => {
     if (membership === "premium") {
@@ -154,7 +152,7 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={downloadFile}>
+          {/*  <TouchableOpacity onPress={downloadFile}>
             <View style={[styles.icon, { display: iconShow }]}>
               <Feather
                 style={{ margin: 20 }}
@@ -168,9 +166,9 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
                 Download
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <TouchableOpacity onPress={onShare}>
+          {/* <TouchableOpacity onPress={onShare}>
             <View style={[styles.icon, { display: iconShow }]}>
               <Entypo
                 style={{ margin: 20 }}
@@ -184,7 +182,7 @@ const ShowImage = ({ route, navigation, quote = {} }) => {
                 Share
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {membership === "premium" ? (
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>

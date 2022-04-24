@@ -21,7 +21,7 @@ function AuthRoutes() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.white,
           borderTopWidth: 0,
           height: 60,
           paddingBottom: 16,
@@ -30,26 +30,39 @@ function AuthRoutes() {
         labelPosition: "below-icon",
         showLabel: true,
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.lightgray,
         headerStyle: {
           backgroundColor: colors.background,
         },
       }}
     >
       <Tab.Screen
-        name="Explore"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
-              name="explore"
+              name="home"
               size={24}
-              color={focused ? colors.primary : colors.opacityWhite}
+              color={focused ? colors.primary : colors.lightgray}
             />
           ),
         }}
       />
       <Tab.Screen
+        name="Arts for Change"
+        component={Favorites}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="paint-brush"
+              size={24}
+              color={focused ? colors.primary : colors.lightgray}
+            />
+          ),
+        }}
+      />
+      {/*  <Tab.Screen
         name="Favorites"
         component={Favorites}
         options={{
@@ -61,7 +74,7 @@ function AuthRoutes() {
             />
           ),
         }}
-      />
+      /> */}
       {/* <Tab.Screen 
             name="Daily" component={Daily}
             options={{

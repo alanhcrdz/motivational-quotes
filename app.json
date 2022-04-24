@@ -3,7 +3,7 @@
     "owner": "globalpromotions",
     "name": "motivationalquotes",
     "slug": "motivationalquotes",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.globalpromotions.motivationalquotes",
-      "buildNumber": "1.0.2",
+      "buildNumber": "1.0.4",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~8191271703"
       }
@@ -31,7 +31,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.globalpromotions.motivationalquotes",
-      "versionCode": 4,
+      "versionCode": 6,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~9504353373"
       }
