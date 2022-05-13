@@ -61,12 +61,10 @@ function Favorites({ route, navigation }) {
   const renderItem = ({ item }) => {
     const { picture } = item;
     return (
-      <>
         <View
           style={{
-            width: "100%",
+            width: "50%",
             height: "100%",
-            flex: 1,
           }}
         >
           <TouchableOpacity
@@ -74,8 +72,6 @@ function Favorites({ route, navigation }) {
             onPress={() =>
               navigation.navigate("ShowImage", {
                 picture,
-                category,
-                name,
                 membership: item.creator.membership,
                 user_store: item.creator.user_store,
                 username: item.creator.username,
@@ -84,13 +80,12 @@ function Favorites({ route, navigation }) {
           >
             <ImageBackground style={styles.picture} source={{ uri: picture }} />
           </TouchableOpacity>
-          <View style={{ margin: 10 }}>
+          <View style={{ margin: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
             <TouchableOpacity onPress={() => handleRemoveFavorites(item)}>
               <FontAwesome name={"remove"} size={24} color={colors.white} />
             </TouchableOpacity>
           </View>
         </View>
-      </>
     );
   };
   const LoadingBar = () => {
@@ -106,13 +101,15 @@ function Favorites({ route, navigation }) {
       {loading ? (
         <LoadingBar />
       ) : favorites.length === 0 ? (
-        <Text style={{ color: "#64676D", fontSize: 18 }}>
-          Add a picture to favorites list.
+        <View style={{ flexGrow: 1, justifyContent: 'center', alignItems:'center' }}>
+          <Text style={{ color: "#64676D", fontSize: 18 }}>
+          No favorites found. Add a picture to the list.
         </Text>
+        </View>
       ) : (
         <FlatList
           style={{ flexGrow: 1 }}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.key}
           data={favorites}
           numColumns={2}
           renderItem={renderItem}
@@ -137,9 +134,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
     justifyContent: "space-between",
-    alignItems: "center",
+    flexGrow: 1,
     width: "100%",
-    height: "100%",
   },
   heading: {
     width: "90%",
@@ -161,7 +157,9 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     width: "100%",
+    flexGrow: 1,
     padding: 6,
+    backgroundColor: colors.background,
   },
   picture: {
     borderRadius: 8,

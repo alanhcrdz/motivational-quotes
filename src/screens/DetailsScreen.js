@@ -19,9 +19,9 @@ import {
   LogBox,
   Image,
 } from "react-native";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 //import actions
-import { addFavorite, removeFavorite } from "../redux/actions";
+import { getQuotes, addFavorite, removeFavorite } from "../redux/actions";
 
 // import ActionButton from '../components/ActionButton';
 import colors from "../constants/colors";
@@ -30,9 +30,9 @@ import styled from "styled-components/native";
 import fonts from "../constants/fonts";
 import { AdMobInterstitial } from "expo-ads-admob";
 import * as Device from "expo-device";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 // getting quotes from firebase
-import { collection, getDocs, getFirestore } from "firebase/firestore";
 LogBox.ignoreLogs(["Setting a timer"]);
 
 const ActionsContainer = styled.View`
@@ -52,39 +52,25 @@ function DetailsScreen({ route, navigation }) {
   const [adLoading, setAdLoading] = useState(false);
   const [adLoaded, setAdLoaded] = useState(null);
   const [showFooter, setShowFooter] = useState(false);
-  const [quotes, setQuotes] = useState([]);
 
   const { category, name, slug } = route.params;
   const { loading, setLoading } = useDataContext();
-  const db = getFirestore();
+  const { quotes, favorites } = useSelector(state => state.quotesReducer);
+  const dispatch = useDispatch();
+  const fetchQuotes = () => dispatch(getQuotes());
 
-  async function getQuotes() {
-    try {
-      const querySnapshot = await getDocs(collection(db, "quotes"));
-      const listQuotes = [];
-      querySnapshot.forEach((doc) => {
-        listQuotes.push({
-          ...doc.data(),
-          key: doc.id,
-        });
-      });
-
-      if (isMounted.current) {
-        setQuotes(listQuotes);
-      }
-    } catch (error) {
-      isMounted.current && console.log("Could not find data: ", error);
-    }
-    setLoading(false);
-  }
 
   useEffect(() => {
-    setLoading(true);
     isMounted.current = true;
-    getQuotes();
+    fetchQuotes();
+    
     // this is run when component unmount (cleanUp)
-    return () => (isMounted.current = false);
+    return () => 
+      (isMounted.current = false);
+    ;
   }, []);
+
+ 
 
   // renderComponent after 3 seconds
 
@@ -126,17 +112,37 @@ function DetailsScreen({ route, navigation }) {
       setAdLoading(false);
     });
   }
+   
+  // handling favorites
+  const addToFavoriteList = quote => dispatch(addFavorite(quote));
+
+  const removeFromFavoriteList = quote => dispatch(removeFavorite(quote));
+
+  const handleAddFavorites = quote => {
+    addToFavoriteList(quote);
+  };
+
+  const handleRemoveFavorites = quote => {
+    removeFromFavoriteList(quote);
+  }
+
+const ifExists = quote => {
+  if(favorites.filter(item => item.key === quote.key).length > 0) {
+    return true;
+  };
+  return false;
+}
+
 
   const filteredQuotes = quotes.filter((quote) => quote.category === category);
 
   const renderItem = ({ item }) => {
-    const { picture } = item;
+    const { picture } = item
     return (
       <View
         style={{
-          width: "100%",
+          width: "50%",
           height: "100%",
-          flex: 1,
         }}
       >
         <TouchableOpacity
@@ -154,7 +160,7 @@ function DetailsScreen({ route, navigation }) {
         >
           <ImageBackground style={styles.picture} source={{ uri: picture }} />
         </TouchableOpacity>
-        {/*  <View style={{ margin: 10 }}>
+          <View style={{ margin: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
             <TouchableOpacity
               onPress={() => {
                 ifExists(item)
@@ -165,10 +171,11 @@ function DetailsScreen({ route, navigation }) {
               <AntDesign
                 name={ifExists(item) ? "heart" : "hearto"}
                 size={24}
-                color={ifExists(item) ? colors.accent : colors.white}
+                color={ifExists(item) ? colors.white : '#64676D'}
               />
             </TouchableOpacity>
-          </View> */}
+            
+          </View> 
       </View>
     );
   };
@@ -225,10 +232,13 @@ function DetailsScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <LoadingBar />
-      ) : (
-        <FlatList
+  
+        {
+          loading ? (
+            <LoadingBar />
+          )
+          :
+          <FlatList
           style={{ flex: 1 }}
           keyExtractor={(item) => item.key}
           data={filteredQuotes}
@@ -247,7 +257,8 @@ function DetailsScreen({ route, navigation }) {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
-      )}
+        }
+      
     </View>
   );
 }
@@ -264,7 +275,6 @@ const styles = StyleSheet.create({
   },
   loadingWrapper: {
     flexGrow: 1,
-    backgroundColor: "purple",
   },
   loadingContainer: {
     width: 40,
