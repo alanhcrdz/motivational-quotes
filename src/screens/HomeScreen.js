@@ -13,9 +13,11 @@ import {
   Animated,
   Modal,
   TouchableHighlight,
-} from "react-native";
-import * as Device from "expo-device";
 
+} from "react-native";
+import NetInfo from '@react-native-community/netinfo'
+import {  Entypo } from "@expo/vector-icons";
+import * as Device from "expo-device";
 import colors from "../constants/colors";
 import fonts from "../constants/fonts";
 //import { enCA, es, ptBR } from 'date-fns/locale';
@@ -26,15 +28,25 @@ import { useDataContext } from "../hooks/useDataContext";
 import { AdMobRewarded } from "expo-ads-admob";
 import { ActivityIndicator } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
+import OfflineNotice from "../components/OfflineNotice";
 
 export default function HomeScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
-
+  // const [modalVisible, setModalVisible] = useState(false);
+  const [netInfo, setNetInfo] = useState('');
+  const [isConnected, setIsConnected] = useState()
   // firestore database
-  const { adLoading, setAdLoading, loading, setLoading } = useDataContext();
-
+  // const { adLoading, setAdLoading, loading, setLoading } = useDataContext();
+  
   const isFocused = useIsFocused();
   useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setNetInfo(
+        `Connection type: ${state.type}
+        Is connected? ${state.isConnected}
+        Ip Address: ${state.details.ipAddress}`
+      )
+      setIsConnected(state.isConnected)
+    })
     StatusBar.setHidden(true);
     if (isFocused) {
       const backAction = () => {
@@ -52,24 +64,30 @@ export default function HomeScreen({ navigation }) {
         "hardwareBackPress",
         backAction
       );
-      return () => backHandler.remove();
+      return () => {
+        backHandler.remove();
+        unsubscribe();
+      }
     } else {
       BackHandler.removeEventListener("hardwareBackPress");
+
     }
   }, []);
+
+  
   // rewarded
-  const prodRewardedIos = "ca-app-pub-9871106933538473/1612406555";
-  const testRewardedIos = "ca-app-pub-3940256099942544/1712485313";
+  // const prodRewardedIos = "ca-app-pub-9871106933538473/1612406555";
+  // const testRewardedIos = "ca-app-pub-3940256099942544/1712485313";
 
-  const prodRewardedAndr = "ca-app-pub-9871106933538473/2015201008";
-  const testRewardedAndr = "ca-app-pub-3940256099942544/5224354917";
+  // const prodRewardedAndr = "ca-app-pub-9871106933538473/2015201008";
+  // const testRewardedAndr = "ca-app-pub-3940256099942544/5224354917";
 
-  const RewardedUnit = Platform.select({
+  /* const RewardedUnit = Platform.select({
     ios: Device.isDevice && !__DEV__ ? prodRewardedIos : testRewardedIos,
     android: Device.isDevice && !__DEV__ ? prodRewardedAndr : testRewardedAndr,
-  });
+  }); */
 
-  async function showRewarded() {
+  /* async function showRewarded() {
     setAdLoading(true);
 
     // await setTestDeviceIDAsync("EMULATOR");
@@ -112,20 +130,20 @@ export default function HomeScreen({ navigation }) {
       console.log("Video Dismissed.");
       removeRewardedListeners();
     });
-  }
-  function removeRewardedListeners() {
+  } */
+  /* function removeRewardedListeners() {
     AdMobRewarded.removeAllListeners();
     console.log("Removed all listeners");
-  }
+  } */
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  /* const fadeAnim = useRef(new Animated.Value(0)).current;
   const animFade = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 250,
       useNativeDriver: true,
     }).start();
-  };
+  }; */
 
   const DATA = CategoriesData;
   const renderItem = ({ item }) => {
@@ -141,13 +159,15 @@ export default function HomeScreen({ navigation }) {
           }}
           activeOpacity={0.6}
           key={item.id}
-          style={[styles.list, styles.overlay]}
+          disabled={!isConnected ? 'true' : 'false'}
+          style={[styles.list, {backgroundColor: !isConnected ? '#d3d3d3' : colors.opacityBlack}]}
         >
           <ImageBackground
             style={styles.background}
             source={item.background}
             imageStyle={{ opacity: 0.6 }}
           >
+            {!isConnected ? <Entypo name="block" size={24} color='red' /> : null}
             <Text style={[styles.title_dark, { color: "#fff" }]}>
               {item.title}
             </Text>
@@ -156,7 +176,7 @@ export default function HomeScreen({ navigation }) {
       </>
     );
   };
-  const renderHeader = ({ item }) => {
+  /* const renderHeader = ({ item }) => {
     return (
       <>
         <TouchableOpacity
@@ -251,12 +271,12 @@ export default function HomeScreen({ navigation }) {
       </>
     );
   };
-
+ */
   return (
     <View style={styles.container_light}>
+      {!isConnected ?  <OfflineNotice /> : null}
       <View style={styles.catContainer}>
         <FlatList
-          ListHeaderComponent={renderHeader}
           keyExtractor={(item, index) => item.id}
           data={DATA}
           numColumns={1}
@@ -346,10 +366,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
   },
-  overlay: {
-    // height: 160,
-    backgroundColor: colors.opacityBlack,
-  },
+  
   subtitleWrapper: {
     padding: 8,
     backgroundColor: colors.accent,
