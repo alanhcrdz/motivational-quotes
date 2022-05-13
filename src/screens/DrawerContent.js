@@ -83,7 +83,7 @@ function DrawerContent({ otherProps, navigation }) {
                   navigation.navigate("Inspire");
                 }}
               />
-              {/* <DrawerItem
+               <DrawerItem
                 icon={() => (
                   <AntDesign
                     name="heart"
@@ -95,7 +95,7 @@ function DrawerContent({ otherProps, navigation }) {
                 onPress={() => {
                   navigation.navigate("Favorites");
                 }}
-              /> */}
+              /> 
               {/* <DrawerItem
                                 icon={({ color, size }) => (
                                     <AntDesign
@@ -168,7 +168,7 @@ function DrawerContent({ otherProps, navigation }) {
                 icon={({ color, size }) => (
                   <Entypo name="star-outlined" color={color} size={size} />
                 )}
-                label="Leave Feedback"
+                label="Give Feedback"
                 onPress={handleModalVisibility}
               />
               <DrawerItem
