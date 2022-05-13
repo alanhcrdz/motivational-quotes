@@ -9,7 +9,14 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
-.credentials.json
+
+# Prohibit everithing.json accidentally
+*.json
+# prohibit every certificates
+*.pem
+*.pfx
+*.cer
+*.crt
 
 
 # macOS
