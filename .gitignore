@@ -9,7 +9,6 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
-
 # Prohibit everithing.json accidentally
 *.json
 # prohibit every certificates
