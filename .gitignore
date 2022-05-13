@@ -10,7 +10,7 @@ npm-debug.*
 web-build/
 .env
 # Prohibit everithing.json accidentally
-*.json
+credentials.json
 # prohibit every certificates
 *.pem
 *.pfx
