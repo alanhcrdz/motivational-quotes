@@ -32,21 +32,11 @@ import OfflineNotice from "../components/OfflineNotice";
 
 export default function HomeScreen({ navigation }) {
   // const [modalVisible, setModalVisible] = useState(false);
-  const [netInfo, setNetInfo] = useState('');
-  const [isConnected, setIsConnected] = useState()
   // firestore database
-  // const { adLoading, setAdLoading, loading, setLoading } = useDataContext();
+  // const { isConnected } = useDataContext();
   
   const isFocused = useIsFocused();
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setNetInfo(
-        `Connection type: ${state.type}
-        Is connected? ${state.isConnected}
-        Ip Address: ${state.details.ipAddress}`
-      )
-      setIsConnected(state.isConnected)
-    })
     StatusBar.setHidden(true);
     if (isFocused) {
       const backAction = () => {
@@ -66,7 +56,6 @@ export default function HomeScreen({ navigation }) {
       );
       return () => {
         backHandler.remove();
-        unsubscribe();
       }
     } else {
       BackHandler.removeEventListener("hardwareBackPress");
@@ -159,15 +148,14 @@ export default function HomeScreen({ navigation }) {
           }}
           activeOpacity={0.6}
           key={item.id}
-          disabled={!isConnected ? 'true' : 'false'}
-          style={[styles.list, {backgroundColor: !isConnected ? '#d3d3d3' : colors.opacityBlack}]}
+          
+          style={[styles.list, {backgroundColor: colors.opacityBlack}]}
         >
           <ImageBackground
             style={styles.background}
             source={item.background}
             imageStyle={{ opacity: 0.6 }}
           >
-            {!isConnected ? <Entypo name="block" size={24} color='red' /> : null}
             <Text style={[styles.title_dark, { color: "#fff" }]}>
               {item.title}
             </Text>
@@ -274,21 +262,21 @@ export default function HomeScreen({ navigation }) {
  */
   return (
     <View style={styles.container_light}>
-      {!isConnected ?  <OfflineNotice /> : null}
       <View style={styles.catContainer}>
-        <FlatList
-          keyExtractor={(item, index) => item.id}
-          data={DATA}
-          numColumns={1}
-          renderItem={renderItem}
-          // for better performance (if needed, install recyclerlistview)
-          initialNumToRender={5}
-          maxToRenderPerBatch={10}
-          windowSize={10}
-          removeClippedSubviews={true}
-          updateCellsBatchingPeriod={100}
-        />
-      </View>
+      <FlatList
+        keyExtractor={(item, index) => item.id}
+        data={DATA}
+        numColumns={1}
+        renderItem={renderItem}
+        // for better performance (if needed, install recyclerlistview)
+        initialNumToRender={5}
+        maxToRenderPerBatch={10}
+        windowSize={10}
+        removeClippedSubviews={true}
+        updateCellsBatchingPeriod={100}
+      />
+    </View>
+      
     </View>
   );
 }

@@ -184,7 +184,7 @@ const ShowImage = ({ route, navigation }) => {
             </View>
           </TouchableOpacity> 
 
-          {membership === "premium" ? (
+           {membership === "premium" ? (
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
               <View style={[styles.icon, { display: iconShow }]}>
                 <Entypo
@@ -200,17 +200,14 @@ const ShowImage = ({ route, navigation }) => {
                 </Text>
               </View>
             </TouchableOpacity>
-          ) : null}
-
-          {/* FAVORITES FEATURE WILL BE ADDED LATER, AFTER STUDY MORE!!! */}
-         
+          ) : null} 
         </Animated.View>
 
         {/* MODAL FOR LOADING AD */}
         <Modal animationType="slide" visible={modalVisible} transparent>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <View style={styles.modalHeader}>
+               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
                   onPress={() => {
@@ -231,7 +228,7 @@ const ShowImage = ({ route, navigation }) => {
                   source={require("../assets/shop.json")}
                   style={styles.storeImage}
                 />
-              </View>
+              </View> 
               <Text style={styles.modalTitle}>Support our Creators!</Text>
               <Text style={styles.modalText}>
                 The owner of this amazing picture sells its products online.

@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { createContext, useState, useEffect } from "react";
 import { format } from "date-fns";
 
+
 const Context = createContext();
 
 export function DataContextProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [adLoading, setAdLoading] = useState(false);
+
 
   const today = format(new Date(), "eeee");
 
@@ -20,6 +22,7 @@ export function DataContextProvider({ children }) {
     const newFavorites = favorites.filter((x) => x.id !== picture.id);
     setFavorites(newFavorites);
   };
+  
 
   /* async function loadRandomQuotes() {
     setLoading(true);
@@ -53,6 +56,7 @@ export function DataContextProvider({ children }) {
         favorites,
         addToFavorites: add,
         removeFromFavorites: remove,
+        
       }}
     >
       {children}

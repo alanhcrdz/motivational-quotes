@@ -191,7 +191,9 @@ const ifExists = quote => {
             onPress={() => {
               if (
                 category === "motivationalprosperity" ||
-                category === "motivationalsuccess"
+                category === "motivationalsuccess" ||
+                category === "motivationalconfidence" ||
+                category === "motivationallove"
               ) {
                 showInterstitial();
                 setTimeout(() => {

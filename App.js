@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -12,9 +12,10 @@ import {
   Ubuntu_700Bold,
 } from "@expo-google-fonts/ubuntu";
 import Routes from "./src/routes/index";
-import { DataContextProvider } from "./src/hooks/useDataContext";
+import { DataContextProvider, useDataContext } from "./src/hooks/useDataContext";
 import { NotifierWrapper } from "react-native-notifier";
 import { Provider as PaperProvider } from "react-native-paper";
+import NetInfo from '@react-native-community/netinfo'
 
 //firebase
 import { initializeApp } from "firebase/app";
@@ -55,10 +56,26 @@ initializeApp(firebaseConfig);
 //logEvent(analytics, 'notification_received')
 
 export default function App() {
+  const [isConnected, setIsConnected] = useState()
+  const [netInfo, setNetInfo] = useState('');
+
   const [fontsLoaded] = useFonts({
     Ubuntu_700Bold,
     Ubuntu_400Regular,
   });
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setNetInfo(
+        `Connection type: ${state.type}
+        Is connected? ${state.isConnected}
+        Ip Address: ${state.details.ipAddress}`
+      )
+      setIsConnected(state.isConnected)
+    });
+    return () => {
+      unsubscribe();
+    }
+  })
 
   if (!fontsLoaded) return <AppLoading />;
 
@@ -68,7 +85,10 @@ export default function App() {
         <PaperProvider>
           <NotifierWrapper>
             <DataContextProvider>
-              <Routes />
+              {
+                !isConnected ? <OfflineNotice /> :
+                <Routes />
+              }
               <Toast />
             </DataContextProvider>
           </NotifierWrapper>
