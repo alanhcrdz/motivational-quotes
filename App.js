@@ -29,6 +29,7 @@ import {
   APP_ID,
   MEASUREMENT_ID,
 } from "@env";
+import OfflineNotice from "./src/components/OfflineNotice";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
