@@ -50,27 +50,25 @@ function DetailsScreen({ route, navigation }) {
 
   const [refreshing, setRefreshing] = useState(false);
   const [adLoading, setAdLoading] = useState(false);
-  const [adLoaded, setAdLoaded] = useState(null);
+  // const [adLoaded, setAdLoaded] = useState(null);
   const [showFooter, setShowFooter] = useState(false);
 
   const { category, name, slug } = route.params;
   const { loading, setLoading } = useDataContext();
-  const { quotes, favorites } = useSelector(state => state.quotesReducer);
-  const dispatch = useDispatch();
-  const fetchQuotes = () => dispatch(getQuotes());
+  const { quotes, favorites } = useSelector((state) => state.quotesReducer);
 
+  const dispatch = useDispatch();
+  const fetchQuotes = () => {
+    dispatch(getQuotes());
+  };
 
   useEffect(() => {
     isMounted.current = true;
     fetchQuotes();
-    
-    // this is run when component unmount (cleanUp)
-    return () => 
-      (isMounted.current = false);
-    ;
-  }, []);
 
- 
+    // this is run when component unmount (cleanUp)
+    return () => (isMounted.current = false);
+  }, []);
 
   // renderComponent after 3 seconds
 
@@ -112,32 +110,31 @@ function DetailsScreen({ route, navigation }) {
       setAdLoading(false);
     });
   }
-   
+
   // handling favorites
-  const addToFavoriteList = quote => dispatch(addFavorite(quote));
+  const addToFavoriteList = (quote) => dispatch(addFavorite(quote));
 
-  const removeFromFavoriteList = quote => dispatch(removeFavorite(quote));
+  const removeFromFavoriteList = (quote) => dispatch(removeFavorite(quote));
 
-  const handleAddFavorites = quote => {
+  const handleAddFavorites = (quote) => {
     addToFavoriteList(quote);
   };
 
-  const handleRemoveFavorites = quote => {
+  const handleRemoveFavorites = (quote) => {
     removeFromFavoriteList(quote);
-  }
-
-const ifExists = quote => {
-  if(favorites.filter(item => item.key === quote.key).length > 0) {
-    return true;
   };
-  return false;
-}
 
+  const ifExists = (quote) => {
+    if (favorites.filter((item) => item.key === quote.key).length > 0) {
+      return true;
+    }
+    return false;
+  };
 
   const filteredQuotes = quotes.filter((quote) => quote.category === category);
 
   const renderItem = ({ item }) => {
-    const { picture } = item
+    const { picture } = item;
     return (
       <View
         style={{
@@ -160,22 +157,28 @@ const ifExists = quote => {
         >
           <ImageBackground style={styles.picture} source={{ uri: picture }} />
         </TouchableOpacity>
-          <View style={{ margin: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
-            <TouchableOpacity
-              onPress={() => {
-                ifExists(item)
-                  ? handleRemoveFavorites(item)
-                  : handleAddFavorites(item);
-              }}
-            >
-              <AntDesign
-                name={ifExists(item) ? "heart" : "hearto"}
-                size={24}
-                color={ifExists(item) ? colors.white : '#64676D'}
-              />
-            </TouchableOpacity>
-            
-          </View> 
+        <View
+          style={{
+            margin: 10,
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              ifExists(item)
+                ? handleRemoveFavorites(item)
+                : handleAddFavorites(item);
+            }}
+          >
+            <AntDesign
+              name={ifExists(item) ? "heart" : "hearto"}
+              size={24}
+              color={ifExists(item) ? colors.white : "#64676D"}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -234,13 +237,10 @@ const ifExists = quote => {
 
   return (
     <View style={styles.container}>
-  
-        {
-          loading ? (
-            <LoadingBar />
-          )
-          :
-          <FlatList
+      {filteredQuotes.length < 0 ? (
+        <LoadingBar />
+      ) : (
+        <FlatList
           style={{ flex: 1 }}
           keyExtractor={(item) => item.key}
           data={filteredQuotes}
@@ -259,8 +259,7 @@ const ifExists = quote => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
-        }
-      
+      )}
     </View>
   );
 }

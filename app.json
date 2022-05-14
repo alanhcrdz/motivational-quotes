@@ -30,7 +30,13 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.globalpromotions.motivationalquotes",
-      "versionCode": 8,
+      "versionCode": 9,
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9871106933538473~9504353373"
       }
