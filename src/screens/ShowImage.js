@@ -17,20 +17,13 @@ import {
 import AnimatedLottieView from "lottie-react-native";
 
 //share and download images feature
- import * as Sharing from "expo-sharing";
- import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 
 import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import colors from "../constants/colors";
 import { Notifier, Easing } from "react-native-notifier";
 import fonts from "../constants/fonts";
-
-//redux
-// import { createStructuredSelector } from "reselect";
-// import { selectQuoteMarked } from "../redux/quotes/quotes.selectors";
-// import { toggleFavorite, addQuote } from "../redux/quotes/quotes.actions";
-// import { QuotesActionTypes } from "../redux/quotes/quotes.types";
-// import { Favorite } from "../components/favorites/favorites.component";
 
 const ShowImage = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -97,8 +90,8 @@ const ShowImage = ({ route, navigation }) => {
     }
   }; */
   // sharing
-   const source = picture;
-    const onShare = () => {
+  const source = picture;
+  const onShare = () => {
     FileSystem.downloadAsync(source, FileSystem.documentDirectory + ".png")
       .then(({ uri }) => {
         console.log("finished download to " + uri);
@@ -108,7 +101,7 @@ const ShowImage = ({ route, navigation }) => {
       .catch((error) => {
         console.error(error);
       });
-  }; 
+  };
 
   useEffect(() => {
     if (membership === "premium") {
@@ -168,7 +161,7 @@ const ShowImage = ({ route, navigation }) => {
             </View>
           </TouchableOpacity> */}
 
-           <TouchableOpacity onPress={onShare}>
+          <TouchableOpacity onPress={onShare}>
             <View style={[styles.icon, { display: iconShow }]}>
               <Entypo
                 style={{ margin: 20 }}
@@ -182,9 +175,9 @@ const ShowImage = ({ route, navigation }) => {
                 Share
               </Text>
             </View>
-          </TouchableOpacity> 
+          </TouchableOpacity>
 
-           {membership === "premium" ? (
+          {membership === "premium" ? (
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
               <View style={[styles.icon, { display: iconShow }]}>
                 <Entypo
@@ -200,14 +193,14 @@ const ShowImage = ({ route, navigation }) => {
                 </Text>
               </View>
             </TouchableOpacity>
-          ) : null} 
+          ) : null}
         </Animated.View>
 
         {/* MODAL FOR LOADING AD */}
         <Modal animationType="slide" visible={modalVisible} transparent>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-               <View style={styles.modalHeader}>
+              <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
                   onPress={() => {
@@ -228,7 +221,7 @@ const ShowImage = ({ route, navigation }) => {
                   source={require("../assets/shop.json")}
                   style={styles.storeImage}
                 />
-              </View> 
+              </View>
               <Text style={styles.modalTitle}>Support our Creators!</Text>
               <Text style={styles.modalText}>
                 The owner of this amazing picture sells its products online.
