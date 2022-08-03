@@ -21,7 +21,7 @@
       "bundleIdentifier": "com.globalpromotions.motivationalquotes",
       "buildNumber": "1.1.0",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-9871106933538473~8191271703"
+        "googleMobileAdsAppId": ""
       }
     },
     "android": {
@@ -36,7 +36,7 @@
         "ACCESS_NETWORK_STATE"
       ],
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-9871106933538473~9504353373"
+        "googleMobileAdsAppId": ""
       }
     },
     "web": {
