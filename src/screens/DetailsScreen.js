@@ -88,11 +88,11 @@ function DetailsScreen({ route, navigation }) {
   }, []);
 
   //ads
-  const productionInterIos = "ca-app-pub-9871106933538473/5497945163";
-  const testInterIos = "ca-app-pub-3940256099942544/4411468910";
+  const productionInterIos = "";
+  const testInterIos = "";
 
-  const productionInterAndroid = "ca-app-pub-9871106933538473/2193673059";
-  const testInterAndroid = "ca-app-pub-3940256099942544/1033173712";
+  const productionInterAndroid = "";
+  const testInterAndroid = "";
 
   const interstitialUnit = Platform.select({
     ios: Device.isDevice && !__DEV__ ? productionInterIos : testInterIos,
