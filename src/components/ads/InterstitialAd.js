@@ -5,11 +5,11 @@ import { AdMobInterstitial } from "expo-ads-admob";
 import Constants from 'expo-constants';
 
 
-    const productionIos =  'ca-app-pub-9871106933538473/5497945163'
-    const testIos =  'ca-app-pub-3940256099942544/4411468910'
+    const productionIos =  ''
+    const testIos =  ''
 
-    const productionAndroid = 'ca-app-pub-9871106933538473/4460195663'
-    const testAndroid = 'ca-app-pub-3940256099942544/1033173712'
+    const productionAndroid = ''
+    const testAndroid = ''
 
 const interstitialUnit = Platform.select({
     ios: Constants.isDevice && !__DEV__ ? productionIos : testIos,
