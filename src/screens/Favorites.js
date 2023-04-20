@@ -32,21 +32,10 @@ import fonts from "../constants/fonts";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFavorite } from "../redux/actions";
 
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
-};
-
 function Favorites({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
 
   const { loading, setLoading } = useDataContext();
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {
-      setRefreshing(false);
-    });
-  }, []);
 
   // listing favorites with redux
   const { favorites } = useSelector((state) => state.quotesReducer);
@@ -61,31 +50,38 @@ function Favorites({ route, navigation }) {
   const renderItem = ({ item }) => {
     const { picture } = item;
     return (
+      <View
+        style={{
+          width: "50%",
+          height: "100%",
+        }}
+      >
+        <TouchableOpacity
+          style={styles.imgContainer}
+          onPress={() =>
+            navigation.navigate("ShowImage", {
+              picture,
+              membership: item.creator.membership,
+              user_store: item.creator.user_store,
+              username: item.creator.username,
+            })
+          }
+        >
+          <ImageBackground style={styles.picture} source={{ uri: picture }} />
+        </TouchableOpacity>
         <View
           style={{
-            width: "50%",
-            height: "100%",
+            margin: 10,
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            flexDirection: "row",
           }}
         >
-          <TouchableOpacity
-            style={styles.imgContainer}
-            onPress={() =>
-              navigation.navigate("ShowImage", {
-                picture,
-                membership: item.creator.membership,
-                user_store: item.creator.user_store,
-                username: item.creator.username,
-              })
-            }
-          >
-            <ImageBackground style={styles.picture} source={{ uri: picture }} />
+          <TouchableOpacity onPress={() => handleRemoveFavorites(item)}>
+            <FontAwesome name={"remove"} size={24} color={colors.white} />
           </TouchableOpacity>
-          <View style={{ margin: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => handleRemoveFavorites(item)}>
-              <FontAwesome name={"remove"} size={24} color={colors.white} />
-            </TouchableOpacity>
-          </View>
         </View>
+      </View>
     );
   };
   const LoadingBar = () => {
@@ -101,10 +97,16 @@ function Favorites({ route, navigation }) {
       {loading ? (
         <LoadingBar />
       ) : favorites.length === 0 ? (
-        <View style={{ flexGrow: 1, justifyContent: 'center', alignItems:'center' }}>
+        <View
+          style={{
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Text style={{ color: "#64676D", fontSize: 18 }}>
-          No favorites found. Add a picture to the list.
-        </Text>
+            No favorites found. Add a picture to the list.
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -121,9 +123,6 @@ function Favorites({ route, navigation }) {
           removeClippedSubviews={true}
           updateCellsBatchingPeriod={100}
           // reresh control
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
         />
       )}
     </View>

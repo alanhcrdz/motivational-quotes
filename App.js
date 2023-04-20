@@ -12,10 +12,13 @@ import {
   Ubuntu_700Bold,
 } from "@expo-google-fonts/ubuntu";
 import Routes from "./src/routes/index";
-import { DataContextProvider, useDataContext } from "./src/hooks/useDataContext";
+import {
+  DataContextProvider,
+  useDataContext,
+} from "./src/hooks/useDataContext";
 import { NotifierWrapper } from "react-native-notifier";
 import { Provider as PaperProvider } from "react-native-paper";
-import NetInfo from '@react-native-community/netinfo'
+import NetInfo from "@react-native-community/netinfo";
 
 //firebase
 import { initializeApp } from "firebase/app";
@@ -56,8 +59,8 @@ initializeApp(firebaseConfig);
 //logEvent(analytics, 'notification_received')
 
 export default function App() {
-  const [isConnected, setIsConnected] = useState()
-  const [netInfo, setNetInfo] = useState('');
+  const [isConnected, setIsConnected] = useState();
+  const [netInfo, setNetInfo] = useState("");
 
   const [fontsLoaded] = useFonts({
     Ubuntu_700Bold,
@@ -69,13 +72,13 @@ export default function App() {
         `Connection type: ${state.type}
         Is connected? ${state.isConnected}
         Ip Address: ${state.details.ipAddress}`
-      )
-      setIsConnected(state.isConnected)
+      );
+      setIsConnected(state.isConnected);
     });
     return () => {
       unsubscribe();
-    }
-  })
+    };
+  });
 
   if (!fontsLoaded) return <AppLoading />;
 
@@ -85,10 +88,7 @@ export default function App() {
         <PaperProvider>
           <NotifierWrapper>
             <DataContextProvider>
-              {
-                !isConnected ? <OfflineNotice /> :
-                <Routes />
-              }
+              {!isConnected ? <OfflineNotice /> : <Routes />}
               <Toast />
             </DataContextProvider>
           </NotifierWrapper>
