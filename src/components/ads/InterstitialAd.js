@@ -10,17 +10,12 @@ import {
 } from "@env"
 
     const productionIos =  ''
-<<<<<<< HEAD
+
     const testIos =  REACT_APP_TEST_INT_IOS
 
     const productionAndroid = ''
     const testAndroid = REACT_APP_TEST_INT_ANDROID
-=======
-    const testIos =  ''
 
-    const productionAndroid = ''
-    const testAndroid = ''
->>>>>>> 85792467079d2b6ae5598de05de3a8fe03917525
 
 const interstitialUnit = Platform.select({
     ios: Constants.isDevice && !__DEV__ ? productionIos : testIos,
