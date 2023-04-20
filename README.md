@@ -1,5 +1,10 @@
 # Motivational Quotes App
 
+<img src="./src/assets/motivation-1.png" width="600" height="400" />
+<img src="./src/assets/motivation-2.png" width="600" height="400" />
+<img src="./src/assets/motivation-3.png" width="600" height="400" />
+<img src="./src/assets/motivation-4.png" width="600" height="400" />
+
 
 
 
