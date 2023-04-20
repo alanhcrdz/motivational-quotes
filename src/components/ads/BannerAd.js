@@ -4,11 +4,16 @@ import { Platform } from "react-native";
 import { AdMobBanner } from "expo-ads-admob";
 import * as Device from "expo-device";
 
-const productionAndroid = "ca-app-pub-9871106933538473/9702119337";
-const testAndroid = "ca-app-pub-3940256099942544/6300978111";
+import {
+  REACT_APP_TEST_BANNER_ANDROID,
+  REACT_APP_TEST_BANNER_IOS
+} from "@env"
 
-const productionIos = "ca-app-pub-9871106933538473/1712960432";
-const testIos = "ca-app-pub-3940256099942544/2934735716";
+const productionAndroid = "";
+const testAndroid = REACT_APP_TEST_BANNER_ANDROID;
+
+const productionIos = "";
+const testIos = REACT_APP_TEST_BANNER_IOS;
 
 // UNITS
 const bannerUnit = Platform.select({

@@ -32,6 +32,11 @@ import { AdMobInterstitial } from "expo-ads-admob";
 import * as Device from "expo-device";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
+import {
+  REACT_APP_TEST_INT_ANDROID,
+  REACT_APP_TEST_INT_IOS
+} from "@env"
+
 // getting quotes from firebase
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -90,11 +95,11 @@ function DetailsScreen({ route, navigation }) {
   }, []);
 
   //ads
-  const productionInterIos = "ca-app-pub-9871106933538473/5497945163";
-  const testInterIos = "ca-app-pub-3940256099942544/4411468910";
+  const productionInterIos = "";
+  const testInterIos = REACT_APP_TEST_INT_IOS;
 
-  const productionInterAndroid = "ca-app-pub-9871106933538473/2193673059";
-  const testInterAndroid = "ca-app-pub-3940256099942544/1033173712";
+  const productionInterAndroid = "";
+  const testInterAndroid = REACT_APP_TEST_INT_ANDROID;
 
   const interstitialUnit = Platform.select({
     ios: Device.isDevice && !__DEV__ ? productionInterIos : testInterIos,

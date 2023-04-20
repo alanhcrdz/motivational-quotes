@@ -4,12 +4,16 @@ import { View, Platform } from 'react-native';
 import { AdMobInterstitial } from "expo-ads-admob";
 import Constants from 'expo-constants';
 
+import {
+  REACT_APP_TEST_INT_ANDROID,
+  REACT_APP_TEST_INT_IOS
+} from "@env"
 
-    const productionIos =  'ca-app-pub-9871106933538473/5497945163'
-    const testIos =  'ca-app-pub-3940256099942544/4411468910'
+    const productionIos =  ''
+    const testIos =  REACT_APP_TEST_INT_IOS
 
-    const productionAndroid = 'ca-app-pub-9871106933538473/4460195663'
-    const testAndroid = 'ca-app-pub-3940256099942544/1033173712'
+    const productionAndroid = ''
+    const testAndroid = REACT_APP_TEST_INT_ANDROID
 
 const interstitialUnit = Platform.select({
     ios: Constants.isDevice && !__DEV__ ? productionIos : testIos,
