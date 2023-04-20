@@ -5,8 +5,9 @@
 
 ## Table of Contents
 - [Installation](#installation)
-- [Usage](#usage)
+- [App Features](#app-features)
 - [Contributing](#contributing)
+- [Conclusion](#conclusion)
 
 ## Introduction
 
